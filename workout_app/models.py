@@ -21,7 +21,7 @@ class Workout(models.Model):
 class Exercise(models.Model):
     name = models.CharField(max_length=200, blank=False)
     type = models.IntegerField(choices=EXERCISE_TYPE, default=0)
-    goal = models.CharField(max_length=8, blank=False)
+    goal = models.CharField(max_length=8, blank=True)
 
     def __str__(self):
         return self.name
