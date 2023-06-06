@@ -30,7 +30,7 @@ class Exercise(models.Model):
 class ExerciseSet(models.Model):
     workout = models.ForeignKey(
         Workout, on_delete=models.CASCADE, related_name="workout_set")
-    exercise = models.ForeignKey(Exercise, related_name="exercise_set")
+    exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_set")
     reps = models.IntegerField(null=True)
     weight = models.IntegerField(null=True)
     time = models.IntegerField(null=True)
