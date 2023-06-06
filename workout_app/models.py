@@ -31,7 +31,7 @@ class ExerciseSet(models.Model):
     workout = models.ForeignKey(
         Workout, on_delete=models.CASCADE, related_name="workout_set")
     exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_set")
-    reps = models.IntegerField(null=True)
-    weight = models.IntegerField(null=True)
-    time = models.IntegerField(null=True)
-    distance = models.FloatField(null=True)
+    reps = models.IntegerField(blank=True, null=True, default="")
+    weight = models.IntegerField(blank=True, null=True, default="")
+    time = models.IntegerField(blank=True, null=True, default="")
+    distance = models.FloatField(blank=True, null=True, default="")
