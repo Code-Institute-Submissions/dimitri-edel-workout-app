@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Add Workout {% endblock title %}
+
+{% block content %}
+<h1>Add Workout</h1>
+<form action="{% url 'add_workout' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <div class="row">        
+        {{ form.date }}
+    </div>
+        <div class="row">
+            <input type="submit" value="Save" class="wo-button">
+        </div>
+    </div>
+</form>
+{% endblock content %}
