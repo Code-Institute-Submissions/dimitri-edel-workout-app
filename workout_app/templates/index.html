@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            Name
+        </div>
+        <div class="col">
+            Date
+        </div>        
+    </div>
+    {% for workout in workout_list %}
+    <div class="row">
+        <div class="col">
+            {{ workout.name }}
+        </div>
+        <div class="col">
+            {{ workout.date }}
+        </div>        
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
