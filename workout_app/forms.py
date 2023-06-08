@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, ModelChoiceField
+from django.forms import ModelForm, TextInput, formset_factory
 from .models import *
 
 class WorkoutForm(ModelForm):
@@ -14,12 +14,16 @@ class WorkoutForm(ModelForm):
         }
 
 
-class ExerciseSetForm(ModelForm):
-    exercise = ModelChoiceField(queryset=Exercise.objects.values_list('name', flat=True), empty_label="------ Select Exercise",to_field_name='exercise')
-    
+class ExerciseSetForm(ModelForm):    
     class Meta:
         model = ExerciseSet
         fields = ["exercise", "reps","weight", "time","distance"]
+
+    
+    def __init__(self, *args, **kwargs):
+        super(ExerciseSetForm, self).__init__(*args, **kwargs)
+        # Set the empty label in the selector
+        self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
 
 
 class ExerciseForm(ModelForm):

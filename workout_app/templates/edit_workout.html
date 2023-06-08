@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Edit Workout {% endblock title %}
+
+{% block content %}
+<h1>Edit Workout</h1>
+<form action="{% url 'add_workout' %}" method="POST">
+    {% csrf_token %}
+    {{ workout_form }}
+    <div class="row">
+        {{ workout_form.date }}
+    </div>
+    {% for exercise_set_form in exercise_set_forms %}
+    <div class="row">
+        <div class="col">            
+            {{ exercise_set_form.exercise }}
+        </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col md-2">
+            <a href="{% url 'home' %}" class="wo-button">
+                Cancel
+            </a>
+        </div>
+        <div class="col md-2">
+            <input type="submit" value="Save" class="wo-button">
+        </div>
+    </div>
+</form>
+{% endblock content %}
