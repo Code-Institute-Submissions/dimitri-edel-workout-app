@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <a href="{% url 'home' %}">
+            <button class="wo-button">Close</button>
+        </a>
+    </div>    
+    <div class="row">
+        <div class="col">
+            Name
+        </div>
+        <div class="col">
+            Type
+        </div>
+        <div class="col">
+            Goal
+        </div>
+    </div>
+    {% for exercise in exercise_list %}
+    <div class="row">
+        <div class="col">
+            {{ exercise.name }}
+        </div>
+        <div class="col">
+            {% if exercise.type == 0 %}
+            Strength
+            {% else %} 
+            Cardio
+            {% endif %}
+        </div>
+        <div class="col">
+            {% if exercise.goal == 0 %} 
+            Repetitions
+            {% else %} 
+            Destance 
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
