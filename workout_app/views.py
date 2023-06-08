@@ -14,20 +14,24 @@ class WorkoutList(generic.ListView):
 
 
 class Workout(View):
-    form_class = WorkoutForm
-
+    workout_form_class = WorkoutForm
+    exercise_set_form_class = ExerciseSetForm
     template_name = "add_workout.html"
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request, self.template_name, {"form": form})
+        workout_form = self.workout_form_class(prefix="workout")
+        exercise_set_form = self.exercise_set_form_class(prefix="exercise_set")
+        return render(request, self.template_name, {"workout_form": workout_form, "exercise_set_form": exercise_set_form})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
+        workout_form = self.workout_form_class(request.POST, prefix="workout")
+        exercise_set_form = self.exercise_set_form_class(request.POST, prefix="exercise_set")
+        if workout_form.is_valid() and exercise_set_form.is_valid():
             # <process form cleaned data>
-            form.instance.user = request.user
-            form.save()
+            workout_form.instance.user = request.user
+            workout_form.save()
+            exercise_set_form.instance.workout_id = workout_form.instance.id   
+            exercise_set_form.save()         
             return HttpResponseRedirect("/")
 
-        return render(request, self.template_name, {"form": form})
+        return render(request, self.template_name, {"workout_form": workout_form})

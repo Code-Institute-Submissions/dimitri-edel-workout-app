@@ -48,10 +48,10 @@ class ExerciseSet(models.Model):
     # The relationship to an Exercise object
     exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_set")
     # Number of repetitioons in this set
-    reps = models.IntegerField(blank=True, null=True, default="")
+    reps = models.IntegerField(blank=True, null=True, default="0")
     # The weight that was used, if weight lifting is involved
-    weight = models.IntegerField(blank=True, null=True, default="")
+    weight = models.IntegerField(blank=True, null=True, default="0")
     # The time it took to complete the set, if it is a cardio exercise
-    time = models.IntegerField(blank=True, null=True, default="")
+    time = models.IntegerField(blank=True, null=True, default="0")
     # The distance covered in the ammount of time specified in the time field
-    distance = models.FloatField(blank=True, null=True, default="")
+    distance = models.FloatField(blank=True, null=True, default="0")
