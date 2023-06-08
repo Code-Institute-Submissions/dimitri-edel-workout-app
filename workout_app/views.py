@@ -13,7 +13,7 @@ class WorkoutList(generic.ListView):
     paginate_by = 6
 
 
-class Workout(View):
+class AddWorkout(View):
     workout_form_class = WorkoutForm
     exercise_set_form_class = ExerciseSetForm
     template_name = "add_workout.html"
