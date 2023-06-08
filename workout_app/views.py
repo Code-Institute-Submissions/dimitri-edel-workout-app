@@ -35,3 +35,25 @@ class AddWorkout(View):
             return HttpResponseRedirect("/")
 
         return render(request, self.template_name, {"workout_form": workout_form})
+
+
+class AddExercise(View):
+    exercise_form_class = ExerciseForm
+    
+    template_name = "add_exercise.html"
+
+    def get(self, request, *args, **kwargs):
+        exercise_form = self.exercise_form_class()
+        
+        return render(request, self.template_name, {"exercise_form": exercise_form})
+
+    def post(self, request, *args, **kwargs):
+        exercise_form = self.exercise_form_class(request.POST)
+        
+        if exercise_form.is_valid():
+            # <process form cleaned data>
+            exercise_form.instance.user = request.user
+            exercise_form.save()                   
+            return HttpResponseRedirect("/")
+
+        return render(request, self.template_name, {"exercise_form": exercise_form})

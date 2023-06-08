@@ -21,5 +21,10 @@ class ExerciseSetForm(ModelForm):
         model = ExerciseSet
         fields = ["exercise", "reps","weight", "time","distance"]
 
-        
+
+class ExerciseForm(ModelForm):
+    class Meta:
+        model = Exercise
+        fields = ["name", "type", "goal"]     
+
         
