@@ -11,18 +11,18 @@
     </div>
     <div class="row">
         <div class="col">
-            {{ exercise_set_form.reps }}
-        </div>
-        <div class="col">
             {{ exercise_set_form.exercise }}
         </div>
     </div>
-
     <div class="row">
+        <div class="col md-2">
+            <a href="{% url 'home' %}" class="wo-button">
+                Cancel
+            </a>
+        </div>
         <div class="col md-2">
             <input type="submit" value="Save" class="wo-button">
         </div>
-    </div>
     </div>
 </form>
 {% endblock content %}

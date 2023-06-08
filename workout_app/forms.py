@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput, ModelChoiceField
 from .models import *
 
 class WorkoutForm(ModelForm):
@@ -6,8 +6,20 @@ class WorkoutForm(ModelForm):
         model = Workout
         fields = ["name"]
 
+        labels = {
+            'name' : ""
+        }
+        widgets = {
+            'name': TextInput({'placeholder': 'Enter Name of Workout'})
+        }
+
 
 class ExerciseSetForm(ModelForm):
+    exercise = ModelChoiceField(queryset=Exercise.objects.values_list('name', flat=True), empty_label="------ Select Exercise",to_field_name='exercise')
+    
     class Meta:
         model = ExerciseSet
-        fields = ["exercise","reps","weight", "time","distance"]
+        fields = ["exercise", "reps","weight", "time","distance"]
+
+        
+        

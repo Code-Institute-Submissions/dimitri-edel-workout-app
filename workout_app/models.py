@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 # EXERCISE_TYPE is used in class Exercise
 EXERCISE_TYPE = ((0, "Strength"), (1, "Cardio"))
+# EXERCISE_GOAL is used in class Exercise
+EXERCISE_GOAL = ((0, "Repetitions"), (2, "Distance"))
 
 # A class for a Workout session
 # A Wrokout is comprised of several sets.
@@ -34,7 +36,7 @@ class Exercise(models.Model):
     # The goal field will only be used in conjunction with Exercises of type Cardio.
     # If the Exercise if of type Strength then this field will be left blank.
     # There are basicly two types of goal: distance and repetitions.
-    goal = models.CharField(max_length=12, blank=True)
+    goal = models.IntegerField(choices=EXERCISE_GOAL, default=0)
     # Strinbg representation of the object
     def __str__(self):
         return self.name
