@@ -141,6 +141,12 @@ class AddExerciseSet(View):
         ExerciseSet.objects.create(workout_id=workout_id, exercise=exercise)
         return HttpResponseRedirect(f"/edit_workout/{workout_id}")
 
+class AddWorkoutExercise(View):
+    def get(self, request, workout_id, *args, **kwargs):
+        WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=1)
+        return HttpResponseRedirect(f"/edit_workout/{workout_id}")
+
+
 # List of Exercises
 class ExerciseList(generic.ListView):
     model = Exercise
