@@ -9,14 +9,14 @@
     <div class="row">
         {{ workout_form.date }}
     </div>
-    {{ exercise_set_forms.management_form }}
-    {% for exercise_set_form in exercise_set_forms %}    
+    {{ workout_exercise_formset.management_form }}
+    {% for workout_exercise_form in workout_exercise_formset %}    
     <div class="row">
         <div class="col">            
-            {{ exercise_set_form.exercise }}
+            {{ workout_exercise_form.exercise }}
         </div>
     </div>    
-    {{ exercise_set_form.id }}
+    {{ workout_exercise_form.id }}
     {% endfor %}
     <div class="row">
         <div class="col md-4">

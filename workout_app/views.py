@@ -21,7 +21,7 @@ class AddWorkout(View):
     # Reference to the form class for the model class Workout
     workout_form_class = WorkoutForm
     # Referenece to the form class for the model class ExerciseSet
-    exercise_set_form_class = ExerciseSetForm
+    workout_exercise_form_class = WorkoutExerciseForm
     # Referenece to the template for this view
     template_name = "add_workout.html"
     # Process a GET-Request
@@ -32,18 +32,20 @@ class AddWorkout(View):
         # When initializing a form, using the data in the POST-request object, prefix
         # helps setting the forms apart, as you can see in the post method below.
         workout_form = self.workout_form_class(prefix="workout")
-        exercise_set_form = self.exercise_set_form_class(prefix="exercise_set")
+        workout_exercise_form = self.workout_exercise_form_class(prefix="workout_exercise")
         # Render the dedicated template
-        return render(request, self.template_name, {"workout_form": workout_form, "exercise_set_form": exercise_set_form})
+        return render(request, self.template_name, {"workout_form": workout_form, "workout_exercise_form": workout_exercise_form})
     # Process a POST-Request
 
     def post(self, request, *args, **kwargs):
         # Instanciate the forms.
         workout_form = self.workout_form_class(request.POST, prefix="workout")
-        exercise_set_form = self.exercise_set_form_class(
-            request.POST, prefix="exercise_set")
+        workout_exercise_form = self.workout_exercise_form_class(
+            request.POST, prefix="workout_exercise")
+        
         # If both forms are valid
-        if workout_form.is_valid() and exercise_set_form.is_valid():
+        if workout_form.is_valid() and workout_exercise_form.is_valid():
+            print("is valid !!!!!!!!!!!!!!!!!!!!")
             # Assign the form to the current user.
             # The instance property of the forms is a reference to the model class
             # that is being used and allows us to access its properties and methods
@@ -51,9 +53,9 @@ class AddWorkout(View):
             # Cimmit the model object to the database
             workout_form.save()
             # Assign the workout_id of the newly created Workout to the ExerciseSet.workout_id field
-            exercise_set_form.instance.workout_id = workout_form.instance.id
+            workout_exercise_form.instance.workout_id = workout_form.instance.id
             # Commit the model object to the database
-            exercise_set_form.save()
+            workout_exercise_form.save()
             # Redirect the user to the home page
             return HttpResponseRedirect(f"edit_workout/{workout_form.instance.id}")
             # return HttpResponseRedirect(f"edit_workout/{workout_form.instance.id}")
@@ -65,8 +67,7 @@ class AddWorkout(View):
 class EditWorkout(View):
     # Reference to the form class for the model class Workout
     workout_form_class = WorkoutForm
-    # Referenece to the form class for the model class ExerciseSet
-    exercise_set_form_class = ExerciseSetForm
+    
     # Referenece to the template for this view
     template_name = "edit_workout.html"
     # Process a GET-Request
@@ -81,17 +82,17 @@ class EditWorkout(View):
             instance=workout, prefix="workout")
 
         # Use the Form-Set to extract the set of forms from the POST-request
-        exercise_set_forms = ExersiceSetForms(queryset=ExerciseSet.objects.filter(workout_id=id))
-        print(exercise_set_forms.data)
-        # exercise_set_forms = []
+        workout_exercise_formset = WorkoutExerciseFormset(queryset=WorkoutExercise.objects.filter(workout_id=id))
+        print(workout_exercise_formset.data)
+        # workout_exercise_formset = []
         # exercise_sets = ExerciseSet.objects.filter(workout_id=id)
         # for exercise_set in exercise_sets:
         #     exercise_set_form = self.exercise_set_form_class(
         #         instance=exercise_set, prefix="exercise_set")
-        #     exercise_set_forms.append(exercise_set_form)
+        #     workout_exercise_formset.append(exercise_set_form)
 
         # Render the dedicated template
-        return render(request, self.template_name, {"workout_form": workout_form, "exercise_set_forms": exercise_set_forms})
+        return render(request, self.template_name, {"workout_form": workout_form, "workout_exercise_formset": workout_exercise_formset})
     # Process a POST-Request
     # @parameter : id = workout_id
     def post(self, request, id, *args, **kwargs):
@@ -103,21 +104,21 @@ class EditWorkout(View):
         # Create a Form-Set that can hold several forms at a time
 
         # Use the Form-Set to extract the set of forms from the POST-request
-        exercise_set_forms = ExersiceSetForms(
+        workout_exercise_formset = WorkoutExerciseFormset(
             request.POST, request.FILES )
 
         # exercise_set_form = self.exercise_set_form_class(request.POST, prefix="exercise_set")
 
         # If both forms are valid
-        if workout_form.is_valid() and exercise_set_forms.is_valid():
+        if workout_form.is_valid() and workout_exercise_formset.is_valid():
             print("Is valid !!!!!!!!!!!!!!!!!!!!")
-            return self.__save_forms(request, workout_form, exercise_set_forms)
+            return self.__save_forms(request, workout_form, workout_exercise_formset)
 
         # If the form was not valid, render the template. The workout_from will contain the validation
         # messages for the user, which had been generated upon calling the is_valid() method
         return render(request, self.template_name, {"workout_form": workout_form})
 
-    def __save_forms(self, request, workout_form, exercise_set_forms):
+    def __save_forms(self, request, workout_form, workout_exercise_formset):
         # Assign the form to the current user.
         # The instance property of the forms is a reference to the model class
         # that is being used and allows us to access its properties and methods
@@ -125,7 +126,7 @@ class EditWorkout(View):
         # Cimmit the model object to the database
         workout_form.save()
         # Assign the workout_id of the newly created Workout to the ExerciseSet.workout_id field
-        for exercise_set_form in exercise_set_forms:
+        for exercise_set_form in workout_exercise_formset:
             exercise_set_form.instance.workout_id = workout_form.instance.id
             # Commit the model object to the database
             exercise_set_form.save()

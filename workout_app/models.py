@@ -41,14 +41,26 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
+
+class WorkoutExercise(models.Model):
+    # The relationshop to the owner object of type Workout
+    workout= models.ForeignKey(
+        Workout, on_delete=models.CASCADE, related_name="workout_workout_exercise")
+    # The relationship to an Exercise object
+    exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_workout_exercise")
+    # Status of wether or not you're done with the exercise within the given workout
+    done = models.BooleanField(default=False)
+
+
 # A class for a set. It belongs to (related to) an object of type Workout.
 # Each set must also be related to a particular exercise, such as pull-ups or jogging, etc.
 class ExerciseSet(models.Model):
     # The relationshop to the owner object of type Workout
-    workout = models.ForeignKey(
-        Workout, on_delete=models.CASCADE, related_name="workout_set")
+    # workout= models.ForeignKey(
+    #     Workout, on_delete=models.CASCADE, related_name="workout_exercise_set")
     # The relationship to an Exercise object
-    exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_set")
+    # exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_set")
+    workout_exercise = models.ForeignKey(WorkoutExercise, on_delete=models.CASCADE, related_name="workout_exercise_exercise_set", default=0)
     # Number of repetitioons in this set
     reps = models.IntegerField(blank=True, null=True, default="0")
     # The weight that was used, if weight lifting is involved
@@ -57,3 +69,4 @@ class ExerciseSet(models.Model):
     time = models.IntegerField(blank=True, null=True, default="0")
     # The distance covered in the ammount of time specified in the time field
     distance = models.FloatField(blank=True, null=True, default="0")
+

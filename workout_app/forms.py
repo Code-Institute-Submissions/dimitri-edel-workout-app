@@ -20,13 +20,13 @@ class ExerciseSetForm(ModelForm):
 
     class Meta:
         model = ExerciseSet
-        fields = ["id", "exercise", "reps","weight", "time","distance"]
+        fields = ["id", "workout_exercise", "reps","weight", "time","distance"]
 
     
-    def __init__(self, *args, **kwargs):
-        super(ExerciseSetForm, self).__init__(*args, **kwargs)
-        # Set the empty label in the selector
-        self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
+    # def __init__(self, *args, **kwargs):
+    #     super(ExerciseSetForm, self).__init__(*args, **kwargs)
+    #     # Set the empty label in the selector
+    #     self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
 
 class ExerciseForm(ModelForm):
     class Meta:
@@ -34,5 +34,16 @@ class ExerciseForm(ModelForm):
         fields = ["name", "type", "goal"]     
 
 
+# FormSet to hold multiple forms of type ExerciseSetForm
+ExersiceSetForms = modelformset_factory(model=ExerciseSet, form=ExerciseSetForm, fields=["id", "workout_exercise", "reps","weight", "time","distance"], extra=0)
 
-ExersiceSetForms = modelformset_factory(model=ExerciseSet, form=ExerciseSetForm, fields=["id", "exercise", "reps","weight", "time","distance"], extra=0)
+class WorkoutExerciseForm(ModelForm):
+    # id of the WorkoutExercise as a hidden field
+    # id = IntegerField(widget = HiddenInput) 
+
+    class Meta:
+        model= WorkoutExercise
+        fields = ["exercise", "done"]
+
+# FormSet to hold multiple forms of type WorkoutExerciseForm
+WorkoutExerciseFormset = modelformset_factory(model=WorkoutExercise, form=WorkoutExerciseForm, fields = ["exercise", "done"], extra=0)
