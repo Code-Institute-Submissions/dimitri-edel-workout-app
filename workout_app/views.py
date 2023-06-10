@@ -179,7 +179,8 @@ class EditExerciseSet(View):
         for form in exercise_set_formset:
             form.instance.exercise_workout_exercise = workout_exercise_form.instance.id
             form.save()
-        return HttpResponseRedirect(f"edit_exercise_set/{workout_exercise_form.instance.id}")
+        #return HttpResponseRedirect(f"edit_exercise_set/{workout_exercise_form.instance.id}")
+        return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={ "workout_exercise_id" : workout_exercise_form.instance.id} ))
 
 
     def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):        
@@ -199,13 +200,15 @@ class AddExerciseSet(View):
         # Create new ExerciseSet object
         ExerciseSet.objects.create(workout_exercise_id=workout_exercise_id)
 
-        return HttpResponseRedirect(f"/edit_exercise_set/{workout_exercise_id}")
+        #return HttpResponseRedirect(f"/edit_exercise_set/{workout_exercise_id}")
+        return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id" : workout_exercise_id}))
 
 
 class AddWorkoutExercise(View):
     def get(self, request, workout_id, *args, **kwargs):
         WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=1)
-        return HttpResponseRedirect(f"/edit_workout/{workout_id}")
+        #return HttpResponseRedirect(f"/edit_workout/{workout_id}")
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={"id" : workout_id}))
 
 class DeleteWorkout(View):
     def get(self, request, workout_id, *args, **kwargs):
