@@ -50,6 +50,9 @@ class WorkoutExercise(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_workout_exercise")
     # Status of wether or not you're done with the exercise within the given workout
     done = models.BooleanField(default=False)
+    # String representation of the object
+    def __str__(self):
+        return f"{self.workout.name} : {self.exercise.name}"
 
 
 # A class for a set. It belongs to (related to) an object of type Workout.
@@ -69,4 +72,5 @@ class ExerciseSet(models.Model):
     time = models.IntegerField(blank=True, null=True, default="0")
     # The distance covered in the ammount of time specified in the time field
     distance = models.FloatField(blank=True, null=True, default="0")
-
+    def __str__(self):
+        return f"{self.workout_exercise.__str__()}"

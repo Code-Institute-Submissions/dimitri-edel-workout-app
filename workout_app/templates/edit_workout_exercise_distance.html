@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Edit {{ exercise.name }} {% endblock title %}
+{% block title %}Edit Exercise Sets {% endblock title %}
 
 {% block content %}
-<h1>Edit {{ exercise.name }} </h1>
+<h1>Edit {{ exercise.name }}</h1>
 <form action="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}" method="POST">
     {% csrf_token %}
     <div hidden>
@@ -11,22 +11,23 @@
     {{ exercise_set_formset.management_form }}
     <div class="row">
         <div class="col">
-            Reps
+            Distance
         </div>
         <div class="col">
-            Weight
+            Time
         </div>
     </div>
     {% for exercise_set_form in exercise_set_formset %}
     
     <div class="row">
         <div class="col">
-            {{ exercise_set_form.reps }}
+            {{ exercise_set_form.distance }}
         </div>
         <div class="col">
-            {{ exercise_set_form.weight }}
+            {{ exercise_set_form.time }}
         </div>
     </div>
+
     {{ exercise_set_form.id }}
     {% endfor %}
     <div class="row">

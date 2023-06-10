@@ -24,9 +24,12 @@
     <div class="row">
         <div class="col">
             {{ workout.name }}
-        </div>
+        </div>        
         <div class="col">
             {{ workout.date }}
+        </div>
+        <div class="col">
+            <a href="{% url 'edit_workout' workout.id  %}">Edit</a>
         </div>
     </div>
     {% endfor %}
