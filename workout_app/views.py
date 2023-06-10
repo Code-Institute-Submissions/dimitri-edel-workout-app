@@ -126,7 +126,7 @@ class EditWorkout(View):
             # Commit the model object to the database
             workout_exercise_form.save()
         # Redirect the user to the home page
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse('home'))
 
 
 class EditExerciseSet(View):
@@ -207,6 +207,11 @@ class AddWorkoutExercise(View):
         WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=1)
         return HttpResponseRedirect(f"/edit_workout/{workout_id}")
 
+class DeleteWorkout(View):
+    def get(self, request, workout_id, *args, **kwargs):
+        workout = Workout.objects.get(id=workout_id)
+        workout.delete()
+        return HttpResponseRedirect(reverse('home'))
 
 # List of Exercises
 class ExerciseList(generic.ListView):

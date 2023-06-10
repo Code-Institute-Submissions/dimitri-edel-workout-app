@@ -31,6 +31,9 @@
         <div class="col">
             <a href="{% url 'edit_workout' workout.id  %}">Edit</a>
         </div>
+        <div class="col">
+            <a href="{% url 'delete_workout' workout.id  %}">Delete</a>
+        </div>
     </div>
     {% endfor %}
 </div>
