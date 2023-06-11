@@ -69,7 +69,7 @@ class ExerciseSet(models.Model):
     # The weight that was used, if weight lifting is involved
     weight = models.IntegerField(blank=True, null=True, default="0")
     # The time it took to complete the set, if it is a cardio exercise
-    time = models.IntegerField(blank=True, null=True, default="0")
+    time = models.CharField(blank=True, null=True, default="00:00:00:00")
     # The distance covered in the ammount of time specified in the time field
     distance = models.FloatField(blank=True, null=True, default="0")
     def __str__(self):

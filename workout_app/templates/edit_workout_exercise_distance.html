@@ -18,7 +18,7 @@
         </div>
     </div>
     {% for exercise_set_form in exercise_set_formset %}
-    
+
     <div class="row">
         <div class="col">
             {{ exercise_set_form.distance }}
@@ -46,5 +46,22 @@
             <input type="submit" value="Save" class="wo-button">
         </div>
     </div>
+    <div id="debug-field">
+
+    </div>
 </form>
+<script>
+    function getTimerFields() {
+        let list = document.getElementsByClassName("timer-field");
+        
+        for (let i = 0; i < list.length; i++) {
+            document.getElementById("debug-field").innerHTML += "<br>"+list[i].id;
+        }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        getTimerFields();
+    }, false);
+</script>
 {% endblock content %}

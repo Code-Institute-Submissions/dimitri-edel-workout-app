@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, IntegerField, HiddenInput, modelformset_factory
+from django.forms import ModelForm, TextInput, IntegerField, HiddenInput, modelformset_factory, Textarea
 from .models import *
 
 class WorkoutForm(ModelForm):
@@ -21,12 +21,12 @@ class ExerciseSetForm(ModelForm):
     class Meta:
         model = ExerciseSet
         fields = ["id", "reps","weight", "time","distance"]
+        widgets = {
+            "time": Textarea(attrs={"class" : "timer-field"})
+        }
 
     
-    # def __init__(self, *args, **kwargs):
-    #     super(ExerciseSetForm, self).__init__(*args, **kwargs)
-    #     # Set the empty label in the selector
-    #     self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
+   
 
 
 # FormSet to hold multiple forms of type ExerciseSetForm
@@ -47,6 +47,12 @@ class WorkoutExerciseForm(ModelForm):
     class Meta:
         model= WorkoutExercise
         fields = ["exercise", "done"]
+
+    def __init__(self, *args, **kwargs):
+        super(WorkoutExerciseForm, self).__init__(*args, **kwargs)
+        # Set the empty label in the selector
+        self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
+
 
 # FormSet to hold multiple forms of type WorkoutExerciseForm
 WorkoutExerciseFormset = modelformset_factory(model=WorkoutExercise, form=WorkoutExerciseForm, fields = ["exercise", "done"], extra=0)
