@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, IntegerField, HiddenInput, modelformset_factory, Textarea
+from django.forms import ModelForm, TextInput, IntegerField, HiddenInput, modelformset_factory, CharField
 from .models import *
 
 class WorkoutForm(ModelForm):
@@ -18,12 +18,14 @@ class ExerciseSetForm(ModelForm):
     # id of the ExerciseSet as a hidden field
     id = IntegerField(widget = HiddenInput)   
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['time'].widget.attrs['class'] = 'timer-field'
+
+    
     class Meta:
         model = ExerciseSet
         fields = ["id", "reps","weight", "time","distance"]
-        widgets = {
-            "time": Textarea(attrs={"class" : "timer-field"})
-        }
 
     
    

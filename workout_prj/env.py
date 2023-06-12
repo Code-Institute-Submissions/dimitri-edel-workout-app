@@ -6,7 +6,7 @@ class Database():
         return "workoutapp"
 
     def get_password():
-        return "w2r4k2t3!"
+        return "w2r4k2t3!75"
 
     def get_host():
         return "212.227.155.64"

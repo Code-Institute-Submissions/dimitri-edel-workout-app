@@ -204,11 +204,23 @@ class AddExerciseSet(View):
         return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id" : workout_exercise_id}))
 
 
+class DeleteExerciseSet(View):
+    def get(self, request, workout_exercise_id, exercise_set_id, *args, **kwargs):
+        exercise_set = ExerciseSet.objects.get(id=exercise_set_id)
+        exercise_set.delete()
+        return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id" : workout_exercise_id}))
+        
+
 class AddWorkoutExercise(View):
     def get(self, request, workout_id, *args, **kwargs):
         WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=1)
         #return HttpResponseRedirect(f"/edit_workout/{workout_id}")
         return HttpResponseRedirect(reverse('edit_workout', kwargs={"id" : workout_id}))
+
+
+class DeleteWorkoutExercise(View):
+    pass
+
 
 class DeleteWorkout(View):
     def get(self, request, workout_id, *args, **kwargs):
