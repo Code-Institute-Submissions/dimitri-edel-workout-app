@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Edit Workout {% endblock title %}
+
+{% block content %}
+<h1>Edit Workout</h1>
+<form action="{% url 'edit_workout' workout_form.instance.id %}" method="POST">
+    {% csrf_token %}
+    {{ workout_form }}
+    <div class="row">
+        {{ workout_form.date }}
+    </div>
+    {{ workout_exercise_formset.management_form }}
+    
+    {% for workout_exercise_form in workout_exercise_formset %}    
+    <div class="row">
+        <div class="col">            
+            {{ workout_exercise_form.exercise }}
+        </div>
+        <div class="col">
+            <a href="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}">Edit</a> 
+        </div>
+    </div>    
+    {{ workout_exercise_form.id }}
+    {% endfor %}
+    <div class="row">
+        <div class="col md-4">
+            <a href="{% url 'add_workout_exercise' workout_form.instance.id %}">Add Exercise</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col md-2">
+            <a href="{% url 'home' %}" class="wo-button">
+                Cancel
+            </a>
+        </div>
+        <div class="col md-2">
+            <input type="submit" value="Save" class="wo-button">
+        </div>
+    </div>
+</form>
+{% endblock content %}

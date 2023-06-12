@@ -68,8 +68,10 @@ class AddWorkout(View):
 
 
 class EditWorkout(View):
-    # Reference to the form class for the model class Workout
+    # Reference to the name of the form class for the model class Workout
     workout_form_class = WorkoutForm
+    # Reference to the name of the form class for the model class WorkoutExercise
+    workout_exercise_form_class = WorkoutExerciseForm
 
     # Referenece to the template for this view
     template_name = "edit_workout.html"
@@ -81,15 +83,25 @@ class EditWorkout(View):
         # When initializing a form, using the data in the POST-request object, prefix
         # helps setting the forms apart, as you can see in the post method below.
         workout = Workout.objects.get(id=id)
+        # Create form for the workout object
         workout_form = self.workout_form_class(
             instance=workout, prefix="workout")
+        # Get the last object from the WorkoutExercise model that is related to this workout
+        workout_exercise_list = WorkoutExercise.objects.filter(workout_id=id)
+        # Create a form for the last WrokoutExercise object
+        workout_exercise_form = self.workout_exercise_form_class(
+            instance=workout_exercise_list.last(), prefix="workout_exercise"
+        )
 
         # Use the Form-Set to extract the set of forms from the POST-request
         workout_exercise_formset = WorkoutExerciseFormset(
             queryset=WorkoutExercise.objects.filter(workout_id=id))
 
         # Render the dedicated template
-        return render(request, self.template_name, {"workout_form": workout_form, "workout_exercise_formset": workout_exercise_formset})
+        return render(
+            request, self.template_name, {"workout_form": workout_form,
+                                          "workout_exercise_list": workout_exercise_list,
+                                          "workout_exercise_form": workout_exercise_form})
     # Process a POST-Request
     # @parameter : id = workout_id
 
@@ -99,21 +111,25 @@ class EditWorkout(View):
         # Instanciate the forms.
         workout_form = self.workout_form_class(
             request.POST, prefix="workout", instance=workout)
-        # Create a Form-Set that can hold several forms at a time
+        #
+        workout_exercise = WorkoutExercise.objects.filter(workout_id=id).last()
 
+        workout_exercise_form = self.workout_exercise_form_class(
+            request.POST, prefix="workout_exercise", instance=workout_exercise
+        )
         # Use the Form-Set to extract the set of forms from the POST-request
         workout_exercise_formset = WorkoutExerciseFormset(
             request.POST, request.FILES)
         # If both forms are valid
-        if workout_form.is_valid() and workout_exercise_formset.is_valid():
+        if workout_form.is_valid() and workout_exercise_form.is_valid():
             print("Is valid !!!!!!!!!!!!!!!!!!!!")
-            return self.__save_forms(request, workout_form, workout_exercise_formset)
+            return self.__save_forms(request, workout_form, workout_exercise_form)
 
         # If the form was not valid, render the template. The workout_from will contain the validation
         # messages for the user, which had been generated upon calling the is_valid() method
         return render(request, self.template_name, {"workout_form": workout_form})
 
-    def __save_forms(self, request, workout_form, workout_exercise_formset):
+    def __save_forms(self, request, workout_form, workout_exercise_form):
         # Assign the form to the current user.
         # The instance property of the forms is a reference to the model class
         # that is being used and allows us to access its properties and methods
@@ -121,12 +137,12 @@ class EditWorkout(View):
         # Cimmit the model object to the database
         workout_form.save()
         # Assign the workout_id of the newly created Workout to the ExerciseSet.workout_id field
-        for workout_exercise_form in workout_exercise_formset:
-            workout_exercise_form.instance.workout_id = workout_form.instance.id
-            # Commit the model object to the database
-            workout_exercise_form.save()
+
+        workout_exercise_form.instance.workout_id = workout_form.instance.id
+        # Commit the model object to the database
+        workout_exercise_form.save()
         # Redirect the user to the home page
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id':workout_form.instance  .id}))
 
 
 class EditExerciseSet(View):
@@ -153,22 +169,22 @@ class EditExerciseSet(View):
 
         return self.__render(request, exercise, workout_exercise_form, exercise_set_formset)
 
-    def post(self, request, workout_exercise_id, *args, **kwargs):        
+    def post(self, request, workout_exercise_id, *args, **kwargs):
         #
         workout_exercise = WorkoutExercise.objects.get(id=workout_exercise_id)
-        
+
         #
         workout_exercise_form = self.workout_exercise_form_class(
             request.POST, instance=workout_exercise, prefix="workout_exercise")
         #
-        exercise_set_formset = ExersiceSetFormset(request.POST, request.FILES)        
-        
+        exercise_set_formset = ExersiceSetFormset(request.POST, request.FILES)
+
         exercise = Exercise.objects.get(id=workout_exercise.exercise_id)
-        
+
         # If forms are valid
         if workout_exercise_form.is_valid() and exercise_set_formset.is_valid():
-            self.__save_forms(request, workout_exercise_form, exercise_set_formset)
-            
+            self.__save_forms(request, workout_exercise_form,
+                              exercise_set_formset)
 
         return self.__render(request, exercise, workout_exercise_form, exercise_set_formset)
 
@@ -179,11 +195,10 @@ class EditExerciseSet(View):
         for form in exercise_set_formset:
             form.instance.exercise_workout_exercise = workout_exercise_form.instance.id
             form.save()
-        #return HttpResponseRedirect(f"edit_exercise_set/{workout_exercise_form.instance.id}")
-        return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={ "workout_exercise_id" : workout_exercise_form.instance.id} ))
+        # return HttpResponseRedirect(f"edit_exercise_set/{workout_exercise_form.instance.id}")
+        return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={"workout_exercise_id": workout_exercise_form.instance.id}))
 
-
-    def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):        
+    def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):
         if exercise.type == self.EXERCISE_TYPE_STRENGTH:
             return render(request, self.template_strength_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_formset": exercise_set_formset})
         else:
@@ -196,26 +211,26 @@ class EditExerciseSet(View):
 class AddExerciseSet(View):
     # Process a GET-request
     def get(self, request, workout_exercise_id, workout_id,  *args, **kwargs):
-        
+
         # Create new ExerciseSet object
         ExerciseSet.objects.create(workout_exercise_id=workout_exercise_id)
 
-        #return HttpResponseRedirect(f"/edit_exercise_set/{workout_exercise_id}")
-        return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id" : workout_exercise_id}))
+        # return HttpResponseRedirect(f"/edit_exercise_set/{workout_exercise_id}")
+        return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id": workout_exercise_id}))
 
 
 class DeleteExerciseSet(View):
     def get(self, request, workout_exercise_id, exercise_set_id, *args, **kwargs):
         exercise_set = ExerciseSet.objects.get(id=exercise_set_id)
         exercise_set.delete()
-        return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id" : workout_exercise_id}))
-        
+        return HttpResponseRedirect(reverse('edit_exercise_set', kwargs={"workout_exercise_id": workout_exercise_id}))
+
 
 class AddWorkoutExercise(View):
     def get(self, request, workout_id, *args, **kwargs):
         WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=1)
-        #return HttpResponseRedirect(f"/edit_workout/{workout_id}")
-        return HttpResponseRedirect(reverse('edit_workout', kwargs={"id" : workout_id}))
+        # return HttpResponseRedirect(f"/edit_workout/{workout_id}")
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={"id": workout_id}))
 
 
 class DeleteWorkoutExercise(View):
@@ -229,6 +244,8 @@ class DeleteWorkout(View):
         return HttpResponseRedirect(reverse('home'))
 
 # List of Exercises
+
+
 class ExerciseList(generic.ListView):
     model = Exercise
     queryset = Exercise.objects.all()

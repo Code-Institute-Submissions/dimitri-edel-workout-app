@@ -8,18 +8,44 @@
     {{ workout_form }}
     <div class="row">
         {{ workout_form.date }}
-    </div>
-    {{ workout_exercise_formset.management_form }}
-    
-    {% for workout_exercise_form in workout_exercise_formset %}    
+    </div>    
+
+    {% for workout_exercise in workout_exercise_list %}
     <div class="row">
-        <div class="col">            
-            {{ workout_exercise_form.exercise }}
+        
+        {% if forloop.last %}
+        <!--
+            If user changes the value of this drop-down list, of this last element,
+            then an event lister will be called 
+             which will submit the form and apply the change to the model.
+             The event listener is defined in the script at the bottom of this document
+             and it will use the 'last_exercise_id '
+        -->
+        <script>let last_exercise_id = "{{ workout_exercise_form.exercise.auto_id }}"; </script>
+        <div class="col">
+            {{ workout_exercise_form.done }}
         </div>
         <div class="col">
-            <a href="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}">Edit</a> 
+            {{ workout_exercise_form.exercise }}
+        </div>        
+        <div class="col">
+            <a href="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}">Edit</a>
         </div>
-    </div>    
+        {% else %}
+        {%if workout_exercise.done %}
+        <div class="col">Done</div>
+        {% else %}
+        <div class="col">Not Done</div>
+        {% endif %}
+        <div class="col">
+            {{ workout_exercise.exercise.name }}
+        </div>
+        <div class="col">
+            <a href="{% url 'edit_exercise_set' workout_exercise.id %}">Edit</a>
+        </div>
+        {% endif %}
+        
+    </div>
     {{ workout_exercise_form.id }}
     {% endfor %}
     <div class="row">
@@ -38,4 +64,11 @@
         </div>
     </div>
 </form>
+<script>
+    let last_exercise = document.getElementById(last_exercise_id);
+    last_exercise.addEventListener('change', function (event) {
+        // alert(event.target.value);
+        document.forms[0].submit();
+    });
+</script>
 {% endblock content %}
