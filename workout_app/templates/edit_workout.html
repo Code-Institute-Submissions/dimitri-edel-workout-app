@@ -31,6 +31,9 @@
         <div class="col">
             <a href="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}">Edit</a>
         </div>
+        <div class="col">
+            <a href="{% url 'delete_workout_exercise' workout_exercise_form.instance.id workout_form.instance.id %}">Delete</a>
+        </div>
         {% else %}
         {%if workout_exercise.done %}
         <div class="col">Done</div>
@@ -42,6 +45,9 @@
         </div>
         <div class="col">
             <a href="{% url 'edit_exercise_set' workout_exercise.id %}">Edit</a>
+        </div>
+        <div class="col">
+            <a href="{% url 'delete_workout_exercise' workout_exercise.id workout_form.instance.id %}">Delete</a>
         </div>
         {% endif %}
         
