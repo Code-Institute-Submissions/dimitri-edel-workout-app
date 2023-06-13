@@ -233,7 +233,8 @@ class DeleteExerciseSet(View):
 
 class AddWorkoutExercise(View):
     def get(self, request, workout_id, *args, **kwargs):
-        WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=1)
+        exercise = Exercise.objects.first()
+        WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=exercise.id)
         # return HttpResponseRedirect(f"/edit_workout/{workout_id}")
         return HttpResponseRedirect(reverse('edit_workout', kwargs={"id": workout_id}))
 

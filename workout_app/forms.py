@@ -49,7 +49,7 @@ class WorkoutExerciseForm(ModelForm):
 
     class Meta:
         model= WorkoutExercise
-        fields = ["exercise", "done"]
+        fields = ["exercise"]
 
     def __init__(self, *args, **kwargs):
         super(WorkoutExerciseForm, self).__init__(*args, **kwargs)

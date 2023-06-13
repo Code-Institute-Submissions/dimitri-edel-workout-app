@@ -26,6 +26,12 @@
         <div class="col">
             {{ exercise_set_form.time }}
         </div>
+        {% if forloop.last %}
+        <!-- The last field will be used to copy the results from the timer into-->
+        <script>
+            let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
+        </script>
+        {% endif %}
         <div class="col">
             <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}">Delete</a>
         </div>
@@ -41,7 +47,7 @@
             </a>
         </div>
         <div class="col md-2">
-            <a href="{% url 'home' %}" class="wo-button">
+            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="wo-button">
                 Cancel
             </a>
         </div>
@@ -59,22 +65,16 @@
 {% load static %}
 <script src="{% static 'js/timer.js' %}"></script>
 <script>
-    // Grab the last element that uses CSS-class: timer-field
-    // This element will be the last ExerciseSet.time field that has been added to the form
-    function getTimerResultFieldId() {
-        let list = document.getElementsByClassName("timer-field");        
-        // return the id of the last element in that list
-        return list[list.length - 1].id;
-    }
-    // Store the id of the element that the timer will use to copy the time results to
-    let timer_result_id = getTimerResultFieldId();
     /* 
         Instanciate the timer
         First parameter in the constructor specifies the id of the element that the timer uses for output
-        Second parameter in the constructor specifies the output field for the results
+
+        Second parameter in the constructor specifies the output field for the results. The id for this field
+        was initialized in the inline script within the form : let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
+
         Third parameter specifies the intervals in milliseconds in which the timer will be updated
     */
-    let timer = new Timer("timer-text", timer_result_id, 100);
+    let timer = new Timer("timer-text", reult_field_id, 100);
     // Event listener for the start button
     function start_button_click() {
         timer.start();

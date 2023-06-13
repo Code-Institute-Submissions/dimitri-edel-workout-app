@@ -3,18 +3,6 @@
 
 {% block content %}
 <h1>Edit Exercise</h1>
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div{% if message.tags %} class="{{ message.tags }} alert alert-dismissable fade show" {% endif %} id="msg"
-        role="alert">
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="" Close"></button>
-</div>
-{% endfor %}
-</div>
-{% endif %}
 <form action="{% url 'edit_exercise_list' %}" method="POST">
     {% csrf_token %}
 
