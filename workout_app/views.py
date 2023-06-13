@@ -257,12 +257,19 @@ class EditExerciseList(View):
     exercise_form_class = ExerciseForm
     # Reference to the template
     template_name = "edit_exercise_list.html"
+    # last id created
     # Process a GET-Request
 
     def get(self, request, *args, **kwargs):
         # Query the last exercises related to the current user
         exercises = Exercise.objects.filter(user_id=request.user.id)
         edit_exercise = exercises.last()
+        # If edit_exercise is None, then create a new exercise
+        if edit_exercise is None:
+            edit_exercise = Exercise.objects.create(user_id=request.user.id)
+
+        # Store the id of the last object in the session    
+        request.session["edit_exercise_id"] = edit_exercise.id
         # Instanciate the form
         exercise_form = self.exercise_form_class(instance=edit_exercise)
         # Render the specified template
@@ -270,8 +277,12 @@ class EditExerciseList(View):
     # Process a POST-Request
 
     def post(self, request, *args, **kwargs):
+        # Retrieve the object that was sent in the form 
+        edit_exercise_id = request.session["edit_exercise_id"]
+        edit_exercise = Exercise.objects.get(id=edit_exercise_id)
         # Instanciate the form
-        exercise_form = self.exercise_form_class(request.POST)
+        exercise_form = self.exercise_form_class(request.POST, instance=edit_exercise)
+        
         # If the form is valid
         if exercise_form.is_valid():
             # Assign the form to the current user.
@@ -280,6 +291,8 @@ class EditExerciseList(View):
             exercise_form.instance.user = request.user
             # Commit the model object to the database
             exercise_form.save()
+            # Add append a new exercise to the list of exercises
+            Exercise.objects.create(user_id=request.user.id)
             # Redirect the user to the home page
             return HttpResponseRedirect(reverse("edit_exercise_list"))
         # If the form was not valid, render the template. The workout_from will contain the validation

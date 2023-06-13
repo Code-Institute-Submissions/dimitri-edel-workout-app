@@ -6,33 +6,35 @@
 {% if messages %}
 <div class="messages">
     {% for message in messages %}
-    <div{% if message.tags %} class="{{ message.tags }} alert alert-dismissable fade show"{% endif %} id="msg" role="alert">
+    <div{% if message.tags %} class="{{ message.tags }} alert alert-dismissable fade show" {% endif %} id="msg"
+        role="alert">
         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
         {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label=""Close"></button>
-    </div>
-    {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="" Close"></button>
+</div>
+{% endfor %}
 </div>
 {% endif %}
 <form action="{% url 'edit_exercise_list' %}" method="POST">
     {% csrf_token %}
 
     {% for exercise in exercises %}
-    <!-- If it is the last one in the list, then make it editable -->
+
     {% if forloop.last %}
-    <div class="row">
+    <!-- If it is the last one in the list, then make it editable -->
+    <div class="row">        
         <div class="col">
-            {{ exercise_form.name }} 
+            {{ exercise_form.name }}
         </div>
         <div class="col">
-            {{ exercise_form.type }} 
+            {{ exercise_form.type }}
         </div>
         <div class="col">
-            {{ exercise_form.goal }} 
+            {{ exercise_form.goal }}
         </div>
         <div class="col">
             <div class="col md-2">
-                <input type="submit" value="Save" class="wo-button">
+                <input type="submit" value="Add" class="wo-button">
             </div>
         </div>
         <div class="col">
@@ -48,15 +50,15 @@
         <div class="col">
             {% if exercise.type == 0 %}
             Strength
-            {% else %} 
+            {% else %}
             Cardio
             {% endif %}
         </div>
         <div class="col">
-            {% if exercise.goal == 0 %} 
+            {% if exercise.goal == 0 %}
             Repetitions
-            {% else %} 
-            Destance 
+            {% else %}
+            Destance
             {% endif %}
         </div>
         <div class="col">
@@ -74,7 +76,7 @@
                 Cancel
             </a>
         </div>
-        
+
     </div>
 </form>
 {% endblock content %}

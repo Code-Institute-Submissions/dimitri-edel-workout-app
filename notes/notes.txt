@@ -1,0 +1,15 @@
+BUG-FIX # 1:
+class: EditExerciseSet
+Forsets work fine in the get method, yet in the post method they come up uninitialized.
+Solution: 
+add {% *.management_form %} to the three templates that the view uses for rendering
+
+BUG-FIX #2:
+class EditExerciseList
+Since the URL does not use any parameters, yet the template is designed to be able to 
+add new datasets to the model, I did not provide instance to the form in the post method.
+Which lead to faulty behaviour.
+Solution:
+I store the id of the object that is used in the form in the get-method in request.session.
+Then, pull the id from the request.session and use it to get an instance of the exercise,
+from the model. Then assign this instance to the form.

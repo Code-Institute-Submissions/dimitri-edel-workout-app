@@ -36,6 +36,7 @@ ExersiceSetFormset = modelformset_factory(model=ExerciseSet, form=ExerciseSetFor
 
 
 class ExerciseForm(ModelForm):
+    
     class Meta:
         model = Exercise
         fields = ["name", "type", "goal"]     
