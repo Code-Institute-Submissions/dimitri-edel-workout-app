@@ -260,9 +260,10 @@ class EditExerciseList(View):
     # Process a GET-Request
 
     def get(self, request, *args, **kwargs):
-        # Instanciate the form
-        exercises = Exercise.objects.all()
+        # Query the last exercises related to the current user
+        exercises = Exercise.objects.filter(user_id=request.user.id)
         edit_exercise = exercises.last()
+        # Instanciate the form
         exercise_form = self.exercise_form_class(instance=edit_exercise)
         # Render the specified template
         return render(request, self.template_name, {"exercise_form": exercise_form, "exercises":exercises})
@@ -303,6 +304,9 @@ class ExerciseList(generic.ListView):
     queryset = Exercise.objects.all()
     template_name = "exercise_list.html"
     paginate_by = 6
+    # Only retrieve datasets related to the user
+    def get_queryset(self):
+        return self.model.objects.filter(user_id=self.request.user.id)
 
 
 # View for editing exercises

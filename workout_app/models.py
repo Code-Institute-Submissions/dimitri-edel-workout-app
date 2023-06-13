@@ -27,7 +27,10 @@ class Workout(models.Model):
 # A class for the type of exercise, such as push-ups, pull-ups, jogging, etc.
 # The WorkoutSet class is related to this class. A WorkoutSet is for a particular
 # type of exercise. For instance, the user wants to do a set of push-ups. 
-class Exercise(models.Model):    
+class Exercise(models.Model): 
+    # Relation to the user
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_exercise", default=1)   
     # Name of the exercise
     name = models.CharField(max_length=200, blank=False)
     # Type of exercise. There are only two types: Strength and Cardio which are
