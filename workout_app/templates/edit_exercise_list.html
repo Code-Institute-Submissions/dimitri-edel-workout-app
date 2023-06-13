@@ -60,7 +60,7 @@
             {% endif %}
         </div>
         <div class="col">
-            <a href="#">Edit</a>
+            <a href="{% url 'edit_exercise' exercise.id %}">Edit</a>
         </div>
         <div class="col">
             <a href="{% url 'delete_exercise' exercise.id %}">Delete</a>

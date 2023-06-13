@@ -302,34 +302,35 @@ class ExerciseList(generic.ListView):
     paginate_by = 6
 
 
-# View for adding new exercises
-# class AddExercise(View):
-#     # Reference to the form
-#     exercise_form_class = ExerciseForm
-#     # Reference to the template
-#     template_name = "add_exercise.html"
-#     # Process a GET-Request
+# View for editing exercises
+class EditExercise(View):
+    # Reference to the form
+    exercise_form_class = ExerciseForm
+    # Reference to the template
+    template_name = "edit_exercise.html"
+    # Process a GET-Request
 
-#     def get(self, request, *args, **kwargs):
-#         # Instanciate the form
-#         exercise_form = self.exercise_form_class()
-#         # Render the specified template
-#         return render(request, self.template_name, {"exercise_form": exercise_form})
-#     # Process a POST-Request
+    def get(self, request, exercise_id, *args, **kwargs):
+        exercise = Exercise.objects.get(id=exercise_id)
+        # Instanciate the form
+        exercise_form = self.exercise_form_class(instance=exercise)
+        # Render the specified template
+        return render(request, self.template_name, {"exercise_form": exercise_form})
+    # Process a POST-Request
 
-#     def post(self, request, *args, **kwargs):
-#         # Instanciate the form
-#         exercise_form = self.exercise_form_class(request.POST)
-#         # If the form is valid
-#         if exercise_form.is_valid():
-#             # Assign the form to the current user.
-#             # The instance property of the forms is a reference to the model class
-#             # that is being used and allows us to access its properties and methods
-#             exercise_form.instance.user = request.user
-#             # Commit the model object to the database
-#             exercise_form.save()
-#             # Redirect the user to the home page
-#             return HttpResponseRedirect("exercise_list")
-#         # If the form was not valid, render the template. The workout_from will contain the validation
-#         # messages for the user, which had been generated upon calling the is_valid() method
-#         return render(request, self.template_name, {"exercise_form": exercise_form})
+    def post(self, request,  *args, **kwargs):
+        # Instanciate the form
+        exercise_form = self.exercise_form_class(request.POST)
+        # If the form is valid
+        if exercise_form.is_valid():
+            # Assign the form to the current user.
+            # The instance property of the forms is a reference to the model class
+            # that is being used and allows us to access its properties and methods
+            exercise_form.instance.user = request.user
+            # Commit the model object to the database
+            exercise_form.save()
+            # Redirect the user to the home page
+            return HttpResponseRedirect(reverse("edit_exercise_list"))
+        # If the form was not valid, render the template. The workout_from will contain the validation
+        # messages for the user, which had been generated upon calling the is_valid() method
+        return render(request, self.template_name, {"exercise_form": exercise_form})
