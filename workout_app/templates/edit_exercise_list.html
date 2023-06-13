@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Edit Exercise List {% endblock title %}
+
+{% block content %}
+<h1>Edit Exercise</h1>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div{% if message.tags %} class="{{ message.tags }} alert alert-dismissable fade show"{% endif %} id="msg" role="alert">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label=""Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<form action="{% url 'edit_exercise_list' %}" method="POST">
+    {% csrf_token %}
+
+    {% for exercise in exercises %}
+    <!-- If it is the last one in the list, then make it editable -->
+    {% if forloop.last %}
+    <div class="row">
+        <div class="col">
+            {{ exercise_form.name }} 
+        </div>
+        <div class="col">
+            {{ exercise_form.type }} 
+        </div>
+        <div class="col">
+            {{ exercise_form.goal }} 
+        </div>
+        <div class="col">
+            <div class="col md-2">
+                <input type="submit" value="Save" class="wo-button">
+            </div>
+        </div>
+        <div class="col">
+            <a href="{% url 'delete_exercise' exercise_form.instance.id %}">Delete</a>
+        </div>
+    </div>
+    <!-- Else just display the properties of the exercise -->
+    {% else %}
+    <div class="row">
+        <div class="col">
+            {{ exercise.name }}
+        </div>
+        <div class="col">
+            {% if exercise.type == 0 %}
+            Strength
+            {% else %} 
+            Cardio
+            {% endif %}
+        </div>
+        <div class="col">
+            {% if exercise.goal == 0 %} 
+            Repetitions
+            {% else %} 
+            Destance 
+            {% endif %}
+        </div>
+        <div class="col">
+            <a href="#">Edit</a>
+        </div>
+        <div class="col">
+            <a href="{% url 'delete_exercise' exercise.id %}">Delete</a>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="row">
+        <div class="col md-2">
+            <a href="{% url 'home' %}" class="wo-button">
+                Cancel
+            </a>
+        </div>
+        
+    </div>
+</form>
+{% endblock content %}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages
 from .env import Database
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -71,6 +72,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "workout_prj.wsgi.application"
 
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
