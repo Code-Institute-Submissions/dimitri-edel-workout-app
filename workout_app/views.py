@@ -11,10 +11,13 @@ from django.db.models import ProtectedError
 
 
 class WorkoutList(generic.ListView):
-    model = Workout
-    queryset = Workout.objects.all()
+    model = Workout      
     template_name = "index.html"
     paginate_by = 20
+
+    # Only retrieve datasets related to the user
+    def get_queryset(self):
+        return self.model.objects.filter(user_id=self.request.user.id)
 
 # View for adding a new Workout
 
@@ -311,6 +314,7 @@ class EditExercise(View):
     # Process a GET-Request
 
     def get(self, request, exercise_id, *args, **kwargs):
+        # Retrieve dataset
         exercise = Exercise.objects.get(id=exercise_id)
         # Instanciate the form
         exercise_form = self.exercise_form_class(instance=exercise)

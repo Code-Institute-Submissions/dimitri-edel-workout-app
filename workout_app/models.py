@@ -9,7 +9,7 @@ EXERCISE_GOAL = ((0, "Repetitions"), (2, "Distance"))
 # A class for a Workout session
 # A Wrokout is comprised of several sets.
 # Each set is for one particular type of exercise
-class Workout(models.Model):
+class Workout(models.Model):    
     # Relation to the user
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_workout")
