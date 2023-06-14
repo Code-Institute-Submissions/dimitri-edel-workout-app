@@ -7,17 +7,105 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import ProtectedError
 
+# A class for storing reports about an exercise in a workout
+class ExerciseReport:
+    workout_exercise_id = 0
+    report = ""
+
+
+# A class for storing reports for each workout
+class WorkoutReport:
+    workout_id = 0
+    date = None
+    name = None
+    exercise_reports = None   
+
+    def __init__(self) -> None:
+        self.date = "today"
+        self.name = "workout name"
+        self.exercise_reports = []
+
 # List of Workouts
-
-
-class WorkoutList(generic.ListView):
-    model = Workout      
+class WorkoutList(View):
+    model = Workout
     template_name = "index.html"
     paginate_by = 20
+    # Constants for exercise.type
+    STRENGTH = 0
+    CARDIO = 1
+    # Constants for exercise.goal
+    REPETITIONS = 0
+    DISTANCE = 1
 
-    # Only retrieve datasets related to the user
-    def get_queryset(self):
-        return self.model.objects.filter(user_id=self.request.user.id)
+    
+    def get(self, request, *args, **kwargs):
+        # Only retrieve datasets related to the user
+        self.model.objects.filter(user_id=self.request.user.id)
+        reports = self.__generate_reports()
+        context = {
+            "reports" :reports
+        }
+        return render(request, self.template_name,context=context)
+    
+    # Create Reports
+    def __generate_reports(self):
+        reports = {}
+        workout_list = self.model.objects.filter(user_id=self.request.user.id)
+        for workout in workout_list:
+            workout_exercises = WorkoutExercise.objects.filter(
+                workout_id=workout.id)
+            report = WorkoutReport()
+            report.workout_id = workout.id
+            report.date = workout.date
+            report.name = workout.name
+            for workout_exercise in workout_exercises:
+                exercise_report = ExerciseReport()
+                exercise_report.workout_exercise_id = workout_exercise.id
+                exercise_report.report += f"{workout_exercise.exercise.name}:"
+                exercise_report.report += self.__generate_report(workout_exercise)  
+                report.exercise_reports.append(exercise_report)              
+                print(f"-------------------- workout.generate exercise_report {exercise_report.report}")
+            print(f"report.exercise_report:::::::::: {report.exercise_reports}")
+            reports[workout.id] = report
+        return reports
+
+    def __generate_report(self, workout_exercise):
+        report = ""
+        exercise_sets = ExerciseSet.objects.filter(
+            workout_exercise_id=workout_exercise.id)
+        print(f"################## NUMBER OF SETS : {len(exercise_sets)}")
+        if workout_exercise.exercise.type == self.STRENGTH:            
+            report+=self.__generate_strength_report(exercise_sets)
+            
+        else:
+            if workout_exercise.exercise.goal == self.REPETITIONS:                
+                report+=self.__generate_repetitions_report(exercise_sets)
+            else:                
+                report+= self.__generate_distance_report(exercise_sets)
+        
+        return report
+
+    def __generate_strength_report(self, exercise_sets):
+        report = ""
+        for exercise_set in exercise_sets:
+            report+= f"{exercise_set.reps} x {exercise_set.weight} kg  "
+        print(f"REPORT:  {report}")
+        return report
+
+    def __generate_repetitions_report(self, exercise_sets):
+        report = ""
+        for exercise_set in exercise_sets:
+            report+= f"{exercise_set.reps} in {exercise_set.time}    "
+        print(f"REPORT:  {report}")
+        return report
+
+    def __generate_distance_report(self, exercise_sets):
+        report = ""
+        for exercise_set in exercise_sets:
+            report+= f"{exercise_set.distance} in {exercise_set.time}   "
+        print(f"REPORT:  {report}")
+        return report
+
 
 # View for adding a new Workout
 
@@ -126,8 +214,7 @@ class EditWorkout(View):
         workout_exercise_formset = WorkoutExerciseFormset(
             request.POST, request.FILES)
         # If both forms are valid
-        if workout_form.is_valid() and workout_exercise_form.is_valid():
-            print("Is valid !!!!!!!!!!!!!!!!!!!!")
+        if workout_form.is_valid() and workout_exercise_form.is_valid():            
             return self.__save_forms(request, workout_form, workout_exercise_form)
 
         # If the form was not valid, render the template. The workout_from will contain the validation
@@ -146,8 +233,9 @@ class EditWorkout(View):
         workout_exercise_form.instance.workout_id = workout_form.instance.id
         # Commit the model object to the database
         workout_exercise_form.save()
+        
         # Redirect the user to the home page
-        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id':workout_form.instance  .id}))
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id': workout_form.instance  .id}))
 
 
 class EditExerciseSet(View):
@@ -200,7 +288,9 @@ class EditExerciseSet(View):
         for form in exercise_set_formset:
             form.instance.exercise_workout_exercise = workout_exercise_form.instance.id
             form.save()
-        # return HttpResponseRedirect(f"edit_exercise_set/{workout_exercise_form.instance.id}")
+        # Report success to user
+        messages.add_message(
+                request, messages.SUCCESS, "The exercise has been successfully updated!")
         return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={"workout_exercise_id": workout_exercise_form.instance.id}))
 
     def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):
@@ -234,7 +324,8 @@ class DeleteExerciseSet(View):
 class AddWorkoutExercise(View):
     def get(self, request, workout_id, *args, **kwargs):
         exercise = Exercise.objects.first()
-        WorkoutExercise.objects.create(workout_id=workout_id, exercise_id=exercise.id)
+        WorkoutExercise.objects.create(
+            workout_id=workout_id, exercise_id=exercise.id)
         # return HttpResponseRedirect(f"/edit_workout/{workout_id}")
         return HttpResponseRedirect(reverse('edit_workout', kwargs={"id": workout_id}))
 
@@ -243,7 +334,7 @@ class DeleteWorkoutExercise(View):
     def get(self, request, workout_exercise_id, workout_id, *args, **kwargs):
         workout_exercise = WorkoutExercise.objects.get(id=workout_exercise_id)
         workout_exercise.delete()
-        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id':workout_id}))
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id': workout_id}))
 
 
 class DeleteWorkout(View):
@@ -269,21 +360,22 @@ class EditExerciseList(View):
         if edit_exercise is None:
             edit_exercise = Exercise.objects.create(user_id=request.user.id)
 
-        # Store the id of the last object in the session    
+        # Store the id of the last object in the session
         request.session["edit_exercise_id"] = edit_exercise.id
         # Instanciate the form
         exercise_form = self.exercise_form_class(instance=edit_exercise)
         # Render the specified template
-        return render(request, self.template_name, {"exercise_form": exercise_form, "exercises":exercises})
+        return render(request, self.template_name, {"exercise_form": exercise_form, "exercises": exercises})
     # Process a POST-Request
 
     def post(self, request, *args, **kwargs):
-        # Retrieve the object that was sent in the form 
+        # Retrieve the object that was sent in the form
         edit_exercise_id = request.session["edit_exercise_id"]
         edit_exercise = Exercise.objects.get(id=edit_exercise_id)
         # Instanciate the form
-        exercise_form = self.exercise_form_class(request.POST, instance=edit_exercise)
-        
+        exercise_form = self.exercise_form_class(
+            request.POST, instance=edit_exercise)
+
         # If the form is valid
         if exercise_form.is_valid():
             # Assign the form to the current user.
@@ -307,8 +399,9 @@ class DeleteExercise(View):
         try:
             exercise.delete()
         except ProtectedError:
-            messages.add_message(request, messages.ERROR, "This exercise connot be deleted because it is being used in a workout!")
-            
+            messages.add_message(
+                request, messages.ERROR, "This exercise connot be deleted because it is being used in a workout!")
+
         return HttpResponseRedirect(reverse("edit_exercise_list"))
 
 
@@ -319,6 +412,7 @@ class ExerciseList(generic.ListView):
     template_name = "exercise_list.html"
     paginate_by = 6
     # Only retrieve datasets related to the user
+
     def get_queryset(self):
         return self.model.objects.filter(user_id=self.request.user.id)
 
@@ -334,6 +428,8 @@ class EditExercise(View):
     def get(self, request, exercise_id, *args, **kwargs):
         # Retrieve dataset
         exercise = Exercise.objects.get(id=exercise_id)
+        # Store the id of the last object in the session
+        request.session["edit_exercise_id"] = exercise_id
         # Instanciate the form
         exercise_form = self.exercise_form_class(instance=exercise)
         # Render the specified template
@@ -341,8 +437,10 @@ class EditExercise(View):
     # Process a POST-Request
 
     def post(self, request,  *args, **kwargs):
+        # Retrieve the object using the id stored in session
+        edit_exercise = Exercise.objects.get(id=request.session["edit_exercise_id"])
         # Instanciate the form
-        exercise_form = self.exercise_form_class(request.POST)
+        exercise_form = self.exercise_form_class(request.POST, instance=edit_exercise)
         # If the form is valid
         if exercise_form.is_valid():
             # Assign the form to the current user.

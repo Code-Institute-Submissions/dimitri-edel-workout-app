@@ -14,25 +14,36 @@
     </div>
     <div class="row">
         <div class="col">
+            Date
+        </div>
+        <div class="col">
             Name
         </div>
         <div class="col">
-            Date
+            Report
         </div>
-    </div>
-    {% for workout in workout_list %}
+        <div class="col">
+
+        </div>
+    </div>    
+    
+    {% for key, report in reports.items %}
     <div class="row">
         <div class="col">
-            {{ workout.name }}
+            {{ report.date }}
+        </div>
+        <div class="col">
+            <a href="{% url 'edit_workout' report.workout_id  %}">{{report.name }}</a>
         </div>        
+            
         <div class="col">
-            {{ workout.date }}
+            {% for exercise_report in report.exercise_reports %}    
+            <a style="display:block;" href="{% url 'edit_exercise_set' exercise_report.workout_exercise_id  %}">{{exercise_report.report }}</a>
+            {% endfor %}
         </div>
+        
         <div class="col">
-            <a href="{% url 'edit_workout' workout.id  %}">Edit</a>
-        </div>
-        <div class="col">
-            <a href="{% url 'delete_workout' workout.id  %}">Delete</a>
+            <a href="{% url 'delete_workout' report.workout_id  %}">Delete</a>
         </div>
     </div>
     {% endfor %}
