@@ -51,11 +51,11 @@ class WorkoutExerciseForm(ModelForm):
         model= WorkoutExercise
         fields = ["exercise"]
 
-    def __init__(self, *args, **kwargs):
-        super(WorkoutExerciseForm, self).__init__(*args, **kwargs)
+    def __init__(self, user_id, *args, **kwargs):
+        super(WorkoutExerciseForm, self).__init__(*args, **kwargs)        
         # Set the empty label in the selector
         self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
-
+        self.fields['exercise'].queryset = Exercise.objects.filter(user_id=user_id)
 
 # FormSet to hold multiple forms of type WorkoutExerciseForm
 WorkoutExerciseFormset = modelformset_factory(model=WorkoutExercise, form=WorkoutExerciseForm, fields = ["exercise", "done"], extra=0)

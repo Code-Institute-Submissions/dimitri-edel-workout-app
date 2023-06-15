@@ -125,7 +125,7 @@ class AddWorkout(View):
         # When initializing a form, using the data in the POST-request object, prefix
         # helps setting the forms apart, as you can see in the post method below.
         workout_form = self.workout_form_class(prefix="workout")
-        workout_exercise_form = self.workout_exercise_form_class(
+        workout_exercise_form = self.workout_exercise_form_class(user_id=request.user.id,
             prefix="workout_exercise")
         # Render the dedicated template
         return render(request, self.template_name, {"workout_form": workout_form, "workout_exercise_form": workout_exercise_form})

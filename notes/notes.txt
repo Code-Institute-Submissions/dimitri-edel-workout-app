@@ -26,3 +26,13 @@ Solution:
 I forgot to erase a line of code, that I had used for creating a formset, so all the datasets were editable.
 The instanciation of a formset requires a query. The query was reordering the QuerySet. I simply removed
 that line from the code and thing came back to normal.
+
+BUG-FIX #4:
+class WorkoutExerciseForm
+
+Issue:
+In the view AddWorkout.get(). In the workout_exercie_form, the list of exercises is not linked to the current user.
+Solution:
+Add a queryset to the form, like so:
+self.fields['exercise'].queryset = Exercise.objects.filter(user_id=user_id)
+
