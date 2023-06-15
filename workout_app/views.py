@@ -187,10 +187,6 @@ class EditWorkout(View):
             instance=workout_exercise, prefix="workout_exercise"
         )
 
-        # Use the Form-Set to extract the set of forms from the POST-request
-        workout_exercise_formset = WorkoutExerciseFormset(
-            queryset=WorkoutExercise.objects.filter(workout_id=id))
-
         # Render the dedicated template
         return render(
             request, self.template_name, {"workout_form": workout_form,

@@ -1,11 +1,13 @@
 BUG-FIX # 1:
 class: EditExerciseSet
+Issue:
 Forsets work fine in the get method, yet in the post method they come up uninitialized.
 Solution: 
 add {% *.management_form %} to the three templates that the view uses for rendering
 
 BUG-FIX #2:
 class EditExerciseList
+Issue:
 Since the URL does not use any parameters, yet the template is designed to be able to 
 add new datasets to the model, I did not provide instance to the form in the post method.
 Which lead to faulty behaviour.
@@ -13,3 +15,14 @@ Solution:
 I store the id of the object that is used in the form in the get-method in request.session.
 Then, pull the id from the request.session and use it to get an instance of the exercise,
 from the model. Then assign this instance to the form.
+
+BUG-FIX #3:
+class EditWorkout   
+Issue:
+The the QuerySet in the view kept coming up in a random order. As a result the editable form for
+for a new exercise in the workout (type: WorkoutExercise) was one from the already existing EditExerciseSet
+in this very same workout. So changing it would change one of the existing datesets.
+Solution:
+I forgot to erase a line of code, that I had used for creating a formset, so all the datasets were editable.
+The instanciation of a formset requires a query. The query was reordering the QuerySet. I simply removed
+that line from the code and thing came back to normal.
