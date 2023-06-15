@@ -18,26 +18,30 @@
 
 <body>
     <header>
-        <nav>
-            <div class="" collapse navbar-collapse" id="navbarText">
-                <ul>
-                    <li class="nav-item">
-                        <a class="" nav-link active" aria-current="" page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
+        <nav id="nav-bar">
+            <ul class="navigation-menu">
+                <li>
+                    <a class="nav-link active" aria-current="" page" href="{% url 'home' %}"><i class="fa-solid fa-house"></i>Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li>
+                    <a class="nav-link" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'edit_exercise_list' %}"><i class="fa-solid fa-list"></i>Exercises</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'add_workout' %}"><i class="fa-solid fa-play"></i>Start Workout</a>
+                </li>
+                {% else %}
+                <li>
+                    <a class="nav-link" href="{% url 'account_signup' %}"><i class="fa-solid fa-user-plus"></i>Register</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'account_login' %}"><i class="fa-solid fa-right-to-bracket"></i>Login</a>
+                </li>
+                {% endif %}
+            </ul>
         </nav>
     </header>
     {% if messages %}
@@ -48,13 +52,14 @@
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="" Close"></button>
-        </div>
-        {% endfor %}
+    </div>
+    {% endfor %}
     </div>
     {% endif %}
     {% block content %}
     <!-- Content Goes here -->
     {% endblock content %}
+    <script src="https://kit.fontawesome.com/73429b2bf2.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

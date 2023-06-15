@@ -26,14 +26,18 @@
         <div class="col">
             {{ exercise_set_form.time }}
         </div>
-        {% if forloop.last %}
-        <!-- The last field will be used to copy the results from the timer into-->
+        {% if forloop.last %}        
         <script>
+            // The last field with time will be used to copy the results from the timer into,
+            // when the stop button gets clicked
+            // Also the stop_button_click() function will auto-submit this form
             let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
+            // The last field with dinstance will be added an on-change event listener, which will submit this form if the value changes
+            let edit_distance_field = "{{ exercise_set_form.distance.auto_id }}";
         </script>
         {% endif %}
         <div class="col">
-            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}">Delete</a>
+            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"><i class="fa-solid fa-trash-can"></i>Delete</a>
         </div>
     </div>
 
@@ -42,17 +46,18 @@
     <div class="row">
         <div class="col md-2">
             <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
-                class="wo-button">
-                Add another Set
+                class="wo-button"style="font-size: 2em;">
+                <i class="fa-solid fa-circle-plus"></i>
             </a>
         </div>
         <div class="col md-2">
-            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="wo-button">
+            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}">
                 Cancel
             </a>
         </div>
         <div class="col md-2">
-            <input type="submit" value="Save" class="wo-button">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <input type="submit" value="Save">
         </div>
     </div>
 </form>
@@ -64,17 +69,11 @@
 <button id="stop-button" onclick="reset_button_click()">RESET</button>
 {% load static %}
 <script src="{% static 'js/timer.js' %}"></script>
-<script>
-    /* 
-        Instanciate the timer
-        First parameter in the constructor specifies the id of the element that the timer uses for output
-
-        Second parameter in the constructor specifies the output field for the results. The id for this field
-        was initialized in the inline script within the form : let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
-
-        Third parameter specifies the intervals in milliseconds in which the timer will be updated
-    */
-    let timer = new Timer("timer-text", reult_field_id, 100);
+<script>    
+    // Auto-save the form
+    function submit_form(){
+        document.forms[0].submit();
+    }
     // Event listener for the start button
     function start_button_click() {
         timer.start();
@@ -82,8 +81,11 @@
     }
     // Event listener for the stop button
     function stop_button_click() {
+        // Stop the timer. Upon that the timer will update the last field in exercise_set_form.time
         timer.stop();
-
+        
+        // Auto-save the form
+        submit_form();
     }
 
     function reset_button_click() {
@@ -93,6 +95,21 @@
     function pause_button_click() {
         timer.pause();
     }
+    /* 
+        Instanciate the timer
+        First parameter in the constructor specifies the id of the element that the timer uses for output
+
+        Second parameter in the constructor specifies the output field for the results. The id for this field
+        was initialized in the inline script within the form : let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
+
+        Third parameter specifies the intervals in milliseconds in which the timer will be updated
+    */    
+    let timer = new Timer("timer-text", reult_field_id, 100);
+    // If the value of the last distance-field changes, auto-save this form
+    let last_distance_field = document.getElementById(edit_distance_field);
+    last_distance_field.addEventListener('input', function (event) {
+        submit_form();
+    });
 
 </script>
 {% endblock content %}

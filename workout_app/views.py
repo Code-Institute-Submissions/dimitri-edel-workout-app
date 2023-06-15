@@ -181,9 +181,10 @@ class EditWorkout(View):
             instance=workout, prefix="workout")
         # Get the last object from the WorkoutExercise model that is related to this workout
         workout_exercise_list = WorkoutExercise.objects.filter(workout_id=id)
+        workout_exercise = workout_exercise_list.last()
         # Create a form for the last WrokoutExercise object
         workout_exercise_form = self.workout_exercise_form_class(
-            instance=workout_exercise_list.last(), prefix="workout_exercise"
+            instance=workout_exercise, prefix="workout_exercise"
         )
 
         # Use the Form-Set to extract the set of forms from the POST-request
@@ -324,8 +325,9 @@ class DeleteExerciseSet(View):
 class AddWorkoutExercise(View):
     def get(self, request, workout_id, *args, **kwargs):
         exercise = Exercise.objects.first()
-        WorkoutExercise.objects.create(
+        workout_exercise = WorkoutExercise.objects.create(
             workout_id=workout_id, exercise_id=exercise.id)
+        print(f"*********************** workout-exercise-id: {workout_exercise.id}")
         # return HttpResponseRedirect(f"/edit_workout/{workout_id}")
         return HttpResponseRedirect(reverse('edit_workout', kwargs={"id": workout_id}))
 

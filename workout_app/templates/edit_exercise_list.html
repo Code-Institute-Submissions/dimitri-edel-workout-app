@@ -2,7 +2,7 @@
 {% block title %}Edit Exercise List {% endblock title %}
 
 {% block content %}
-<h1>Edit Exercise</h1>
+<h1>Edit Exercise List</h1>
 <form action="{% url 'edit_exercise_list' %}" method="POST">
     {% csrf_token %}
 
@@ -50,10 +50,10 @@
             {% endif %}
         </div>
         <div class="col">
-            <a href="{% url 'edit_exercise' exercise.id %}">Edit</a>
+            <a href="{% url 'edit_exercise' exercise.id %}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
         </div>
         <div class="col">
-            <a href="{% url 'delete_exercise' exercise.id %}">Delete</a>
+            <a href="{% url 'delete_exercise' exercise.id %}"><i class="fa-solid fa-trash-can"></i>Delete</a>
         </div>
     </div>
     {% endif %}

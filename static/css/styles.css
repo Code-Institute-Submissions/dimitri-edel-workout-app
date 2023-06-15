@@ -2,3 +2,66 @@
     background-color: azure;
     color: black;    
 }
+header {
+    padding: 0;
+}
+#nav-bar {
+    background-color: #d5e6ed;
+    display: block;
+    width: 100%;
+    border:0;
+    overflow: hidden;   
+    text-align: center;  
+}
+
+.navigation-menu {
+    list-style-type: none;
+    direction: ltr;
+    clear: both;  
+    padding: 0;    
+    margin:0 0 15px 0;   
+    display: flex; 
+}
+
+.navigation-menu li {
+    width: 23%;
+    /* float: left; */
+    background-color: #bbe1f1;  
+    margin: 1px; 
+    display: inline-block; 
+}
+
+.navigation-menu li a{
+    display: block;
+}
+.nav-link {
+    display: inline;
+    padding: 5px;
+    margin: 0;
+    font-size: 1em;
+    color:rgb(9, 13, 244);
+    width: 100%;
+}
+.data-header-row {
+    background-color: #f2f6f8;
+    border-style: ridge; 
+}
+.data-row {
+    background-color: #d5e6ed;
+    border-style: groove;    
+}
+
+.right-separator {
+    border-right: 3px solid rgb(9, 13, 244);
+}
+
+a.url-link {
+    text-decoration: none;
+    color:rgb(55, 4, 125);   
+    font-weight: bold; 
+    display:block;
+}
+
+i {
+    margin: 10px;
+}
