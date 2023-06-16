@@ -51,7 +51,8 @@ class WorkoutExerciseForm(ModelForm):
         model= WorkoutExercise
         fields = ["exercise"]
 
-    def __init__(self, user_id, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop("user_id")
         super(WorkoutExerciseForm, self).__init__(*args, **kwargs)        
         # Set the empty label in the selector
         self.fields['exercise'].empty_label = "( --- Select Exercise --- )"

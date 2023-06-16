@@ -34,5 +34,23 @@ Issue:
 In the view AddWorkout.get(). In the workout_exercie_form, the list of exercises is not linked to the current user.
 Solution:
 Add a queryset to the form, like so:
+<code>
 self.fields['exercise'].queryset = Exercise.objects.filter(user_id=user_id)
+</code>
 
+BUG-FIX #5:
+class WorkoutExerciseForm
+
+Issue:
+Upone changing to Form to fix the previous bug. Other views that use this form, started raising Errors. It came down to 
+the fact that the constructor now required a user_id field, which those other views were not providing it with.
+Simple adding the user_id to to the list of arguements, worked for get methods. Yet in the post methods, the request.POST 
+object must be passed to the constructor, so it can pass it down to the super()-constructor. And since request.POST object 
+already has user_id, the two parameters clashed with eachother.
+Solution:
+Instead of defining the user_id as a parameter in the constructor, pass it through kwargs and then pop it from the parameter 
+stack, like so:
+<code>
+def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop("user_id")
+</code>

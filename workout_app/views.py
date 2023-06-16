@@ -135,7 +135,7 @@ class AddWorkout(View):
         # Instanciate the forms.
         workout_form = self.workout_form_class(request.POST, prefix="workout")
         workout_exercise_form = self.workout_exercise_form_class(
-            request.POST, prefix="workout_exercise")
+            request.POST, user_id=request.user.id, prefix="workout_exercise")
 
         # If both forms are valid
         if workout_form.is_valid() and workout_exercise_form.is_valid():
@@ -183,7 +183,7 @@ class EditWorkout(View):
         workout_exercise_list = WorkoutExercise.objects.filter(workout_id=id)
         workout_exercise = workout_exercise_list.last()
         # Create a form for the last WrokoutExercise object
-        workout_exercise_form = self.workout_exercise_form_class(
+        workout_exercise_form = self.workout_exercise_form_class(user_id=request.user.id,
             instance=workout_exercise, prefix="workout_exercise"
         )
 
@@ -205,7 +205,7 @@ class EditWorkout(View):
         workout_exercise = WorkoutExercise.objects.filter(workout_id=id).last()
 
         workout_exercise_form = self.workout_exercise_form_class(
-            request.POST, prefix="workout_exercise", instance=workout_exercise
+            request.POST, user_id=request.user.id, prefix="workout_exercise", instance=workout_exercise
         )
         # Use the Form-Set to extract the set of forms from the POST-request
         workout_exercise_formset = WorkoutExerciseFormset(
@@ -248,7 +248,7 @@ class EditExerciseSet(View):
 
     def get(self, request, workout_exercise_id, *args, **kwargs):
         workout_exercise = WorkoutExercise.objects.get(id=workout_exercise_id)
-        workout_exercise_form = self.workout_exercise_form_class(
+        workout_exercise_form = self.workout_exercise_form_class(user_id=request.user.id,
             instance=workout_exercise, prefix="workout_exercise")
         exercise_set_formset = ExersiceSetFormset(
             queryset=ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id))
@@ -265,7 +265,7 @@ class EditExerciseSet(View):
 
         #
         workout_exercise_form = self.workout_exercise_form_class(
-            request.POST, instance=workout_exercise, prefix="workout_exercise")
+            request.POST, user_id=request.user.id, instance=workout_exercise, prefix="workout_exercise")
         #
         exercise_set_formset = ExersiceSetFormset(request.POST, request.FILES)
 
