@@ -6,6 +6,7 @@ from .forms import *
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import ProtectedError
+from django.core.paginator import Paginator
 
 # A class for storing reports about an exercise in a workout
 
@@ -41,7 +42,7 @@ class HomePage(View):
 class WorkoutList(View):
     model = Workout
     template_name = "workout_list.html"
-    paginate_by = 20
+    paginate_by = 5
     # Constants for exercise.type
     STRENGTH = 0
     CARDIO = 1
@@ -52,15 +53,21 @@ class WorkoutList(View):
     def get(self, request, *args, **kwargs):
         # Only retrieve datasets related to the user
         self.model.objects.filter(user_id=self.request.user.id)
+        # Generate Roports
         reports = self.__generate_reports()
+        # Create paginator and load it with reports
+        paginator = Paginator(reports, self.paginate_by)  
+        # Retrieve page number from the GET-Request-object
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
         context = {
-            "reports": reports
+            "page_obj": page_obj,
         }
         return render(request, self.template_name, context=context)
 
     # Create Reports
     def __generate_reports(self):
-        reports = {}
+        reports = []
         workout_list = self.model.objects.filter(user_id=self.request.user.id)
         for workout in workout_list:
             workout_exercises = WorkoutExercise.objects.filter(
@@ -80,7 +87,7 @@ class WorkoutList(View):
                     f"-------------------- workout.generate exercise_report {exercise_report.report}")
             print(
                 f"report.exercise_report:::::::::: {report.exercise_reports}")
-            reports[workout.id] = report
+            reports.append(report)
         return reports
 
     def __generate_report(self, workout_exercise):
