@@ -1,6 +1,9 @@
 .wo-button {
-    background-color: azure;
-    color: black;    
+    border: 1px;
+    border-style: groove;
+    border-radius: 10px; 
+    text-align: center;  
+    width: 100%;
 }
 header {
     padding: 0;
@@ -26,7 +29,7 @@ header {
 .navigation-menu li {
     width: 23%;
     /* float: left; */
-    background-color: #bbe1f1;  
+    background-color: #e9eaeb;  
     margin: 1px; 
     display: inline-block; 
 }
@@ -39,20 +42,24 @@ header {
     padding: 5px;
     margin: 0;
     font-size: 1em;
-    color:rgb(9, 13, 244);
+    color:rgb(6 8 148);
     width: 100%;
 }
 .data-header-row {
-    background-color: #f2f6f8;
+    background-color: #e9e8fc;
     border-style: ridge; 
+    color:#3e3c58;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 .data-row {
-    background-color: #d5e6ed;
+    background-color: #f0f6f8;
     border-style: groove;    
 }
 
 .right-separator {
-    border-right: 3px solid rgb(9, 13, 244);
+    border-right: 2px solid #3e3c58;
+    border-style: ridge;
 }
 
 a.url-link {
@@ -64,4 +71,18 @@ a.url-link {
 
 i {
     margin: 10px;
+}
+
+.entry-column {
+    background-color: #f0f6f8;
+    margin: 2px;
+}
+
+.text-field {
+    color: #250645;
+    font-weight: bold;
+}
+
+.input-field {
+    width: 100%;
 }

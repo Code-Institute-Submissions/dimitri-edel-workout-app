@@ -10,7 +10,7 @@ class WorkoutForm(ModelForm):
             'name' : ""
         }
         widgets = {
-            'name': TextInput({'placeholder': 'Enter Name of Workout'})
+            'name': TextInput({'placeholder': 'Enter Name of Workout', 'class':'input-field col'})
         }
 
 
@@ -41,6 +41,11 @@ class ExerciseForm(ModelForm):
         model = Exercise
         fields = ["name", "type", "goal"]     
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'input-field'
+        self.fields['type'].widget.attrs['class'] = 'input-field'
+        self.fields['goal'].widget.attrs['class'] = 'input-field'
 
 
 class WorkoutExerciseForm(ModelForm):
@@ -57,6 +62,7 @@ class WorkoutExerciseForm(ModelForm):
         # Set the empty label in the selector
         self.fields['exercise'].empty_label = "( --- Select Exercise --- )"
         self.fields['exercise'].queryset = Exercise.objects.filter(user_id=user_id)
+        self.fields['exercise'].widget.attrs.update({"class": "input-field"})
 
 # FormSet to hold multiple forms of type WorkoutExerciseForm
 WorkoutExerciseFormset = modelformset_factory(model=WorkoutExercise, form=WorkoutExerciseForm, fields = ["exercise", "done"], extra=0)
