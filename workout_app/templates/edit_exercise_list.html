@@ -46,7 +46,7 @@
         </div>
         <div class="col">
             <div class="col md-2">
-                <input type="submit" value="Add" class="wo-button">
+                <a href="#" onclick="submit_form()"><i class="fa-solid fa-circle-plus"></i>Add</a>
             </div>
         </div>
         <div class="col">
@@ -63,4 +63,9 @@
 
     </div>
 </form>
+<script>
+    function submit_form(){
+        document.forms[0].submit();
+    }
+</script>
 {% endblock content %}

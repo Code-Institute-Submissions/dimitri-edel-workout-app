@@ -1,6 +1,29 @@
 {% extends "base.html" %}
-{% block title %}Edit Exercise List {% endblock title %}
+{% block title %}Home{% endblock title %}
 
-{% block content %} 
-<h1>Home</h1>
+{% block content %}
+<h1>Workout Journal</h1>
+{% load static %}
+<img src="{% static '/img/istock_workout_cover.jpg' %}" alt="Image of people working out" style="width: 100px;">
+<article>
+    <h2>How to create your own list of <em>Exercises</em></h2>
+    <p>
+    <ol>
+        <li>In the navigation bar, click on <em>Exercises</em></li>
+        <li>Name your exercise, e.g. Push-Ups, Bicep Curl, .. </li>
+        <li>Choose type
+            <ul>
+                <li>Strength - Exercises that involve weight lifting. </li>
+                <li>Cardio - Cardio vascular exercises such as jogging</li>
+            </ul>
+        </li>
+        <li>Choose goal
+            <ul>
+                <li></li>
+            </ul>
+        </li>
+
+    </ol>
+    </p>
+</article>
 {% endblock content %}
