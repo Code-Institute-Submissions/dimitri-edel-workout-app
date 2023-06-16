@@ -25,13 +25,16 @@
                 </li>
                 {% if user.is_authenticated %}
                 <li>
-                    <a class="nav-link" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-                </li>
+                    <a class="nav-link" href="{% url 'workout_list' %}"><i class="fa-solid fa-list"></i>Workouts</a>
+                </li>                
                 <li>
                     <a class="nav-link" href="{% url 'edit_exercise_list' %}"><i class="fa-solid fa-list"></i>Exercises</a>
                 </li>
                 <li>
                     <a class="nav-link" href="{% url 'add_workout' %}"><i class="fa-solid fa-play"></i>Start Workout</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
                 </li>
                 {% else %}
                 <li>
