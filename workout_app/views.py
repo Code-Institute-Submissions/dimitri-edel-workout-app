@@ -56,7 +56,7 @@ class WorkoutList(View):
         # Generate Roports
         reports = self.__generate_reports()
         # Create paginator and load it with reports
-        paginator = Paginator(reports, self.paginate_by)  
+        paginator = Paginator(reports, self.paginate_by)
         # Retrieve page number from the GET-Request-object
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
@@ -200,10 +200,12 @@ class EditWorkout(View):
         # Create form for the workout object
         workout_form = self.workout_form_class(
             instance=workout, prefix="workout")
-        
-        workout_exercise_list = WorkoutExercise.objects.filter(workout_id=workout.id)
+
+        workout_exercise_list = WorkoutExercise.objects.filter(
+            workout_id=workout.id)
         # Create a form for the last WrokoutExercise object
-        workout_exercise_form = self.workout_exercise_form_class(user_id=request.user.id, prefix="workout_exercise")
+        workout_exercise_form = self.workout_exercise_form_class(
+            user_id=request.user.id, prefix="workout_exercise")
 
         # Render the dedicated template
         return render(
@@ -220,20 +222,27 @@ class EditWorkout(View):
         workout_form = self.workout_form_class(
             request.POST, prefix="workout", instance=workout)
         #
-        workout_exercise = WorkoutExercise.objects.filter(workout_id=id).last()
+        # workout_exercise = WorkoutExercise.objects.filter(workout_id=id).last()
 
         workout_exercise_form = self.workout_exercise_form_class(
-            request.POST, prefix="workout_exercise")
+            request.POST, user_id=request.user.id, prefix="workout_exercise")
         # Use the Form-Set to extract the set of forms from the POST-request
-        workout_exercise_formset = WorkoutExerciseFormset(
-            request.POST, request.FILES)
+        # workout_exercise_formset = WorkoutExerciseFormset(
+        #     request.POST, request.FILES)
         # If both forms are valid
         if workout_form.is_valid() and workout_exercise_form.is_valid():
+            print("Workout exercise valid")
             return self.__save_forms(request, workout_form, workout_exercise_form)
 
         # If the form was not valid, render the template. The workout_from will contain the validation
         # messages for the user, which had been generated upon calling the is_valid() method
-        return render(request, self.template_name, {"workout_form": workout_form})
+        messages.add_message(
+            request, messages.ERROR, "You might have forgotten to select the exercise you want to add!")
+        workout_exercise_list = WorkoutExercise.objects.filter(
+            workout_id=workout.id)
+
+        return render(request, self.template_name, {"workout_form": workout_form, "workout_exercise_form": workout_exercise_form,
+                                                    "workout_exercise_list": workout_exercise_list})
 
     def __save_forms(self, request, workout_form, workout_exercise_form):
         # Assign the form to the current user.
@@ -245,14 +254,15 @@ class EditWorkout(View):
         # Assign the workout_id of the newly created Workout to the ExerciseSet.workout_id field
 
         workout_exercise_form.instance.workout_id = workout_form.instance.id
-        workout_exercise = WorkoutExercise.objects.create(workout_id=workout_form.instance.id, user_id=request.user.id)
+        workout_exercise = WorkoutExercise.objects.create(
+            workout_id=workout_form.instance.id, exercise_id=workout_exercise_form.instance.exercise_id)
         workout_exercise.exercise_id = workout_exercise_form.instance.exercise_id
         workout_exercise.done = workout_exercise_form.instance.done
         workout_exercise.save()
         # Commit the model object to the database
         # workout_exercise_form.save()
 
-        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id': workout_form.instance  .id}))
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id': workout_form.instance.id}))
 
 
 class EditExerciseSet(View):

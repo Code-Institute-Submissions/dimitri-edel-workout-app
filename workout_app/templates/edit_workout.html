@@ -39,8 +39,9 @@
         <div class="col entry-column">
             {{ workout_exercise_form.exercise }}
         </div>
+        <!-- {% url 'add_workout_exercise' workout_form.instance.id %} -->
         <div class="col entry-column md-4">
-            <a href="{% url 'add_workout_exercise' workout_form.instance.id %}" class="url-link">
+            <a href="#" onclick="submit_form()" class="url-link">
                 <i class="fa-solid fa-circle-plus"></i>Add
             </a>
         </div>
@@ -62,4 +63,9 @@
         </div>
     </div>
 </form>
+<script>
+    function submit_form(){
+        document.forms[0].submit();
+    }
+</script>
 {% endblock content %}
