@@ -16,22 +16,19 @@ class WorkoutForm(ModelForm):
 
 class ExerciseSetForm(ModelForm): 
     # id of the ExerciseSet as a hidden field
-    id = IntegerField(widget = HiddenInput)   
+    id = IntegerField(widget = HiddenInput) 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['reps'].widget.attrs['class'] = 'input-field changeable-field'
-        self.fields['weight'].widget.attrs['class'] = 'input-field changeable-field'
+        self.fields['reps'].widget.attrs['class'] = 'input-field changeable-field'        
+        self.fields['weight'].widget.attrs['class'] = 'input-field changeable-field'        
         self.fields['time'].widget.attrs['class'] = 'input-field changeable-field'
-        self.fields['distance'].widget.attrs['class'] = 'input-field changeable-field'
+        self.fields['distance'].widget.attrs['class'] = 'input-field changeable-field'        
 
     
     class Meta:
         model = ExerciseSet
-        fields = ["id", "reps","weight", "time","distance"]
-
-    
-   
+        fields = ["id", "reps","weight", "time","distance"]   
 
 
 # FormSet to hold multiple forms of type ExerciseSetForm

@@ -90,3 +90,7 @@ i {
 .input-field {
     width: 100%;
 }
+
+.changeable-field {
+    padding: 1px;
+}

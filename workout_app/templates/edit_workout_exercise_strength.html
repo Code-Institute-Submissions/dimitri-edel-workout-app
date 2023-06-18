@@ -8,74 +8,54 @@
     <div hidden>
         {{ workout_exercise_form }}
     </div>
-    {{ exercise_set_formset.management_form }}
-    <div class="row">
-        <div class="col entry-column">
-            Reps
-        </div>
-        <div class="col entry-column">
-            Weight
-        </div>
-        <div class="col entry-column">
+    <div class="container-fluid">
+        {{ exercise_set_formset.management_form }}
+        <div class="row">
+            <div class="col-4 entry-column">
+                Reps
+            </div>
+            <div class="col-4 entry-column">
+                Weight
+            </div>
+            <div class="col entry-column">
 
+            </div>
         </div>
-    </div>
 
-    {% for exercise_set_form in exercise_set_formset %}
+        {% for exercise_set_form in exercise_set_formset %}
 
-    <div class="row">
-        <div class="col">
-            {{ exercise_set_form.reps }}
+        <div class="row">
+            <div class="col-4">
+                {{ exercise_set_form.reps }}
+            </div>
+            <div class="col-4">
+                {{ exercise_set_form.weight }}
+            </div>
+            <div class="col">
+                <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"
+                    class="url-link"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
         </div>
-        <div class="col">
-            {{ exercise_set_form.weight }}
-        </div>
-        <div class="col">
-            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"
-                class="url-link"><i class="fa-solid fa-trash-can"></i>Delete</a>
-        </div>
-    </div>
-    {{ exercise_set_form.id }}
-    {% endfor %}
+        
+        {{ exercise_set_form.id }}
+        {% endfor %}
 
-    <div class="row">
-        <div class="col md-2">
-            <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
-                class="url-link wo-button">
-                <i class="fa-solid fa-circle-plus"></i>
-            </a>
-        </div>
-        <div class="col md-2">
-            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button">
-                <i class="fa-solid fa-circle-left"></i>Cancel
-            </a>
-        </div>
-        <div class="col md-2">
-            <!-- Placeholder for layout consistency -->
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-4">
+                <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
+                    class="url-link wo-button">
+                    <i class="fa-solid fa-circle-plus"></i>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button">
+                    <i class="fa-solid fa-circle-left"></i>Cancel
+                </a>
+            </div>
+            <div class="col">
+                <button type="send" class="wo-button">Save</button>
+            </div>
         </div>
     </div>
 </form>
-<script>
-    // Functions for AUTO-SUBMITTING the form
-    function submit_form() {
-        document.forms[0].submit();
-    }
-
-    function getChangeableFields() {
-        return document.getElementsByClassName('changeable-field');
-    }
-
-    function addOnValueChangedEventListeners() {
-        changeable_fields = getChangeableFields();
-
-        for (i = 0; i < changeable_fields.length; i++) {
-            changeable_fields[i].addEventListener('input', function (event) {
-                submit_form();
-            });            
-        }
-    }
-
-    // Add event listeners to the forms from exercise_set_forms
-    addOnValueChangedEventListeners();
-</script>
 {% endblock content %}
