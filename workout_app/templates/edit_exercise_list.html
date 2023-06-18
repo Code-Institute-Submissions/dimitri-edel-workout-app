@@ -9,20 +9,20 @@
     <div class="container-fluid">
         {% for exercise in exercises %}
         <div class="row">
-            <div class="col-4 entry-column">
+            <div class="col-5 entry-column">
                 <a href="{% url 'edit_exercise' exercise.id %}" class="url-link"><i
                         class="fa-solid fa-pen-to-square"></i>{{ exercise.name }}</a>
 
             </div>
-            <div class="col-6 entry-column">
+            <div class="col-4 entry-column">
                 {% if exercise.type == 0 and exercise.goal == 0 %}
-                Strength : Repetitions
+                Strength <br> Repetitions
                 {% elif exercise.type == 0 and exercise.goal == 1 %}
-                Strength : Distance
+                Strength <br> Distance
                 {% elif exercise.type == 1 and exercise.goal == 0 %}
-                Cardio : Repetitions
+                Cardio <br> Repetitions
                 {% else %}
-                Cardio : Distance
+                Cardio <br> Distance
                 {% endif %}
             </div>
             <div class="col entry-column">
@@ -35,15 +35,15 @@
     <div class="container-fluid">
         <!-- Empty form -->
         <div class="row">
-            <div class="col-4 entry-column">
+            <div class="col-5 entry-column">
                 <a href="#" onclick="submit_form()" class="url-link"><i class="fa-solid fa-circle-plus"></i>Add :</a>
                 {{ exercise_form.name }}
             </div>
-            <div class="col-6 entry-column">
+            <div class="col-4 entry-column">
                 {{ exercise_form.type }}            
                 {{ exercise_form.goal }}
             </div>  
-            <div class="col entry-column">
+            <div class="col  entry-column">
                 <!-- place holder for layout consistency -->
             </div>          
         </div>
