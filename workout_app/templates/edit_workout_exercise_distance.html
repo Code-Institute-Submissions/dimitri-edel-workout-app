@@ -9,90 +9,99 @@
         {{ workout_exercise_form }}
     </div>
     {{ exercise_set_formset.management_form }}
-    <div class="row">
-        <div class="col entry-column">
-            Distance
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-5 entry-column">
+                Distance
+            </div>
+            <div class="col-5 entry-column">
+                Time
+            </div>
+            <div class="col entry-column">
+                <!-- Placeholder-->
+            </div>
         </div>
-        <div class="col entry-column">
-            Time
-        </div>
-    </div>
-    {% for exercise_set_form in exercise_set_formset %}
+        {% for exercise_set_form in exercise_set_formset %}
 
-    <div class="row">
-        <div class="col">
-            {{ exercise_set_form.distance }}
+        <div class="row">
+            <div class="col-5">
+                {{ exercise_set_form.distance }}
+            </div>
+            <div class="col-5">
+                {{ exercise_set_form.time }}
+            </div>
+            {% if forloop.last %}
+            <script>
+                // The last field with time will be used to copy the results from the timer into,
+                // when the stop button gets clicked
+                // Also the stop_button_click() function will auto-submit this form
+                let result_field_id = "{{ exercise_set_form.time.auto_id }}";
+            </script>
+            {% endif %}
+            <div class="col">
+                <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"
+                    class="url-link"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
         </div>
-        <div class="col">
-            {{ exercise_set_form.time }}
-        </div>
-        {% if forloop.last %}
-        <script>
-            // The last field with time will be used to copy the results from the timer into,
-            // when the stop button gets clicked
-            // Also the stop_button_click() function will auto-submit this form
-            let result_field_id = "{{ exercise_set_form.time.auto_id }}";
-        </script>
-        {% endif %}
-        <div class="col">
-            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"
-                class="url-link"><i class="fa-solid fa-trash-can"></i>Delete</a>
-        </div>
-    </div>
 
-    {{ exercise_set_form.id }}
-    {% endfor %}
-    <div class="row">
-        <div class="col md-2">
-            <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
-                class="url-link wo-button">
-                <i class="fa-solid fa-circle-plus"></i>
-            </a>
-        </div>
-        <div class="col md-2">
-            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button">
-                <i class="fa-solid fa-circle-left"></i>Cancel
-            </a>
-        </div>
-        <div class="col md-2">
-            <!-- Placeholder for layout consistency -->
-        </div>
+        {{ exercise_set_form.id }}
+        {% endfor %}
+    </div>
+    <div class="container-fluid" style="margin-top: 10px;">
+        <div class="row">
+            <div class="col-5">
+                <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
+                    class="url-link wo-button">
+                    <i class="fa-solid fa-circle-plus"></i>New
+                </a>
+            </div>
+            <div class="col-5">
+                <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button">
+                    <i class="fa-solid fa-circle-left"></i>Close
+                </a>
+            </div>
+            <div class="col">
+                <!-- Placeholder for layout consistency -->
+            </div>
+        </div>        
     </div>
 </form>
-<!-- Element that the timer uses for output -->
-<input type="text" id="timer-text" style="width:200px;">
-<button id="start-button" onclick="start_button_click()">SART</button>
-<button id="start-button" onclick="pause_button_click()">PAUSE</button>
-<button id="stop-button" onclick="stop_button_click()">STOP</button>
-<button id="stop-button" onclick="reset_button_click()">RESET</button>
+<div class="container-fluid" style="margin-top: 10px;">
+    <div class="row" >
+        <div class="col-5">
+            <button id="start-button" onclick="start_button_click(this)" class="wo-button"><i
+                    class="fa-solid fa-play"></i>Timer</button>
+        </div>
+        <div class="col-5">
+            <!-- Element that the timer uses for output -->
+            <input type="text" id="timer-text" class="input-field">
+        </div>
+        <div class="col"><!-- Plaveholder --></div>
+    </div>
+</div>
+
 {% load static %}
+<!-- Load javascript with the timer class -->
 <script src="{% static 'js/timer.js' %}"></script>
 <script>
     // Auto-save the form
     function submit_form() {
         document.forms[0].submit();
     }
-    // Event listener for the start button
-    function start_button_click() {
-        timer.start();
-
-    }
-    // Event listener for the stop button
-    function stop_button_click() {
-        // Stop the timer. Upon that the timer will update the last field in exercise_set_form.time
-        timer.stop();
-
-        // Auto-save the form
-        submit_form();
-    }
-
-    function reset_button_click() {
-        timer.reset();
+    // Register if the button has already been clicked
+    timer_button_clicked = false;
+    // Event listener for the start/stop timer button
+    function start_button_click(button) {
+        if (timer_button_clicked) {
+            timer.stop();
+            submit_form();
+        } else {
+            timer_button_clicked = true;
+            button.innerHTML = "<i class='fa-solid fa-stop'></i>Timer";
+            timer.start();
+        }
     }
 
-    function pause_button_click() {
-        timer.pause();
-    }
     /* 
         Instanciate the timer
         First parameter in the constructor specifies the id of the element that the timer uses for output

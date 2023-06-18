@@ -20,10 +20,10 @@ class ExerciseSetForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['reps'].widget.attrs['class'] = 'changeable-field'
-        self.fields['weight'].widget.attrs['class'] = 'changeable-field'
-        self.fields['time'].widget.attrs['class'] = 'changeable-field'
-        self.fields['distance'].widget.attrs['class'] = 'changeable-field'
+        self.fields['reps'].widget.attrs['class'] = 'input-field changeable-field'
+        self.fields['weight'].widget.attrs['class'] = 'input-field changeable-field'
+        self.fields['time'].widget.attrs['class'] = 'input-field changeable-field'
+        self.fields['distance'].widget.attrs['class'] = 'input-field changeable-field'
 
     
     class Meta:
