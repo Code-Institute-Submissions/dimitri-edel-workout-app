@@ -33,7 +33,7 @@
         {% if forloop.last %}
         <!-- The last field will be used to copy the results from the timer into-->
         <script>
-            let result_id_field = "{{ exercise_set_form.time.auto_id }}";
+            let result_field_id = "{{ exercise_set_form.time.auto_id }}";
         </script>
         {% endif %}
         <div class="col">
@@ -71,6 +71,11 @@
 <script src="{% static 'js/timer.js' %}"></script>
 <script>
     
+    // Auto-submit form
+    function submit_form() {
+        document.forms[0].submit();
+    }
+
     // Event listener for the start button
     function start_button_click() {
         timer.start();
@@ -90,10 +95,6 @@
         timer.pause();
     }
 
-    
-    function submit_form() {
-        document.forms[0].submit();
-    }
 
     /* 
         Instanciate the timer
@@ -104,7 +105,7 @@
     
         Third parameter specifies the intervals in milliseconds in which the timer will be updated
     */
-    let timer = new Timer("timer-text", result_id_field, 100);
+    let timer = new Timer("timer-text", result_field_id, 100);
     
     // Functions for AUTO-SUBMITTING the form
     function getChangeableFields() {

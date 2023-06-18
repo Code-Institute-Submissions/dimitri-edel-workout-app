@@ -42,11 +42,12 @@ class ExerciseForm(ModelForm):
     
     class Meta:
         model = Exercise
-        fields = ["name", "type", "goal"]     
+        fields = ["name", "type", "goal"]  
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['class'] = 'input-field'
+        self.fields['name'].widget.attrs['class'] = 'input-field'        
         self.fields['name'].widget.attrs['placeholder'] = 'Name?'
         self.fields['type'].widget.attrs['class'] = 'input-field'
         self.fields['goal'].widget.attrs['class'] = 'input-field'

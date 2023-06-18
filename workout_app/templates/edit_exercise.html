@@ -5,16 +5,47 @@
 <h1>Edit Exercise</h1>
 <form method="POST">
     {% csrf_token %}
-    {{ exercise_form }}
-    
-    <div class="row">
-        <div class="col md-2">
-            <a href="{% url 'edit_exercise_list' %}" class="wo-button">
-                Cancel
-            </a>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col entry-column">Name:</div>
+            <div class="col">
+                {{ exercise_form.name }}
+            </div>            
+            <div class="col">
+                <!-- Placehoder for layout consitency -->
+            </div>
         </div>
-        <div class="col md-2">
-            <input type="submit" value="Save" class="wo-button">
+        <div class="row"> 
+            <div class="col entry-column">Type:</div>           
+            <div class="col">
+               {{ exercise_form.type }}
+            </div>            
+            <div class="col">
+                <!-- Placehoder for layout consitency -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col entry-column">Goal:</div>
+            <div class="col">                
+                {{ exercise_form.goal }}
+            </div>            
+            <div class="col">
+                <!-- Placehoder for layout consitency -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="{% url 'edit_exercise_list' %}" class="url-link wo-button">
+                    Cancel
+                </a>
+            </div>
+            <div class="col">
+                <input type="submit" value="Save" class="wo-button" style="font-weight:bold;">
+            </div>            
+            <div class="col">
+                <!-- Placehoder for layout consitency -->
+            </div>
         </div>
     </div>
 </form>
