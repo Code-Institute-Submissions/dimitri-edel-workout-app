@@ -42,7 +42,7 @@ class HomePage(View):
 class WorkoutList(View):
     model = Workout
     template_name = "workout_list.html"
-    paginate_by = 5
+    paginate_by = 2
     # Constants for exercise.type
     STRENGTH = 0
     CARDIO = 1
@@ -315,9 +315,7 @@ class EditExerciseSet(View):
         for form in exercise_set_formset:
             form.instance.exercise_workout_exercise = workout_exercise_form.instance.id
             form.save()
-        # Report success to user
-        messages.add_message(
-            request, messages.SUCCESS, "The exercise has been successfully updated!")
+        
         return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={"workout_exercise_id": workout_exercise_form.instance.id}))
 
     def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):
@@ -385,13 +383,7 @@ class EditExerciseList(View):
         # Query the last exercises related to the current user
         exercises = Exercise.objects.filter(
             user_id=request.user.id).order_by('id')
-        edit_exercise = exercises.last()
-        # If edit_exercise is None, then create a new exercise
-        # if edit_exercise is None:
-        #     edit_exercise = Exercise.objects.create(user_id=request.user.id)
-
-        # Store the id of the last object in the session
-        request.session["edit_exercise_id"] = edit_exercise.id
+       
         # Instanciate the form
         # exercise_form = self.exercise_form_class(instance=edit_exercise)
         exercise_form = self.exercise_form_class()
@@ -399,10 +391,7 @@ class EditExerciseList(View):
         return render(request, self.template_name, {"exercise_form": exercise_form, "exercises": exercises})
     # Process a POST-Request
 
-    def post(self, request, *args, **kwargs):
-        # Retrieve the object that was sent in the form
-        edit_exercise_id = request.session["edit_exercise_id"]
-        edit_exercise = Exercise.objects.get(id=edit_exercise_id)
+    def post(self, request, *args, **kwargs):       
         # Instanciate the form
         exercise_form = self.exercise_form_class(
             request.POST)
@@ -419,12 +408,15 @@ class EditExerciseList(View):
             exercise.type = exercise_form.instance.type
             exercise.goal = exercise_form.instance.goal
 
-            # exercise_form.instance.user = request.user
-            # Commit the model object to the database
-            # exercise_form.save()
-            exercise.save()
-
+            # Commit the model object to the database            
+            exercise.save()           
+            # Reverse back to the page with the list of exercises
             return HttpResponseRedirect(reverse("edit_exercise_list"))
+        # If the form is invalid, in this case, it can only mean one thing: The name field is empty
+        else:
+            messages.add_message(request=request, level=messages.ERROR, message="You need to enter a Name for the exercise, before adding it!")
+            return HttpResponseRedirect(reverse("edit_exercise_list"))
+
         # If the form was not valid, render the template. The workout_from will contain the validation
         # messages for the user, which had been generated upon calling the is_valid() method
         return render(request, self.template_name, {"exercise_form": exercise_form})

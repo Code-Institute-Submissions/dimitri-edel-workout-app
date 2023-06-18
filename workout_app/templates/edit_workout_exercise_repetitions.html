@@ -9,13 +9,16 @@
         {{ workout_exercise_form }}
     </div>
     {{ exercise_set_formset.management_form }}
-    
+
     <div class="row">
-        <div class="col">
+        <div class="col entry-column">
             Repetitions
         </div>
-        <div class="col">
+        <div class="col entry-column">
             Time
+        </div>
+        <div class="col entry-column">
+            <!-- Placeholder for layout consistency -->
         </div>
     </div>
     {% for exercise_set_form in exercise_set_formset %}
@@ -30,11 +33,12 @@
         {% if forloop.last %}
         <!-- The last field will be used to copy the results from the timer into-->
         <script>
-            let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
+            let result_id_field = "{{ exercise_set_form.time.auto_id }}";
         </script>
         {% endif %}
         <div class="col">
-            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"><i class="fa-solid fa-trash-can"></i>Delete</a>
+            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"
+                class="url-link"><i class="fa-solid fa-trash-can"></i>Delete</a>
         </div>
     </div>
 
@@ -43,17 +47,17 @@
     <div class="row">
         <div class="col md-2">
             <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
-                class="wo-button"style="font-size: 2em;">
+                class="url-link wo-button">
                 <i class="fa-solid fa-circle-plus"></i>
             </a>
         </div>
         <div class="col md-2">
-            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="wo-button">
-                Cancel
+            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button">
+                <i class="fa-solid fa-circle-left"></i>Cancel
             </a>
         </div>
         <div class="col md-2">
-            <input type="submit" value="Save" class="wo-button">
+            <!-- Placeholder for layout constistency -->
         </div>
     </div>
 </form>
@@ -66,16 +70,7 @@
 {% load static %}
 <script src="{% static 'js/timer.js' %}"></script>
 <script>
-/* 
-    Instanciate the timer
-    First parameter in the constructor specifies the id of the element that the timer uses for output
-
-    Second parameter in the constructor specifies the output field for the results. The id for this field
-    was initialized in the inline script within the form : let reult_field_id = "{{ exercise_set_form.time.auto_id }}";
-
-    Third parameter specifies the intervals in milliseconds in which the timer will be updated
-*/
-let timer = new Timer("timer-text", reult_field_id, 100);
+    
     // Event listener for the start button
     function start_button_click() {
         timer.start();
@@ -95,5 +90,39 @@ let timer = new Timer("timer-text", reult_field_id, 100);
         timer.pause();
     }
 
+    
+    function submit_form() {
+        document.forms[0].submit();
+    }
+
+    /* 
+        Instanciate the timer
+        First parameter in the constructor specifies the id of the element that the timer uses for output
+    
+        Second parameter in the constructor specifies the output field for the results. The id for this field
+        was initialized in the inline script within the form : let result_id_field = "{{ exercise_set_form.time.auto_id }}";
+    
+        Third parameter specifies the intervals in milliseconds in which the timer will be updated
+    */
+    let timer = new Timer("timer-text", result_id_field, 100);
+    
+    // Functions for AUTO-SUBMITTING the form
+    function getChangeableFields() {
+        return document.getElementsByClassName('changeable-field');
+    }
+
+    function addOnValueChangedEventListeners() {
+        changeable_fields = getChangeableFields();
+
+        for (i = 0; i < changeable_fields.length; i++) {
+            changeable_fields[i].addEventListener('input', function (event) {
+                submit_form();
+            });
+        }
+        
+    }
+    
+    // Add event listeners to the forms from exercise_set_forms
+    addOnValueChangedEventListeners();
 </script>
 {% endblock content %}

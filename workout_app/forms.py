@@ -20,7 +20,10 @@ class ExerciseSetForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['time'].widget.attrs['class'] = 'timer-field'
+        self.fields['reps'].widget.attrs['class'] = 'changeable-field'
+        self.fields['weight'].widget.attrs['class'] = 'changeable-field'
+        self.fields['time'].widget.attrs['class'] = 'changeable-field'
+        self.fields['distance'].widget.attrs['class'] = 'changeable-field'
 
     
     class Meta:
@@ -44,6 +47,7 @@ class ExerciseForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['class'] = 'input-field'
+        self.fields['name'].widget.attrs['placeholder'] = 'Name?'
         self.fields['type'].widget.attrs['class'] = 'input-field'
         self.fields['goal'].widget.attrs['class'] = 'input-field'
 

@@ -4,79 +4,64 @@
 {% block content %}
 <h1>Edit Exercise List</h1>
 <form action="{% url 'edit_exercise_list' %}" method="POST">
-    {% csrf_token %}
 
-    {% for exercise in exercises %}         
-    <div class="row">
-        <div class="col entry-column">
-            {{ exercise.name }}
-        </div>
-        <div class="col entry-column">
-            {% if exercise.type == 0 %}
-            Strength
-            {% else %}
-            Cardio
-            {% endif %}
-        </div>
-        <div class="col entry-column">
-            {% if exercise.goal == 0 %}
-            Repetitions
-            {% else %}
-            Distance
-            {% endif %}
-        </div>
-        <div class="col entry-column">
-            <a href="{% url 'edit_exercise' exercise.id %}" class="url-link"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-        </div>
-        <div class="col entry-column">
-            <a href="{% url 'delete_exercise' exercise.id %}" class="url-link"><i class="fa-solid fa-trash-can"></i>Delete</a>
-        </div>
-    </div>    
-    {% endfor %} 
-    <!-- Empty form -->
-    <div class="row">        
-        <div class="col entry-column">
-            {{ exercise_form.name }}
-        </div>
-        <div class="col entry-column">
-            {{ exercise_form.type }}
-        </div>
-        <div class="col entry-column">
-            {{ exercise_form.goal }}
-        </div>
-        <div class="col entry-column">
-            <div class="col entry-column md-2">
-                <a href="#" onclick="submit_form()" class="url-link"><i class="fa-solid fa-circle-plus"></i>Add</a>
+    {% csrf_token %}
+    <div class="container-fluid">
+        {% for exercise in exercises %}
+        <div class="row">
+            <div class="col-4 entry-column">
+                <a href="{% url 'edit_exercise' exercise.id %}" class="url-link"><i
+                        class="fa-solid fa-pen-to-square"></i>{{ exercise.name }}</a>
+
+            </div>
+            <div class="col-6 entry-column">
+                {% if exercise.type == 0 and exercise.goal == 0 %}
+                Strength : Repetitions
+                {% elif exercise.type == 0 and exercise.goal == 1 %}
+                Strength : Distance
+                {% elif exercise.type == 1 and exercise.goal == 0 %}
+                Cardio : Repetitions
+                {% else %}
+                Cardio : Distance
+                {% endif %}
+            </div>
+            <div class="col entry-column">
+                <a href="{% url 'delete_exercise' exercise.id %}" class="url-link"><i
+                        class="fa-solid fa-trash-can"></i></a>
             </div>
         </div>
-        <div class="col entry-column">
-            <!-- place holder for layout consistency -->
-        </div>        
+        {% endfor %}
     </div>
-
-    <div class="row">
-        <div class="col entry-column">
-            <!-- place holder for layout consistency -->
-        </div> 
-        <div class="col entry-column">
-            <!-- place holder for layout consistency -->
-        </div> 
-        <div class="col entry-column">
-            <!-- place holder for layout consistency -->
-        </div> 
-        <div class="col entry-column">
-            <!-- place holder for layout consistency -->
-        </div> 
-        <div class="col entry-column">
-            <a href="{% url 'home' %}" class="url-link wo-button">
-                Cancel
-            </a>
+    <div class="container-fluid">
+        <!-- Empty form -->
+        <div class="row">
+            <div class="col-4 entry-column">
+                <a href="#" onclick="submit_form()" class="url-link"><i class="fa-solid fa-circle-plus"></i>Add :</a>
+                {{ exercise_form.name }}
+            </div>
+            <div class="col-6 entry-column">
+                {{ exercise_form.type }}            
+                {{ exercise_form.goal }}
+            </div>  
+            <div class="col entry-column">
+                <!-- place holder for layout consistency -->
+            </div>          
         </div>
 
+        <div class="row"> 
+            <div class="col entry-column">
+                <!-- place holder for layout consistency -->
+            </div>
+            <div class="col entry-column">
+                <a href="{% url 'home' %}" class="url-link wo-button">
+                    Cancel
+                </a>
+            </div>
+        </div>
     </div>
 </form>
 <script>
-    function submit_form(){
+    function submit_form() {
         document.forms[0].submit();
     }
 </script>

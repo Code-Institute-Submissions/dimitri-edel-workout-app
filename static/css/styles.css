@@ -4,6 +4,9 @@
     border-radius: 10px; 
     text-align: center;  
     width: 100%;
+    background-color: #f4f6f8;
+    color:rgb(55, 4, 125);
+    border-color: rgb(55, 4, 125);
 }
 header {
     padding: 0;
@@ -66,16 +69,17 @@ a.url-link {
     text-decoration: none;
     color:rgb(55, 4, 125);   
     font-weight: bold; 
-    display:block;
+    display:inline-block;
 }
 
 i {
-    margin: 10px;
+    margin: 3px;
 }
 
 .entry-column {
     background-color: #f0f6f8;
     margin: 2px;
+    /* width: 80%; */
 }
 
 .text-field {
@@ -84,5 +88,5 @@ i {
 }
 
 .input-field {
-    width: 100%;
+    width: 90%;
 }

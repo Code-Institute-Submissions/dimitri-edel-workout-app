@@ -9,17 +9,18 @@
         {{ workout_exercise_form }}
     </div>
     {{ exercise_set_formset.management_form }}
-    <div class="row data-header-row">
-        <div class="col right-separator">
+    <div class="row">
+        <div class="col entry-column">
             Reps
         </div>
-        <div class="col right-separator">
+        <div class="col entry-column">
             Weight
         </div>
-        <div class="col right-separator">
+        <div class="col entry-column">
 
         </div>
     </div>
+
     {% for exercise_set_form in exercise_set_formset %}
 
     <div class="row">
@@ -30,42 +31,51 @@
             {{ exercise_set_form.weight }}
         </div>
         <div class="col">
-            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"><i
-                    class="fa-solid fa-trash-can"></i>Delete</a>
+            <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set_form.instance.id %}"
+                class="url-link"><i class="fa-solid fa-trash-can"></i>Delete</a>
         </div>
     </div>
-
     {{ exercise_set_form.id }}
     {% endfor %}
 
     <div class="row">
         <div class="col md-2">
             <a href="{% url 'add_exercise_set' workout_exercise_id=workout_exercise_form.instance.id workout_id=workout_exercise_form.instance.workout_id %}"
-                class="wo-button" style="font-size: 2em;">
+                class="url-link wo-button">
                 <i class="fa-solid fa-circle-plus"></i>
             </a>
         </div>
         <div class="col md-2">
-            <!-- Placeholder for layout consistency -->
-        </div>
-        <div class="col md-2">
-            <!-- Placeholder for layout consistency -->
-        </div>
-    </div>
-    <div class="row">
-        <div class="col md-2">
-            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="wo-button">
+            <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button">
                 <i class="fa-solid fa-circle-left"></i>Cancel
             </a>
-        </div>
-        <div class="col md-2">
-            <button type="submit" class="wo-button">
-                <i class="fa-solid fa-cloud-arrow-up"></i>Save
-            </button>
         </div>
         <div class="col md-2">
             <!-- Placeholder for layout consistency -->
         </div>
     </div>
 </form>
+<script>
+    // Functions for AUTO-SUBMITTING the form
+    function submit_form() {
+        document.forms[0].submit();
+    }
+
+    function getChangeableFields() {
+        return document.getElementsByClassName('changeable-field');
+    }
+
+    function addOnValueChangedEventListeners() {
+        changeable_fields = getChangeableFields();
+
+        for (i = 0; i < changeable_fields.length; i++) {
+            changeable_fields[i].addEventListener('input', function (event) {
+                submit_form();
+            });            
+        }
+    }
+
+    // Add event listeners to the forms from exercise_set_forms
+    addOnValueChangedEventListeners();
+</script>
 {% endblock content %}
