@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, IntegerField, HiddenInput, modelformset_factory, CharField
+from django.forms import ModelForm, TextInput, IntegerField, HiddenInput, modelformset_factory, CharField, DateField
 from .models import *
 
 class WorkoutForm(ModelForm):
@@ -10,7 +10,7 @@ class WorkoutForm(ModelForm):
             'name' : ""
         }
         widgets = {
-            'name': TextInput({'placeholder': 'Enter Name of Workout', 'class':'input-field col'})
+            'name': TextInput({'placeholder': 'Enter Name of Workout', 'class':'input-field col'}),
         }
 
 
