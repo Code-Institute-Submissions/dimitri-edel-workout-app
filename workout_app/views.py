@@ -7,17 +7,19 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django.core.paginator import Paginator
+from .helpers import redirect_user_to_goup
 
-# A class for storing reports about an exercise in a workout
-
+# When deplying, this constant must hold the URL of host+domain-name
+ROOT_URL = "/"
 
 class ExerciseReport:
+    # A class for storing reports about an exercise in a workout
     workout_exercise_id = 0
     report = ""
 
 
-# A class for storing reports for each workout
 class WorkoutReport:
+    # A class for storing reports for each workout
     workout_id = 0
     date = None
     name = None
@@ -29,17 +31,17 @@ class WorkoutReport:
         self.exercise_reports = []
 
 
-# View for the home page
 class HomePage(View):
+    # View for the home page
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
 
-# List of Workouts
-
 
 class WorkoutList(View):
+    # List of Workouts
+
     model = Workout
     template_name = "workout_list.html"
     paginate_by = 2
@@ -49,8 +51,16 @@ class WorkoutList(View):
     # Constants for exercise.goal
     REPETITIONS = 0
     DISTANCE = 1
-
+    
     def get(self, request, *args, **kwargs):
+        # If the user is not logged in, then redirect them to the login page
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+
+        # Check if the user belongs in a group and redirect them if they do        
+        if request.user.groups.exists():
+            return redirect_user_to_goup(request=request)
+        
         # Only retrieve datasets related to the user
         self.model.objects.filter(user_id=self.request.user.id)
         # Generate Roports
@@ -64,6 +74,8 @@ class WorkoutList(View):
             "page_obj": page_obj,
         }
         return render(request, self.template_name, context=context)
+      
+            
 
     # Create Reports
     def __generate_reports(self):
@@ -128,10 +140,9 @@ class WorkoutList(View):
         return report
 
 
-# View for adding a new Workout
-
-
 class AddWorkout(View):
+    # View for adding a new Workout
+
     # Reference to the form class for the model class Workout
     workout_form_class = WorkoutForm
     # Referenece to the form class for the model class ExerciseSet
@@ -141,6 +152,13 @@ class AddWorkout(View):
     # Process a GET-Request
 
     def get(self, request, *args, **kwargs):
+         # If the user is not logged in, then redirect them to the login page
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+
+        # Check if the user belongs in a group and redirect them if they do        
+        if request.user.groups.exists():
+            return redirect_user_to_goup(request=request)
         # Instanciate the forms.
         # The prefix is mandatory whhen using several forms in the same view.
         # When initializing a form, using the data in the POST-request object, prefix
@@ -172,16 +190,16 @@ class AddWorkout(View):
             # Commit the model object to the database
             workout_exercise_form.save()
 
-            return HttpResponseRedirect(f"edit_workout/{workout_form.instance.id}")
+            return HttpResponseRedirect(reverse("edit_workout", kwargs = {'id': workout_form.instance.id}))
             # return HttpResponseRedirect(f"edit_workout/{workout_form.instance.id}")
         # If the form was not valid, render the template. The workout_from will contain the validation
         # messages for the user, which had been generated upon calling the is_valid() method
         return render(request, self.template_name, {"workout_form": workout_form})
 
-# class for editing the list of exercises that the workout is comprised of
-
 
 class EditWorkout(View):
+    # class for editing the list of exercises that the workout is comprised of
+
     # Reference to the name of the form class for the model class Workout
     workout_form_class = WorkoutForm
     # Reference to the name of the form class for the model class WorkoutExercise
@@ -191,7 +209,16 @@ class EditWorkout(View):
     template_name = "edit_workout.html"
     # Process a GET-Request
 
-    def get(self, request, id, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        # If the user is not logged in, then redirect them to the login page
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+
+        # Check if the user belongs in a group and redirect them if they do        
+        if request.user.groups.exists():
+            return redirect_user_to_goup(request=request)
+        # Pull the workout.id from kwargs    
+        id = kwargs['id']
         # Instanciate the forms.
         # The prefix is mandatory whhen using several forms in the same view.
         # When initializing a form, using the data in the POST-request object, prefix
@@ -276,7 +303,17 @@ class EditExerciseSet(View):
     EXERCISE_GOAL_REPETITIONS = 0
     EXERCISE_GOAL_DISTANCE = 1
 
-    def get(self, request, workout_exercise_id, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        # If the user is not logged in, then redirect them to the login page
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+
+        # Check if the user belongs in a group and redirect them if they do        
+        if request.user.groups.exists():
+            return redirect_user_to_goup(request=request)
+
+        workout_exercise_id = kwargs["workout_exercise_id"]
+
         workout_exercise = WorkoutExercise.objects.get(id=workout_exercise_id)
         workout_exercise_form = self.workout_exercise_form_class(user_id=request.user.id,
                                                                  instance=workout_exercise, prefix="workout_exercise")
@@ -315,7 +352,7 @@ class EditExerciseSet(View):
         for form in exercise_set_formset:
             form.instance.exercise_workout_exercise = workout_exercise_form.instance.id
             form.save()
-        
+
         return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={"workout_exercise_id": workout_exercise_form.instance.id}))
 
     def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):
@@ -383,7 +420,7 @@ class EditExerciseList(View):
         # Query the last exercises related to the current user
         exercises = Exercise.objects.filter(
             user_id=request.user.id).order_by('id')
-       
+
         # Instanciate the form
         # exercise_form = self.exercise_form_class(instance=edit_exercise)
         exercise_form = self.exercise_form_class()
@@ -391,7 +428,7 @@ class EditExerciseList(View):
         return render(request, self.template_name, {"exercise_form": exercise_form, "exercises": exercises})
     # Process a POST-Request
 
-    def post(self, request, *args, **kwargs):       
+    def post(self, request, *args, **kwargs):
         # Instanciate the form
         exercise_form = self.exercise_form_class(
             request.POST)
@@ -408,13 +445,14 @@ class EditExerciseList(View):
             exercise.type = exercise_form.instance.type
             exercise.goal = exercise_form.instance.goal
 
-            # Commit the model object to the database            
-            exercise.save()           
+            # Commit the model object to the database
+            exercise.save()
             # Reverse back to the page with the list of exercises
             return HttpResponseRedirect(reverse("edit_exercise_list"))
         # If the form is invalid, in this case, it can only mean one thing: The name field is empty
         else:
-            messages.add_message(request=request, level=messages.ERROR, message="You need to enter a Name for the exercise, before adding it!")
+            messages.add_message(request=request, level=messages.ERROR,
+                                 message="You need to enter a Name for the exercise, before adding it!")
             return HttpResponseRedirect(reverse("edit_exercise_list"))
 
         # If the form was not valid, render the template. The workout_from will contain the validation
@@ -454,7 +492,8 @@ class EditExercise(View):
     template_name = "edit_exercise.html"
     # Process a GET-Request
 
-    def get(self, request, exercise_id, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        exercise_id = kwargs["exercise_id"]
         # Retrieve dataset
         exercise = Exercise.objects.get(id=exercise_id)
         # Store the id of the last object in the session

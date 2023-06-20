@@ -63,11 +63,11 @@
             <div class="col">
                 <button type="send" class="wo-button">Save</button>
             </div>
-        </div>        
+        </div>
     </div>
 </form>
 <div class="container-fluid" style="margin-top: 10px;">
-    <div class="row" >
+    <div class="row">
         <div class="col-4">
             <button id="start-button" onclick="start_button_click(this)" class="wo-button"><i
                     class="fa-solid fa-play"></i>Timer</button>
@@ -76,7 +76,9 @@
             <!-- Element that the timer uses for output -->
             <input type="text" id="timer-text" class="input-field">
         </div>
-        <div class="col"><!-- Plaveholder --></div>
+        <div class="col">
+            <!-- Plaveholder -->
+        </div>
     </div>
 </div>
 
@@ -112,6 +114,7 @@
         Third parameter specifies the intervals in milliseconds in which the timer will be updated
     */
     let timer = new Timer("timer-text", result_field_id, 100);
-    
+
+
 </script>
 {% endblock content %}
