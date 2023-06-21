@@ -318,14 +318,20 @@ class EditExerciseSet(View):
         workout_exercise = WorkoutExercise.objects.get(id=workout_exercise_id)
         workout_exercise_form = self.workout_exercise_form_class(user_id=request.user.id,
                                                                  instance=workout_exercise, prefix="workout_exercise")
-        exercise_set_formset = ExersiceSetFormset(
-            queryset=ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id))
+        # exercise_set_formset = ExersiceSetFormset(
+        #     queryset=ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id))
+
+        # Empty form for adding a new set
+        exercise_set_form =  self.exercise_set_form_class(prefix="exercise_set")
+        
+
+        exercise_set_list = ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id)
 
         # Determine the type of exercise
         exercise = Exercise.objects.get(
             id=workout_exercise.exercise_id)
 
-        return self.__render(request, exercise, workout_exercise_form, exercise_set_formset)
+        return self.__render(request, exercise, workout_exercise_form, exercise_set_form, exercise_set_list)
 
     def post(self, request, workout_exercise_id, *args, **kwargs):
         #
@@ -335,35 +341,44 @@ class EditExerciseSet(View):
         workout_exercise_form = self.workout_exercise_form_class(
             request.POST, user_id=request.user.id, instance=workout_exercise, prefix="workout_exercise")
         #
-        exercise_set_formset = ExersiceSetFormset(request.POST, request.FILES)
+        exercise_set_form = self.exercise_set_form_class(request.POST, prefix="exercise_set")
 
         exercise = Exercise.objects.get(id=workout_exercise.exercise_id)
 
+        print(f"ExerciseSet.post() : ExerciseSetForm: {exercise_set_form}")
+        print(f"Exercise set form is valid? : {exercise_set_form.is_valid()}")
         # If forms are valid
-        if workout_exercise_form.is_valid() and exercise_set_formset.is_valid():
-            self.__save_forms(request, workout_exercise_form,
-                              exercise_set_formset)
+        if workout_exercise_form.is_valid() and exercise_set_form.is_valid():  
+            print("ExerciseSet.post() form is VALID !!!!!!!!!*********************")          
+            return self.__save_forms(request, workout_exercise_form,
+                              exercise_set_form)
 
-        return self.__render(request, exercise, workout_exercise_form, exercise_set_formset)
+        return self.__render(request, exercise, workout_exercise_form, exercise_set_form)
 
-    def __save_forms(self, request, workout_exercise_form, exercise_set_formset):
+    def __save_forms(self, request, workout_exercise_form, exercise_set_form):
         workout_exercise_form.instance.user = request.user
         workout_exercise_form.save()
 
-        for form in exercise_set_formset:
-            form.instance.exercise_workout_exercise = workout_exercise_form.instance.id
-            form.save()
+        # Create a new object of type ExerciseSet
+        exercise_set = ExerciseSet.objects.create(workout_exercise_id=workout_exercise_form.instance.id)
+        # Copy fields from the form to the created object
+        exercise_set.reps = exercise_set_form.instance.reps
+        exercise_set.weight = exercise_set_form.instance.weight
+        exercise_set.time = exercise_set_form.instance.time
+        exercise_set.distance = exercise_set_form.instance.distance
+        # Save the object
+        exercise_set.save()
 
         return HttpResponseRedirect(reverse("edit_exercise_set", kwargs={"workout_exercise_id": workout_exercise_form.instance.id}))
 
-    def __render(self, request, exercise, workout_exercise_form, exercise_set_formset):
-        if exercise.type == self.EXERCISE_TYPE_STRENGTH:
-            return render(request, self.template_strength_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_formset": exercise_set_formset})
+    def __render(self, request, exercise, workout_exercise_form, exercise_set_form, exercise_set_list):
+        if exercise.type == self.EXERCISE_TYPE_STRENGTH:            
+            return render(request, self.template_strength_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_form": exercise_set_form, "exercise_set_list":exercise_set_list })
         else:
             if exercise.goal == self.EXERCISE_GOAL_REPETITIONS:
-                return render(request, self.template_repetitions_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_formset": exercise_set_formset})
+                return render(request, self.template_repetitions_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_form": exercise_set_form, "exercise_set_list":exercise_set_list })
             else:
-                return render(request, self.template_distance_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_formset": exercise_set_formset})
+                return render(request, self.template_distance_exercise, {"exercise": exercise, "workout_exercise_form": workout_exercise_form, "exercise_set_form": exercise_set_form, "exercise_set_list":exercise_set_list })
 
 
 class AddExerciseSet(View):

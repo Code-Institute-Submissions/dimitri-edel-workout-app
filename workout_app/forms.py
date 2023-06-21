@@ -16,7 +16,7 @@ class WorkoutForm(ModelForm):
 
 class ExerciseSetForm(ModelForm): 
     # id of the ExerciseSet as a hidden field
-    id = IntegerField(widget = HiddenInput) 
+    # id = IntegerField(widget = HiddenInput) 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -28,7 +28,7 @@ class ExerciseSetForm(ModelForm):
     
     class Meta:
         model = ExerciseSet
-        fields = ["id", "reps","weight", "time","distance"]   
+        fields = ["reps","weight", "time","distance"]   
 
 
 # FormSet to hold multiple forms of type ExerciseSetForm
