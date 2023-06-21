@@ -2,7 +2,9 @@
 {% block title %}Edit Exercise Sets {% endblock title %}
 
 {% block content %}
-<h1>Edit {{ exercise.name }}</h1>
+<h1>{{ workout_exercise_form.instance.workout.name }} : {{ exercise.name }}</h1>
+<label for="wakelock_checkbox">Keep SCREEN AWAKE</label>
+<input id="wakelock_checkbox" name="wakelock_checkbox" type="checkbox" value="unchecked">
 <form action="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}" method="POST">
     {% csrf_token %}
     <div hidden>
@@ -116,5 +118,40 @@
     let timer = new Timer("timer-text", result_field_id, 100);
 
 
+    /*
+        Wake Lock API
+        Prevent screen from going to sleep mode
+        Documentation with code-snippets on https://developer.chrome.com/en/articles/wake-lock/
+    */
+    // The wake lock sentinel.
+    let wakeLock = null;
+
+    // Function that attempts to request a screen wake lock.
+    const requestWakeLock = async () => {
+        try {
+            wakeLock = await navigator.wakeLock.request();
+            wakeLock.addEventListener('release', () => {
+                console.log('Screen Wake Lock released:', wakeLock.released);
+            });
+            console.log('Screen Wake Lock released:', wakeLock.released);
+        } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+        }
+    };
+
+
+    // If the checkbox is checked then wake-lock the screen
+    document.getElementById("wakelock_checkbox").addEventListener("change", () => {
+        // If the wakelock has not been activated
+        if (wakeLock == null) {
+            // Request a screen wake lock…
+            requestWakeLock();            
+        } else {
+            // If the wakelock is active, release the wakelock
+            wakeLock.release().then(() => {
+                wakeLock = null;
+            });
+        }
+    });
 </script>
 {% endblock content %}

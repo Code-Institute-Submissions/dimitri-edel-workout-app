@@ -35,8 +35,7 @@
     <div class="container-fluid">
         <!-- Empty form -->
         <div class="row">
-            <div class="col-5 entry-column">
-                <a href="#" onclick="submit_form()" class="url-link"><i class="fa-solid fa-circle-plus"></i>Add :</a>
+            <div class="col-5 entry-column">                
                 {{ exercise_form.name }}
             </div>
             <div class="col-4 entry-column">
@@ -44,12 +43,15 @@
                 {{ exercise_form.goal }}
             </div>  
             <div class="col  entry-column">
-                <!-- place holder for layout consistency -->
+                <a href="#" onclick="submit_form()" class="url-link wo-button"><i class="fa-solid fa-circle-plus"></i>Add</a>
             </div>          
         </div>
 
         <div class="row"> 
-            <div class="col entry-column">
+            <div class="col-5 entry-column">
+                <!-- place holder for layout consistency -->
+            </div>
+            <div class="col-4 entry-column">
                 <!-- place holder for layout consistency -->
             </div>
             <div class="col entry-column">

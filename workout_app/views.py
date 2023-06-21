@@ -9,9 +9,6 @@ from django.db.models import ProtectedError
 from django.core.paginator import Paginator
 from .helpers import redirect_user_to_goup
 
-# When deplying, this constant must hold the URL of host+domain-name
-ROOT_URL = "/"
-
 class ExerciseReport:
     # A class for storing reports about an exercise in a workout
     workout_exercise_id = 0
@@ -36,6 +33,10 @@ class HomePage(View):
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
+        # Check if the user belongs in a group and redirect them if they do        
+        if request.user.groups.exists():
+            return redirect_user_to_goup(request=request)
+
         return render(request, self.template_name)
 
 
@@ -55,7 +56,7 @@ class WorkoutList(View):
     def get(self, request, *args, **kwargs):
         # If the user is not logged in, then redirect them to the login page
         if not request.user.is_authenticated:
-            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+            return HttpResponseRedirect("accounts/login/")
 
         # Check if the user belongs in a group and redirect them if they do        
         if request.user.groups.exists():
@@ -154,7 +155,7 @@ class AddWorkout(View):
     def get(self, request, *args, **kwargs):
          # If the user is not logged in, then redirect them to the login page
         if not request.user.is_authenticated:
-            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+            return HttpResponseRedirect("accounts/login/")
 
         # Check if the user belongs in a group and redirect them if they do        
         if request.user.groups.exists():
@@ -212,7 +213,7 @@ class EditWorkout(View):
     def get(self, request, *args, **kwargs):
         # If the user is not logged in, then redirect them to the login page
         if not request.user.is_authenticated:
-            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+            return HttpResponseRedirect("accounts/login/")
 
         # Check if the user belongs in a group and redirect them if they do        
         if request.user.groups.exists():
@@ -306,7 +307,7 @@ class EditExerciseSet(View):
     def get(self, request, *args, **kwargs):
         # If the user is not logged in, then redirect them to the login page
         if not request.user.is_authenticated:
-            return HttpResponseRedirect(ROOT_URL+"accounts/login/")
+            return HttpResponseRedirect("accounts/login/")
 
         # Check if the user belongs in a group and redirect them if they do        
         if request.user.groups.exists():
@@ -417,9 +418,19 @@ class EditExerciseList(View):
     # Process a GET-Request
 
     def get(self, request, *args, **kwargs):
+        # If the user is not logged in, then redirect them to the login page
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect("accounts/login/")
+
+        # Check if the user belongs in a group and redirect them if they do        
+        if request.user.groups.exists():
+            return redirect_user_to_goup(request=request)
+
         # Query the last exercises related to the current user
         exercises = Exercise.objects.filter(
-            user_id=request.user.id).order_by('id')
+            user_id=request.user.id).order_by('-id')
+
+        # Pagination
 
         # Instanciate the form
         # exercise_form = self.exercise_form_class(instance=edit_exercise)
@@ -477,10 +488,11 @@ class ExerciseList(generic.ListView):
     model = Exercise
     queryset = Exercise.objects.all()
     template_name = "exercise_list.html"
-    paginate_by = 6
-    # Only retrieve datasets related to the user
+    paginate_by = 1
+    
 
     def get_queryset(self):
+        # Only retrieve datasets related to the user
         return self.model.objects.filter(user_id=self.request.user.id)
 
 
@@ -489,10 +501,10 @@ class EditExercise(View):
     # Reference to the form
     exercise_form_class = ExerciseForm
     # Reference to the template
-    template_name = "edit_exercise.html"
-    # Process a GET-Request
+    template_name = "edit_exercise.html"    
 
     def get(self, request, *args, **kwargs):
+    # Process a GET-Request    
         exercise_id = kwargs["exercise_id"]
         # Retrieve dataset
         exercise = Exercise.objects.get(id=exercise_id)
