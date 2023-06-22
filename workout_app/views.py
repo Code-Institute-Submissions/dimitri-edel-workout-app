@@ -254,9 +254,21 @@ class EditWorkout(View):
 
         workout_exercise_form = self.workout_exercise_form_class(
             request.POST, user_id=request.user.id, prefix="workout_exercise")
-        # Use the Form-Set to extract the set of forms from the POST-request
-        # workout_exercise_formset = WorkoutExerciseFormset(
-        #     request.POST, request.FILES)
+        
+        # if the workout form has changed yet the workout_exercise_form hasn't
+        if workout_form.has_changed() and not workout_exercise_form.has_changed(): 
+            if workout_form.is_valid():
+                # Save the workout form only
+                workout_form.save()
+                return HttpResponseRedirect(reverse('edit_workout', kwargs={'id': workout_form.instance.id}))
+        # If the workout form has not changed, yet the workout_exercise_form has
+        elif workout_exercise_form.has_changed() and not workout_form.has_changed():
+            if workout_exercise_form.is_valid():
+                # Save the workout_exercise_form only
+                return self.__save_workout_exercise_form(request, workout_form, workout_exercise_form)
+                
+        # In all other cases save both forms
+
         # If both forms are valid
         if workout_form.is_valid() and workout_exercise_form.is_valid():
             print("Workout exercise valid")
@@ -271,6 +283,25 @@ class EditWorkout(View):
 
         return render(request, self.template_name, {"workout_form": workout_form, "workout_exercise_form": workout_exercise_form,
                                                     "workout_exercise_list": workout_exercise_list})
+
+    def __save_workout_exercise_form(self, request, workout_form, workout_exercise_form):
+        # Assign the form to the current user.
+        # The instance property of the forms is a reference to the model class
+        # that is being used and allows us to access its properties and methods
+        workout_form.instance.user = request.user        
+        # Assign the workout_id of the newly created Workout to the ExerciseSet.workout_id field
+
+        workout_exercise_form.instance.workout_id = workout_form.instance.id
+        workout_exercise = WorkoutExercise.objects.create(
+            workout_id=workout_form.instance.id, exercise_id=workout_exercise_form.instance.exercise_id)
+        workout_exercise.exercise_id = workout_exercise_form.instance.exercise_id
+        workout_exercise.done = workout_exercise_form.instance.done
+        workout_exercise.save()
+        # Commit the model object to the database
+        # workout_exercise_form.save()
+
+        return HttpResponseRedirect(reverse('edit_workout', kwargs={'id': workout_form.instance.id}))
+
 
     def __save_forms(self, request, workout_form, workout_exercise_form):
         # Assign the form to the current user.
@@ -325,7 +356,7 @@ class EditExerciseSet(View):
         exercise_set_form =  self.exercise_set_form_class(prefix="exercise_set")
         
 
-        exercise_set_list = ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id)
+        exercise_set_list = ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id).order_by("id")
 
         # Determine the type of exercise
         exercise = Exercise.objects.get(

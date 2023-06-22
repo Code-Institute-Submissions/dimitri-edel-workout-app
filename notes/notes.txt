@@ -58,4 +58,5 @@ def __init__(self, *args, **kwargs):
 Image of a weight lifting man 
 source: https://www.supercoloring.com/coloring-pages/weight-training-workout 
 
-
+WakeLock javascript will not work because my domain is not SSL-Authenticated. It works on the localhost though. I will leave 
+the functionality due to the fact that I am looking into that issue at the moment and will get the SSL-Certifacate any time soon.

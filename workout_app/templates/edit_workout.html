@@ -51,14 +51,16 @@
     </div>
     <div class="row">
         <div class="col entry-column">
-            <!-- Placeholder for consistency of the layout -->
+            <a href="#" onclick="submit_form()" class="url-link wo-button">
+                <i class="fa-solid fa-cloud-arrow-up"></i>Save
+            </a>
         </div>
         <div class="col entry-column">
             <!-- Placeholder for consistency of the layout -->
         </div>
         <div class="col entry-column md-2">
-            <a href="{% url 'home' %}" class="url-link wo-button">
-                Cancel
+            <a href="{% url 'workout_list' %}" class="url-link wo-button">
+                <i class="fa-solid fa-circle-arrow-left"></i>Cancel
             </a>
         </div>
     </div>
