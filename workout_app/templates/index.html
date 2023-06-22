@@ -4,27 +4,89 @@
 {% block content %}
 <h1>Workout Journal</h1>
 {% load static %}
-<img src="{% static '/img/istock_workout_cover.jpg' %}" alt="Image of people working out" style="width: 100px;">
-<article>
-    <h2>How to create your own list of <em>Exercises</em></h2>
+<img src="{% static '/img/istock_workout_cover.jpg' %}" alt="Image of people working out" style="width: 100px;"
+    class="center">
+<article class="index-article center">
+    <h2>Keeo track of progress with a personal Workout Journal</h2>
     <p>
-    <ol>
-        <li>In the navigation bar, click on <em>Exercises</em></li>
-        <li>Name your exercise, e.g. Push-Ups, Bicep Curl, .. </li>
-        <li>Choose type
-            <ul>
-                <li>Strength - Exercises that involve weight lifting. </li>
-                <li>Cardio - Cardio vascular exercises such as jogging</li>
-            </ul>
-        </li>
-        <li>Choose goal
-            <ul>
-                <li>Repetitions - Time how many repetitions you can do within a certain period of time</li>
-                <li>Distance - Time how long a distance you can traverse in a certain period of time</li>
-            </ul>
-        </li>
-
-    </ol>
+        If you work out, it is always good practice to keep a journal, so you can <b>keep track of your results</b> over
+        a given period of time.
+        Many people will have a note pad, where they put everything down. But if you go to the gym and forget the note
+        pad, then it might be
+        difficult to memorize everything, so you can put it down in your workout journal. But for using this workout
+        journal all you need is your
+        smart phone with an internet connection, which you take everywhere with you anyway.
     </p>
+    <h3>Before you begin</h3>
+    <p>
+        If you have not signed up yet, then you will need to do that first.
+    </p>
+    <p>
+        If you have signed up, then you need to log in. Just click or tap on the <span class="nav-link"><i
+                class="fa-solid fa-right-to-bracket"></i>Login</span>.
+    </p>
+    <p>
+        Last but not least, you need to <b>define Exercises</b>, that you are going to use. You can see how to do that
+        in the article below.
+        The exercises you define are <em>not</em> for one workout only. They can be used in other workouts.
+    </p>
+</article>
+<article class="index-article center">
+    <h2>How to create your own list of <em>Exercises</em></h2>
+    <div>
+        <ol>
+            <li>In the navigation bar, click on <span class="nav-link"><i class="fa-solid fa-list"></i>Exercises</span>
+            </li>
+            <li>Name your exercise, e.g. Push-Ups, Bicep Curl, etc. </li>
+            <li>Choose <b>type</b>
+                <ul>
+                    <li><b>Strength</b> - Exercise that involves weight lifting. </li>
+                    <li><b>Cardio</b> - Cardio vascular exercise such as jogging</li>
+                </ul>
+            </li>
+            <li>Choose <b>goal</b> (If you chose the type : Strength , then leave this at Repetitions)
+                <ul>
+                    <li><b>Repetitions</b> - Time how many repetitions you can do within a certain period of time.</li>
+                    <li><b>Distance</b> - Time how long a distance you can traverse in a certain period of time (e.g. <b>Joggin</b>, Sprinting, etc.)</li>
+                </ul>
+            </li>
+
+        </ol>
+    </div>
+</article>
+<article class="index-article center">
+    <h2>Workout</h2>
+    <ol>
+        <li>To start a workout just click on <span class="nav-link"><i class="fa-solid fa-play"></i>Start Workout</span>
+        </li>
+        <li>
+            Now give you workout a <b>name</b> and select an <b>exercise</b> that you want to start out with. Press <b>Start</b>
+        </li>
+        <li>
+            In the top left corner is an editable field with the name of the workout. In the figure below the name of the workout is 
+            <em>chest and shoulders</em>. In the left column below the name you will see the name of the exercise that you chose to 
+            start out with. In the illustraition below the name of the exercise is <em>shoulder press</em>. Now you will probebly want to 
+            start doing the shoulder press and capture how many sets of how many repetitions, with how much weight you did. To do that press on 
+            <span class="url-link"><i class="fa-solid fa-pen-to-square"></i>Edit</span>, that is in the column next to the name of the exercise. <br>
+            <img src="{% static '/img/edit_workout.png' %}" alt="Image of page for editting workout" style="width: 300px;">
+        </li>
+        <li>
+            Now you see a new page as illustrated below. <br>
+            <img src="{% static '/img/edit_exercise_set_strength_1.png' %}" alt="Image of page for editting workout" style="width: 300px;"><br>
+            Let us say, you did 8 reps with 100 kg, just like in the figure above. Now press on <spann class="url-link wo-button">
+                <i class="fa-solid fa-circle-plus"></i> Add</spann>
+        </li>
+        <li>
+            Now you see that this set has been documented. And you can proceed to the next one.<br>
+            <img src="{% static '/img/edit_exercise_set_strength_2.png' %}" alt="Image of page for editting workout" style="width: 300px;">
+        </li>
+        <li>
+            Once you are through with the shoulder press, you might want to do another exercise. Let us say it is going to be the bench press.<br>
+            Click on <span class="url-link wo-button"><i class="fa-solid fa-circle-left"></i>Cancel</span>. It will take you back to the <em>Edit Workout</em> page. 
+            Now select the bench press from the list of exercises and press on <spann class="url-link wo-button"><i class="fa-solid fa-circle-plus"></i> Add</spann> jsut 
+            like shown in the illustration below.<br>
+            <img src="{% static '/img/edit_workout_add_exercise.png' %}" alt="Image of page for editting workout" style="width: 300px;">
+        </li>
+    </ol>
 </article>
 {% endblock content %}

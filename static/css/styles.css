@@ -7,10 +7,22 @@
     background-color: #f4f6f8;
     color:rgb(55, 4, 125);
     border-color: rgb(55, 4, 125);
+    font-size: 1em;
+    font-weight: bold;
 }
+
+body {
+    padding: 5px;
+}
+
 header {
     padding: 0;
 }
+
+h1, h2, h3 {
+    text-align: center;
+}
+
 #nav-bar {
     background-color: #d5e6ed;
     display: block;
@@ -47,6 +59,11 @@ header {
     color:rgb(6 8 148);
     width: 100%;
 }
+
+.index-article {
+    width: 90%;
+}
+
 .data-header-row {
     background-color: #e9e8fc;
     border-style: ridge; 
@@ -100,3 +117,9 @@ i {
     font-weight: bold; 
     border: 1px solid;
 }
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
