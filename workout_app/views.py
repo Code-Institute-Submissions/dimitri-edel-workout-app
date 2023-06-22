@@ -266,7 +266,7 @@ class EditWorkout(View):
             if workout_exercise_form.is_valid():
                 # Save the workout_exercise_form only
                 return self.__save_workout_exercise_form(request, workout_form, workout_exercise_form)
-                
+
         # In all other cases save both forms
 
         # If both forms are valid
@@ -456,6 +456,8 @@ class DeleteWorkout(View):
 
 
 class EditExerciseList(View):
+    # Paginator - Number of items per page
+    paginate_by = 5
     # Reference to the form
     exercise_form_class = ExerciseForm
     # Reference to the template
@@ -477,12 +479,16 @@ class EditExerciseList(View):
             user_id=request.user.id).order_by('-id')
 
         # Pagination
-
+        paginator = Paginator(exercises, self.paginate_by)
+        # Retrieve page number from the GET-Request-object
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        
         # Instanciate the form
         # exercise_form = self.exercise_form_class(instance=edit_exercise)
         exercise_form = self.exercise_form_class()
         # Render the specified template
-        return render(request, self.template_name, {"exercise_form": exercise_form, "exercises": exercises})
+        return render(request, self.template_name, {"exercise_form": exercise_form, "page_obj": page_obj,})
     # Process a POST-Request
 
     def post(self, request, *args, **kwargs):

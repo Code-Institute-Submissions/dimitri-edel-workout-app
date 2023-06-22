@@ -31,7 +31,6 @@ header {
 
 .navigation-menu li {
     width: 23%;
-    /* float: left; */
     background-color: #e9eaeb;  
     margin: 1px; 
     display: inline-block; 
@@ -78,8 +77,7 @@ i {
 
 .entry-column {
     background-color: #f0f6f8;
-    margin: 2px;
-    /* width: 80%; */
+    margin: 2px;    
 }
 
 .text-field {
@@ -91,6 +89,14 @@ i {
     width: 100%;
 }
 
-.changeable-field {
-    padding: 1px;
+.pagination{
+    display: flex;
+    justify-content: center;
+}
+
+.step-links a{
+    text-decoration: none;
+    color:rgb(55, 4, 125);   
+    font-weight: bold; 
+    border: 1px solid;
 }
