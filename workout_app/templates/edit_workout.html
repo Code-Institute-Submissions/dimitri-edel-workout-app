@@ -29,8 +29,47 @@
                     class="fa-solid fa-pen-to-square"></i>Edit</a>
         </div>
         <div class="col entry-column">
-            <a href="{% url 'delete_workout_exercise' workout_exercise.id workout_form.instance.id %}"
+            <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{workout_exercise.id}}"
                 class="url-link"><i class="fa-solid fa-trash-can"></i>Delete</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5 offset-2">
+            <!-- Modal Structure : Confirm Delete -->
+            <div id="modal{{workout_exercise.id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete {{ workout_exercise.exercise.name }}?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Are you sure you want to delete {{ workout_exercise.exercise.name }}?</h4>
+                            <p><i class="medium red material-icons">warning</i> <br>This action cannot be undone!
+                            </p>
+                        </div>
+                        <div class="modal-footer">   
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="{% url 'delete_workout_exercise' workout_exercise.id workout_form.instance.id %}" class="url-link wo-button">Yes</a>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="wo-button" data-bs-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>                        
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <!-- Placehoder -->
+        </div>
+        <div class="col">
+            <!-- Placehoder -->
         </div>
     </div>
     {{ workout_exercise_form.id }}
