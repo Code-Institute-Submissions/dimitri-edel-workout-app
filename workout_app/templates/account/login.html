@@ -7,17 +7,14 @@
 
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-md-8 mt-3 offset-md-2">
+  <div class="row center data-row centered-text">    
       <h3>{% trans "Sign In" %}</h3>
       <p>{% blocktrans %}If you have not created an account yet, then please
-        <a href="{{ signup_url }}" class="url-link">sign up</a> first.{% endblocktrans %}
-      </p>
-    </div>
+        <a href="{{ signup_url }}" class="url-link" style="display:inline-; width: 150px;">sign up</a> first.{% endblocktrans %}
+      </p>    
   </div>
 
-  <div class="row">
-    <div class="col-dm-8 mt-3 offset-md-2">
+  <div class="row data-row centered-text">    
       <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form.as_p }}
@@ -25,8 +22,7 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <button class="wo-button" type="submit" style="width:30%;">{% trans "Sign In" %}</button>
-      </form>
-    </div>
+      </form>   
   </div>
 </div>
 

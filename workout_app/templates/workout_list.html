@@ -1,64 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid">    
-    <div class="row data-header-row">
-        <div class="col-3 right-separator">
+<div class="container-fluid">
+    <div class="row">
+        <div class="table-header col-3 centered-text">
             Date
         </div>
-        <div class="col-7 right-separator">
+        <div class="table-header col-7 centered-text">
             Workout
         </div>
-        
-        <div class="col-2 right-separator">
-           
-        </div>
-    </div>    
-    
-    {% for report in page_obj %}
-    <div class="row data-row">
-        <div class="col-3 right-separator">
-            {{ report.date |date:"M d, y" }}
-        </div>
-        <div class="col-7 right-separator" style="display:inline-block;">
-            <a class="url-link"" href="{% url 'edit_workout' report.workout_id  %}"><i class="fa-solid fa-pen-to-square"></i>{{report.name }}</a>
-            {% for exercise_report in report.exercise_reports %}    
-            <a style="display:block;" class="url-link" href="{% url 'edit_exercise_set' exercise_report.workout_exercise_id  %}"><i class="fa-solid fa-pen-to-square"></i>{{exercise_report.report }}</a>
-            {% endfor %}
-        </div>        
-        <div class="col-2 right-separator">
-            <a class="url-link" href="#" data-bs-toggle="modal" data-bs-target="#modal{{report.workout_id}}"><i class="fa-solid fa-trash-can"></i></a>
+
+        <div class="table-header col-2 centered-text">
+
         </div>
     </div>
+
+    {% for report in page_obj %}
     <div class="row">
-        <div class="col-5 offset-2">
-            <!-- Modal Structure : Confirm Delete -->
-            <div id="modal{{report.workout_id}}" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Delete {{ report.name }}?</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+        <div class="col-3 centered-text">
+            <span class="date-field">{{ report.date |date:"M d, y" }}</span>
+        </div>
+        <div class="col-7 centered-text" style="display:inline-block;">
+            <a class="url-link"" href=" {% url 'edit_workout' report.workout_id %}"><i
+                    class="fa-solid fa-pen-to-square"></i>{{report.name }}</a>
+            {% for exercise_report in report.exercise_reports %}
+            <a style="display:block;" class="url-link"
+                href="{% url 'edit_exercise_set' exercise_report.workout_exercise_id  %}"><i
+                    class="fa-solid fa-pen-to-square"></i>{{exercise_report.report }}</a>
+            {% endfor %}
+        </div>
+        <div class="col-2 centered-text">
+            <a class="url-link" href="#" data-bs-toggle="modal" data-bs-target="#modal{{report.workout_id}}"><i
+                    class="fa-solid fa-trash-can"></i></a>
+        </div>
+    </div>
+
+    <!-- Modal Structure : Confirm Delete -->
+    <div id="modal{{report.workout_id}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete {{ report.name }}?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to delete {{ report.name }}?</h4>
+                    <p><i class="medium red material-icons">warning</i> <br>This action cannot be undone!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'delete_workout' report.workout_id  %}"
+                                    class="url-link wo-button">Yes</a>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="wo-button" data-bs-dismiss="modal">No</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <h4>Are you sure you want to delete {{ report.name }}?</h4>
-                            <p><i class="medium red material-icons">warning</i> <br>This action cannot be undone!
-                            </p>
-                        </div>
-                        <div class="modal-footer">   
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="{% url 'delete_workout' report.workout_id  %}" class="url-link wo-button">Yes</a>
-                                    </div>
-                                    <div class="col">
-                                        <button type="button" class="wo-button" data-bs-dismiss="modal">No</button>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,23 +71,34 @@
         </div>
     </div>
     {% endfor %}
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-            <a href="?page=1"><i class="fa-solid fa-backward-fast"></i></a>
-            <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-backward"></i></a>
-            {% endif %}
+    <div class="row">
+        <div class="col-3">
+            <!-- Placeholder -->
+        </div>
+        <div class="col-7 centered-text">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                    <a href="?page=1"><i class="fa-solid fa-backward-fast"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-backward"></i></a>
+                    {% endif %}
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
 
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-forward"></i></a>
-            <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-forward-fast"></i></a>
-            {% endif %}
-        </span>
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-forward"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-forward-fast"></i></a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <div class="col-2">
+            <!-- Placeholder -->
+        </div>
     </div>
+
 </div>
 
 {% endblock content %}

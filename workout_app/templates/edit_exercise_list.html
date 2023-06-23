@@ -9,12 +9,12 @@
     <div class="container-fluid">
         {% for exercise in page_obj %}
         <div class="row">
-            <div class="col-5 entry-column">
+            <div class="col-4 centered-text">
                 <a href="{% url 'edit_exercise' exercise.id %}" class="url-link"><i
                         class="fa-solid fa-pen-to-square"></i>{{ exercise.name }}</a>
 
             </div>
-            <div class="col-4 entry-column">
+            <div class="col-4 entry-column centered-text">
                 {% if exercise.type == 0 and exercise.goal == 0 %}
                 Strength <br> Repetitions
                 {% elif exercise.type == 0 and exercise.goal == 1 %}
@@ -25,40 +25,36 @@
                 Cardio <br> Distance
                 {% endif %}
             </div>
-            <div class="col entry-column">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{exercise.id}}"><i
+            <div class="col centered-text">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{exercise.id}}" class="url-link"><i
                         class="fa-solid fa-trash-can"></i></a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-5 offset-2">
-                <!-- Modal Structure : Confirm Delete -->
-                <div id="modal{{exercise.id}}" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Delete {{ exercise.name }}?</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+
+        <!-- Modal Structure : Confirm Delete -->
+        <div id="modal{{exercise.id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete {{ exercise.name }}?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Are you sure you want to delete {{ exercise.name }}?</h4>
+                        <p><i class="medium red material-icons">warning</i> <br>This action cannot be undone!
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <a href="{% url 'delete_exercise' exercise.id %}" class="url-link wo-button">Yes</a>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="wo-button" data-bs-dismiss="modal">No</button>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <h4>Are you sure you want to delete {{ exercise.name }}?</h4>
-                                <p><i class="medium red material-icons">warning</i> <br>This action cannot be undone!
-                                </p>
-                            </div>
-                            <div class="modal-footer">   
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col">
-                                            <a href="{% url 'delete_exercise' exercise.id %}" class="url-link wo-button">Yes</a>
-                                        </div>
-                                        <div class="col">
-                                            <button type="button" class="wo-button" data-bs-dismiss="modal">No</button>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,7 +111,7 @@
             </div>
             <div class="col entry-column">
                 <a href="{% url 'home' %}" class="url-link wo-button">
-                    Cancel
+                    <i class="fa-solid fa-circle-left"></i>Cancel
                 </a>
             </div>
         </div>
