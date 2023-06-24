@@ -12,7 +12,7 @@ from django.core.paginator import Paginator
 
 class UserList(View):
     # List of users. Also, creating and filtering users.
-    template_name = "home.html"
+    template_name = "users.html"
     create_user_form_class = CreateUserForm
     paginate_by = 5
 
