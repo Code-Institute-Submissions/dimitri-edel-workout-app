@@ -17,9 +17,10 @@ class UserList(View):
         return render(request, self.template_name, {"users": users})
 
 
-class WorkoutList(View):
-    template_name = "admin_workout_list.html";
+class WorkoutList(View):    
 # List workouts by user.id
+    template_name = "admin_workout_list.html"
+    
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get("user_id")
         workout_list = models.Workout.objects.filter(user_id=user_id).order_by('id')
@@ -28,6 +29,8 @@ class WorkoutList(View):
 
 class WorkoutExerciseList(View):
 # List workout_exercises by workout.id
+    template_name = "admin_workout_exercise_list.html"
+
     def get(self, request, *args, **kwargs):
         workout_id = kwargs.get("workout_id")
         workout_exercise_list = models.WorkoutExercise.objects.filter(workout_id=workout_id).order_by('id')

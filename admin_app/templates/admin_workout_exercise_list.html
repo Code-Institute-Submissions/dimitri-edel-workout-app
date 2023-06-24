@@ -2,18 +2,15 @@
 
 {% block content %}
 <h1>Administration</h1>
-{% for workout in workout_list %}
+{% for workout_exercise in workout_exercise_list %}
 
 <div class="container-fluid">
     <div class="row data-row">
         <div class="col">
-            {{ workout.id }}
+            {{ workout_exercise.id }}
         </div>
         <div class="col">
-            {{ workout.name }}
-        </div>
-        <div class="col">
-            <a href="{% url 'admin_workout_exercise_list' workout.id %}" class="url-link">Open</a>
+            {{ workout_exercise.exercise.name }}
         </div>
     </div>
 </div>
