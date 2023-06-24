@@ -82,7 +82,7 @@ h3 {
 
 .home-container {
     width: 100%;
-    background-image: linear-gradient(to right, rgba(249, 244, 244, 0.667), white, rgba(240, 235, 235, 0.667));
+    background-image: linear-gradient(to right, rgb(249 244 244 / 91%), white, rgb(240 235 235 / 90%));
 }
 
 div .table-header {

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",  # Added for django.allauth
     "django.contrib.staticfiles",
     "workout_app",
+    "admin_app",
 ]
 
 # SETTINGS FOR ALLAUTH
