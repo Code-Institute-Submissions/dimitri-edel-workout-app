@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404, reverse
-from django.views import generic, View
+from django.shortcuts import render, reverse
+from django.views import View
 from django.http import HttpResponseRedirect
 from workout_app import models
 from django.contrib.auth.models import User
@@ -7,19 +7,24 @@ from django.contrib.auth import get_user_model
 from .forms import CreateUserForm
 from django.db import IntegrityError
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 class UserList(View):
     template_name = "home.html"
     create_user_form_class = CreateUserForm
+    paginate_by = 5
 
     def get(self, request, *args, **kwargs):
         User = get_user_model()
         users = User.objects.all()
+        paginator = Paginator(users, self.paginate_by)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
         create_user_form = self.create_user_form_class()
 
-        return render(request, self.template_name, {"users": users, "create_user_form": create_user_form})
+        return render(request, self.template_name, {"page_obj": page_obj, "create_user_form": create_user_form})
 
     def post(self, request, *args, **kwargs):
         self.__create_user(request)
@@ -31,8 +36,10 @@ class UserList(View):
         for user in users:
             if seach_user in user.username:
                 user_list.append(user)
-
-        return render(request, self.template_name, {"users": user_list, "create_user_form": create_user_form})
+        paginator = Paginator(user_list, self.paginate_by)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return render(request, self.template_name, {"page_obj": page_obj, "create_user_form": create_user_form})
 
     def __create_user(self, request):
         create_user_form = self.create_user_form_class(request.POST)        
@@ -82,3 +89,12 @@ class ExerciseSetList(View):
         exercise = workout_exercise.exercise
         exercise_set_list = models.ExerciseSet.objects.filter(workout_exercise_id=workout_exercise_id)
         return render(request, self.template_name, {"exercise_set_list": exercise_set_list, "exercise": exercise})
+
+
+class DeleteUser(View):
+# Delete user
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get("user_id")
+        user = User.objects.get(id=user_id)
+        user.delete()
+        return HttpResponseRedirect(reverse('admin-home'))

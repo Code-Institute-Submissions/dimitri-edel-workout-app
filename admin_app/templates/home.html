@@ -7,11 +7,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-3">
-                <label for="search_user" class="data-row">Find user by name:</label>
+                <label for="search_user" class="data-row">Search:</label>
             </div>
-            <div class="col-7">
-                <input type="text" id="search_user" name="search_user"
-                    placeholder="!Enter string to search for in a username!" class="input-field">
+            <div class="col-6">
+                <input type="text" id="search_user" name="search_user" placeholder="!Enter string in a username!"
+                    class="input-field">
             </div>
             <div class="col">
                 <input type="submit" value="Go">
@@ -23,31 +23,31 @@
 <form method="POST">
     {% csrf_token %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col">
+        <div class="row data-row">
+            <div class="col offset-2">
                 Username:
             </div>
-            <div class="col">
+            <div class="col input-field">
                 {{ create_user_form.username }}
-            </div>
+            </div>            
         </div>
-        <div class="row">
-            <div class="col">
+        <div class="row data-row">
+            <div class="col offset-2">
                 Password:
             </div>
-            <div class="col">
+            <div class="col input-field">
                 {{ create_user_form.password1 }}
             </div>
         </div>
-        <div class="row">
-            <div class="col">
+        <div class="row data-row">
+            <div class="col offset-2">
                 Confirm password:
             </div>
-            <div class="col">
+            <div class="col input-field">
                 {{ create_user_form.password2 }}
             </div>
         </div>
-        <div class="row">
+        <div class="row data-row">
             <div class="col">
                 <input type="submit" value="Create">
             </div>
@@ -56,20 +56,48 @@
     </div>
 </form>
 <h2>Users</h2>
-{% for user in users %}
-<div class="container-fluid">
+{% for user in page_obj %}
+<div class="container">
     <div class="row data-row">
-        <div class="col">
+        <div class="col-2 centered-text">
             {{ user.id }}
         </div>
-        <div class="col">
-            {{ user.username }}
+        <div class="col-6 centered-text">
+            <a href="{% url 'admin_workout_list' user.id %}" class="url-link">{{ user.username }}</a>
         </div>
-        <div class="col">
-            <a href="{% url 'admin_workout_list' user.id %}" class="url-link">Open</a>
+        <div class="col centered-text">
+            <a href="{% url 'admin_delete_user' user.id %}" class="url-link">Delete</a>
         </div>
     </div>
 </div>
 {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <!-- Placeholder -->
+        </div>
+        <div class="col-6 centered-text">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                    <a href="?page=1"><i class="fa-solid fa-backward-fast"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-backward"></i></a>
+                    {% endif %}
 
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-forward"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-forward-fast"></i></a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <div class="col">
+            <!-- Placeholder -->
+        </div>
+    </div>
+</div>
 {% endblock content %}
