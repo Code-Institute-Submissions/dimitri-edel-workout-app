@@ -6,6 +6,6 @@ def redirect_user_to_goup(request):
     user_group = None
     user_group = request.user.groups.all()[0].name
     if user_group == 'admin':
-        return HttpResponseRedirect(reverse("admin:index"))
+        return HttpResponseRedirect(reverse("admin-home"))
     else:
         return HttpResponseRedirect(reverse("home"))
