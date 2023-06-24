@@ -1,32 +1,52 @@
 {% extends "admin_base.html" %}
 
+{% block title %}
+<title>Exercises</title>
+{% endblock title %}
+
 {% block content %}
 <h2>Filter by username</h2>
-<div class="container centered-text">    
-    <div class="row data-row">        
-        <div class="col-5 offset-2">
-            <input id="search_user" type="text" name="search_user" maxlength="50" placeholder="!Username contains?">
-        </div>
-        <div class="col">
-            <input type="submit" value="Go" class="wo-button" style="margin-top: 5px;">
+<form method="POST">
+    {% csrf_token %}
+    <div class="container centered-text">
+        <div class="row data-row">
+            <div class="col-5 offset-2">
+                <input id="search_user" type="text" name="search_user" value="{{ search_user }}" maxlength="50" placeholder="!Username contains?">
+            </div>
+            <div class="col">
+                <input type="submit" value="Go" class="wo-button" style="margin-top: 5px;">
+            </div>
         </div>
     </div>
-</div>
+</form>
 <h1>Exercises</h1>
-{% for exercise in page_obj %}
-
 <div class="container-fluid">
+    <div class="row table-header">
+        <div class="col">
+            ID
+        </div>
+        <div class="col-5">
+            Username
+        </div>
+        <div class="col">
+            Exercise
+        </div>
+    </div>
+    {% for exercise in page_obj %}
+
     <div class="row data-row">
         <div class="col">
             {{ exercise.id }}
         </div>
+        <div class="col-5">
+            {{ exercise.user.username }}
+        </div>
         <div class="col">
             {{ exercise.name }}
-        </div>        
+        </div>
     </div>
+    {% endfor %}
 </div>
-
-{% endfor %}
 <div class="container">
     <div class="row">
         <div class="col-2">

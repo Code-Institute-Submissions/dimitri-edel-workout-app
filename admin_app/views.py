@@ -124,10 +124,42 @@ class ExerciseList(View):
     paginate_by = 5
 
     def get(self, request, *args, **kwargs):
+        # All exercises
         exercise_list = models.Exercise.objects.all()
-
+        # Empty list to hold filtered exercises
+        exercises = [] 
+        # In case there is no search_user in the session, make it an empty string
+        search_user = ""
+        if 'search_user' in request.session:
+            search_user = request.session['search_user']
+        
+        # Filter the exercise list 
+        for exercise in exercise_list:
+            if search_user in exercise.user.username:
+                exercises.append(exercise)
+        
         # Put the filtered results in the paginator
-        paginator = Paginator(exercise_list, self.paginate_by)
+        paginator = Paginator(exercises, self.paginate_by)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, self.template_name, {"page_obj": page_obj, "search_user": search_user})
+
+    def post(self, request, *args, **kwargs):
+        exercise_list = models.Exercise.objects.all()
+        # Copy the contents of the search field
+        search_user = request.POST.get("search_user")
+        # Copy the search_user from POST to session
+        request.session['search_user'] = search_user
+        # Create an empy list to hold the filtered exercise list
+        exercises = []
+        # Filter the exercise list 
+        for exercise in exercise_list:
+            if search_user in exercise.user.username:
+                exercises.append(exercise)
+        
+        # Put the filtered results in the paginator
+        paginator = Paginator(exercises, self.paginate_by)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 
