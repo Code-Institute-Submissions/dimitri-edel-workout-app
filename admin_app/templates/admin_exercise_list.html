@@ -1,0 +1,59 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h2>Filter by username</h2>
+<div class="container centered-text">    
+    <div class="row data-row">        
+        <div class="col-5 offset-2">
+            <input id="search_user" type="text" name="search_user" maxlength="50" placeholder="!Username contains?">
+        </div>
+        <div class="col">
+            <input type="submit" value="Go" class="wo-button" style="margin-top: 5px;">
+        </div>
+    </div>
+</div>
+<h1>Exercises</h1>
+{% for exercise in page_obj %}
+
+<div class="container-fluid">
+    <div class="row data-row">
+        <div class="col">
+            {{ exercise.id }}
+        </div>
+        <div class="col">
+            {{ exercise.name }}
+        </div>        
+    </div>
+</div>
+
+{% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <!-- Placeholder -->
+        </div>
+        <div class="col-6 centered-text">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                    <a href="?page=1"><i class="fa-solid fa-backward-fast"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-backward"></i></a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-forward"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-forward-fast"></i></a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <div class="col">
+            <!-- Placeholder -->
+        </div>
+    </div>
+</div>
+{% endblock content %}

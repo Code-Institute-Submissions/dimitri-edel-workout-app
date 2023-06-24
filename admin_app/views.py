@@ -116,3 +116,19 @@ class DeleteUser(View):
         user = User.objects.get(id=user_id)
         user.delete()
         return HttpResponseRedirect(reverse('admin-users'))
+
+
+class ExerciseList(View):
+# List exercises and filter them by username
+    template_name = "admin_exercise_list.html"
+    paginate_by = 5
+
+    def get(self, request, *args, **kwargs):
+        exercise_list = models.Exercise.objects.all()
+
+        # Put the filtered results in the paginator
+        paginator = Paginator(exercise_list, self.paginate_by)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, self.template_name, {"page_obj": page_obj})

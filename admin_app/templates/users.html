@@ -14,7 +14,7 @@
                     class="input-field">
             </div>
             <div class="col">
-                <input type="submit" value="Go">
+                <input type="submit" value="Go" class="wo-button" style="margin-top:5px;">
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
     {% csrf_token %}
     <div class="container-fluid">
         <div class="row data-row">
-            <div class="col offset-2">
+            <div class="col-2 offset-2">
                 Username:
             </div>
             <div class="col input-field">
@@ -32,7 +32,7 @@
             </div>            
         </div>
         <div class="row data-row">
-            <div class="col offset-2">
+            <div class="col-2 offset-2">
                 Password:
             </div>
             <div class="col input-field">
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="row data-row">
-            <div class="col offset-2">
+            <div class="col-2 offset-2">
                 Confirm password:
             </div>
             <div class="col input-field">
@@ -48,8 +48,11 @@
             </div>
         </div>
         <div class="row data-row">
+            <div class="col-2 offset-2">
+                <input type="submit" value="Create" class="wo-button">
+            </div>
             <div class="col">
-                <input type="submit" value="Create">
+                <!-- Placeholder -->
             </div>
         </div>
     </div>
@@ -66,8 +69,44 @@
             <a href="{% url 'admin_workout_list' user.id %}" class="url-link">{{ user.username }}</a>
         </div>
         <div class="col centered-text">
-            <a href="{% url 'admin_delete_user' user.id %}" class="url-link">Delete</a>
+            <a class="url-link" href="#" data-bs-toggle="modal" data-bs-target="#modal{{user.id}}"><i
+                class="fa-solid fa-trash-can"></i></a>
         </div>
+    </div>
+</div>
+<!-- Modal Structure : Confirm Delete -->
+<div id="modal{{user.id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete {{ user.username }}?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete {{ user.username }}?</h4>
+                <p><i class="medium red material-icons">warning</i> <br>This action cannot be undone!
+                </p>
+            </div>
+            <div class="modal-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'admin_delete_user' user.id %}"
+                                class="url-link wo-button">Yes</a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="wo-button url-link" data-bs-dismiss="modal">No</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <!-- Placehoder -->
+    </div>
+    <div class="col">
+        <!-- Placehoder -->
     </div>
 </div>
 {% endfor %}
