@@ -1,0 +1,61 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h1>Administration</h1>
+<div class="container-fluid">
+{% for exercise_set in exercise_set_list %}
+    <div class="row data-row">
+        <div class="col">
+            ID:
+        </div>
+        <div class="col">
+            {{ exercise_set.id }}
+        </div>
+    </div>
+    <div class="row data-row">
+        <div class="col">
+            Reps :
+        </div>
+        <div class="col">
+            {{ exercise_set.reps }}
+        </div>
+    </div>
+    <div class="row data-row">
+        <div class="col">
+            Weight :
+        </div>
+        <div class="col">
+            {{ exercise_set.weight }}
+        </div>
+    </div>
+    <div class="row data-row">
+        <div class="col">
+            Time :
+        </div>
+        <div class="col">
+            {{ exercise_set.time }}
+        </div>
+    </div>
+    <div class="row data-row">
+        <div class="col">
+            Distance :
+        </div>
+        <div class="col">
+            {{ exercise_set.distance }}
+        </div>
+    </div>
+    {% if forloop.last %} 
+    <div class="row">
+        <div class="col"> END OF SET </div>
+    </div>
+    {% else %} 
+    <div class="row">
+        <div class="col">
+            NEXT SET 
+        </div>
+    </div>
+    {% endif %}
+    
+{% endfor %}
+</div>
+{% endblock content %}
