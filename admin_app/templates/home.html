@@ -2,8 +2,28 @@
 
 {% block content %}
 <h1>Administration</h1>
-{% for user in users %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <label for="search_user" class="data-row">Find user by name:</label>
+            </div>
+            <div class="col-7">
+                <input type="text" id="search_user" name="search_user"
+                    placeholder="!Enter string to search for in a username!" class="input-field">
+            </div>
+            <div class="col">
+                <input type="submit" value="Go">
+            </div>
+        </div>
+    </div>
 
+
+
+</form>
+<h2>Users</h2>
+{% for user in users %}
 <div class="container-fluid">
     <div class="row data-row">
         <div class="col">
@@ -13,10 +33,10 @@
             {{ user.username }}
         </div>
         <div class="col">
-            <a href="{% url 'admin_workout_list' user.id %}" class="url-link">Edit</a>
+            <a href="{% url 'admin_workout_list' user.id %}" class="url-link">Open</a>
         </div>
     </div>
 </div>
-
 {% endfor %}
+
 {% endblock content %}

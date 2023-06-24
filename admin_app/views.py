@@ -16,6 +16,16 @@ class UserList(View):
 
         return render(request, self.template_name, {"users": users})
 
+    def post(self, request, *args, **kwargs):
+        seach_user = request.POST['search_user']
+        User = get_user_model()
+        users = User.objects.all()
+        user_list = []
+        for user in users:
+            if seach_user in user.username:
+                user_list.append(user)
+
+        return render(request, self.template_name, {"users": user_list})
 
 class WorkoutList(View):    
 # List workouts by user.id
@@ -23,8 +33,9 @@ class WorkoutList(View):
 
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get("user_id")
+        user = User.objects.get(id=user_id)
         workout_list = models.Workout.objects.filter(user_id=user_id).order_by('id')
-        return render(request, self.template_name, {"workout_list": workout_list})
+        return render(request, self.template_name, {"workout_list": workout_list, "user": user})
 
 
 class WorkoutExerciseList(View):
