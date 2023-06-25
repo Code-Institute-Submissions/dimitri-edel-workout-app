@@ -99,7 +99,9 @@
     // Event listener for the start/stop timer button
     function start_button_click(button) {
         if (timer_button_clicked) {
-            timer.stop();            
+            timer.stop();  
+            timer_button_clicked = false;  
+            button.innerHTML = "<i class='fa-solid fa-play'></i>Timer";        
         } else {
             timer_button_clicked = true;
             button.innerHTML = "<i class='fa-solid fa-stop'></i>Timer";

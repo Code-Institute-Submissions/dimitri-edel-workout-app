@@ -8,6 +8,7 @@ Due to some misunderstandings along the way, three weeks before submission date,
 The actual problem, though, came up three days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
 ### My Server does not have an SSL-Certificate yet
 This is more of a financial issue at the moment. Due to lack of SSL, the server is not capable of enstablishing a secure https connection. But this is only a presentation and not a comercial website. 
+Lack of SSL won't allow me to use certain functionality that I had added to the project, but had to remove for the time beeing. It was a simple Wake-Lock, that prevents the screen from going into sleep mode. The lock works fine on the local host, but won't work with a simple HTTP-Connection. Which does make sense, since it uses a functionality of the operating system.
 
 ## First design
 ### Wireframe
@@ -75,8 +76,30 @@ Now, name the workout and select an exercise that you wish to begin with. And cl
 ![Name and start](static/img/manual/add_workout_start.jpg)
 
 #### Edit Workout
+You can see the name of the workout in the topmost row. The name of the exercise, that you chose to start out with,
+is in the left column. In the left column, next to the exercise name, is the delete button.
+Underneath the exercise is the row for adding another exercise. 
+If you add a new exercise to the workout, it will also auto-save the form. So there is no necessity to save the form thereafter. It is only necessary to save the form if the only thing you have changed is the name of the workout.
+
 ![Edit workout](static/img/manual/edit_workout.jpg)
 
+##### Adding another exercise
+Let us say, you want to another exercise to the workout. Click on **(-- Select Exercise --)** and select an exercise from the list and then click on **Add**.
+
+![Add exercise to workout](static/img/manual/add_workout_exercise.jpg)
+
+The newly added exercise will appear in the list.
+
+![Add exercise to workout result](static/img/manual/add_workout_exercise_outcome.jpg)
+
+##### Log results of an exercise of type : Cardio and goal : Distance
+If the type of exercise is a cardio exercise and its goal is distance, which jogging is, then you will see a page like this. Now you can enter the distance you have traversed and the time it took you to do so. The time field is actually a text field, so you can type in whatever you please.
+
+![Edit jogging](static/img/manual/edit_workout_exercise_jogging.jpg)
+
+ However, there is a timer that you can use to facilitate that. Upon stopping the timer the results will appear in the time field. When you are done with this set, just click on **Add**.
+
+![Jogging results](static/img/manual/edit_workout_exercise_jogging_results.jpg)
 
 
 
