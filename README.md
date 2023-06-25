@@ -1,4 +1,6 @@
 # workout-app
+![](static/img/cover.jpg | width=300)
+
 ## Introduction
  If you work out, it is always good practice to keep a journal, so you can **keep track of your results**. Many people will have a note pad, where they put everything down. But if you go to the gym and forget the note pad, then it might be difficult to memorize everything, so you can put it down in your workout journal. But for using this workout journal all you need is your smart phone with an internet connection, which you take everywhere with you anyway.
 ## Issues
