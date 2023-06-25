@@ -10,23 +10,17 @@
 
         <div class="col entry-column">
             <!-- Placeholder for consistency of the layout -->
-        </div>
-        <div class="col entry-column">
-            <!-- Placeholder for consistency of the layout -->
-        </div>        
+        </div>              
     </div>
     <div class="row">
         {{ workout_form.date }}
     </div>
     
     {% for workout_exercise in workout_exercise_list %}
-    <div class="row">
-        <div class="col entry-column text-field">
-            {{ workout_exercise.exercise.name }}
-        </div>
+    <div class="row">        
         <div class="col entry-column">
             <a href="{% url 'edit_exercise_set' workout_exercise.id %}" class="url-link"><i
-                    class="fa-solid fa-pen-to-square"></i>Edit</a>
+                    class="fa-solid fa-pen-to-square"></i>{{ workout_exercise.exercise.name }}</a>
         </div>
         <div class="col entry-column">
             <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{workout_exercise.id}}"
@@ -83,20 +77,14 @@
             <a href="#" onclick="submit_form()" class="url-link">
                 <i class="fa-solid fa-circle-plus"></i>Add
             </a>
-        </div>
-        <div class="col entry-column">
-            <!-- Placeholder for consistency of the layout -->
-        </div>
+        </div>        
     </div>
     <div class="row">
         <div class="col entry-column">
             <a href="#" onclick="submit_form()" class="url-link wo-button">
                 <i class="fa-solid fa-cloud-arrow-up"></i>Save
             </a>
-        </div>
-        <div class="col entry-column">
-            <!-- Placeholder for consistency of the layout -->
-        </div>
+        </div>        
         <div class="col entry-column md-2">
             <a href="{% url 'workout_list' %}" class="url-link wo-button">
                 <i class="fa-solid fa-circle-arrow-left"></i>Cancel

@@ -1,5 +1,5 @@
 # workout-app
-![](static/img/cover.jpg | width=300)
+![](static/img/cover.jpg)
 
 ## Introduction
  If you work out, it is always good practice to keep a journal, so you can **keep track of your results**. Many people will have a note pad, where they put everything down. But if you go to the gym and forget the note pad, then it might be difficult to memorize everything, so you can put it down in your workout journal. But for using this workout journal all you need is your smart phone with an internet connection, which you take everywhere with you anyway.
@@ -65,6 +65,17 @@ because I loggged in as an already existing user.
 ![Workout List with existing data sets](static/img/manual/workout_list_with_data.jpg)
 
 
+### Workout 
+To start logging the results of a workout, simply click on **Start Workout** in the navigation menu.
+
+![Add a new workout](static/img/manual/add_workout.jpg)
+
+Now, name the workout and select an exercise that you wish to begin with. And click on **Start**.
+
+![Name and start](static/img/manual/add_workout_start.jpg)
+
+#### Edit Workout
+![Edit workout](static/img/manual/edit_workout.jpg)
 
 
 
