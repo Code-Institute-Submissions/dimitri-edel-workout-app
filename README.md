@@ -101,7 +101,19 @@ If the type of exercise is a cardio exercise and its goal is distance, which jog
 
 ![Jogging results](static/img/manual/edit_workout_exercise_jogging_results.jpg)
 
+The added exercise will appear in the list
 
+![Jogging results](static/img/manual/edit_workout_exercise_jogging_results_2.jpg)
+
+##### Log results of an exercise of type : Cardio and goal : Repetitions
+One way to do push-ups is to try and do as many as you can as quickly as possible. Logging this type of exercise is exactly like the previous one. The only difference is that you have a **repetitions** field instead of distance.
+
+![Edit jogging](static/img/manual/edit_workout_exercise_pushups.jpg)
+
+##### Log results of an exercise of type : Strength and goal : Repetitions
+For the illustraion below, I am using a part from a workout named 'chest and shoulders' and the exercise is 'shoulder press'. The first set was 8 reps with 60 kg. 
+
+![Edit jogging](static/img/manual/edit_workout_exercise_shoulder_press.jpg)
 
 ## Testing
 ## Bugs
@@ -178,12 +190,14 @@ Before beginning with the project I had rented a Virtual Private Server at IONOS
 ## Technologies
 - Django
 - Bootstrap
-- Virtual Private Server
+- Apache2 Web-Server
 - PostgresSQL
 - Visual Studio Code
 - Python
 - JavaScript
 - HTML & CSS
+- FontAwsome
+- Google Fonts
 ## Credits
 - Code Institute
 - Django Documentation
@@ -191,3 +205,4 @@ Before beginning with the project I had rented a Virtual Private Server at IONOS
 - w3schools.com
 - stackoverflow.com
 - DigitalOcean
+- www.pexels.com
