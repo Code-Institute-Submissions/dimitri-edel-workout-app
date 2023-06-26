@@ -4,8 +4,8 @@
 ## Introduction
  If you work out, it is always good practice to keep a journal, so you can **keep track of your results**. Many people will have a note pad, where they put everything down. But if you go to the gym and forget the note pad, then it might be difficult to memorize everything, so you can put it down in your workout journal. But for using this workout journal all you need is your smart phone with an internet connection, which you take everywhere with you anyway.
 ## Issues
-Due to some misunderstandings along the way, three weeks before submission date, I learned that I had to use django and not Flask for this projects. Only because of how well documented and well organized django is, could I learn and develop at the same time. 
-The actual problem, though, came up three days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
+Due to some misunderstandings along the way, three weeks before submission date, I learned that I had to use django and not Flask for this projects. Only because of how well documented and well organized django is, could I learn and develop at the same time. What a freat framework! I doff my hat!
+The actual problem, though, came up three days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
 ### My Server does not have an SSL-Certificate yet
 This is more of a financial issue at the moment. Due to lack of SSL, the server is not capable of enstablishing a secure https connection. But this is only a presentation and not a comercial website. 
 Lack of SSL won't allow me to use certain functionality that I had added to the project, but had to remove for the time beeing. It was a simple Wake-Lock, that prevents the screen from going into sleep mode. The lock works fine on the local host, but won't work with a simple HTTP-Connection. Which does make sense, since it uses a functionality of the operating system.
@@ -115,7 +115,52 @@ For the illustraion below, I am using a part from a workout named 'chest and sho
 
 ![Edit jogging](static/img/manual/edit_workout_exercise_shoulder_press.jpg)
 
-## Testing
+### Admin interface
+
+#### Users
+The admin interface allows the admin to create and delete users. Also, it allows to search users by username. It does not have to be the whole user name, just a sequence of characters that the username should contain. For instance, there is a user named **mentor**. If you put **men** into the search field, the user **mentor** is still going to show up on the list.
+
+![Admin users page](static/img/manual/admin_users.jpg)
+
+The **links with usernames** can be used for **browsing** through user's workouts.
+
+#### Exercises
+The admin can filter exercises of all users. The character sequence in the search field will be looked for in usernames and names of exercises.
+
+![Admin exercise list page](static/img/manual/admin_exercise_list.jpg)
+
+## Testing and validation
+As I have demonstrated in the **use cases** above, everything works fine as long as the user is doing what they are supposed to. Let's see what happens if the user attempts to do something that they are not intended to do.
+
+### Default validation of django
+User registration and login functionality comes from allauth, which has been tested by its developers.
+The validation of the fields, in the scope of this project, is handled by django forms. The forms extract the required fields and the input types from the model. So if the user leaves out a required field, the form won't submit and a validation message will appear.
+
+### Custom error messages
+In a few cases, I could not get the submit-button element to look like I wanted it to. There seems to be some CSS attributes that I didn't manage to override. I have just tryed to do it again, but couldn't do it. However, instead of using a submit button, I resorted to using an **anchor**, which is easy to style. And I used **inline javascript** at the bottom of the html-document to submit the form.
+<code>
+function submit_form() {
+        document.forms[0].submit();
+    }
+</code>
+The **drawback** of this approach is that the django form validation goes out of the window. I do not know why and I could not find out the reason. So I had to manually send a message to the user informing them about the validation error.
+Below is an illustration of such a message.
+
+![Error message when adding exercise](static/img/manual/errors/add_exercise.jpg)
+
+**This message incurs if the user tries to add an exercise, but forgets to name it.**
+
+### Deleting exercise that is used in existing workouts
+For instance, the user tries to delete an exercise named jogging from the list of exercises.
+
+![Delete exercise bench press](static/img/manual/errors/delete_exercise_1.jpg)
+
+**Now they press 'Yes'**
+
+![Error deleting exercise](static/img/manual/errors/delete_exercise_2.jpg)
+
+**An error message is sent to the user**
+
 ## Bugs
 ### BUG-FIX # 1 (Not relevant anymore)
 This bugfix is not relevant, because I redesigned the application. And using Formsets became unnecessary.

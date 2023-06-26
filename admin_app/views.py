@@ -139,6 +139,8 @@ class ExerciseList(View):
         for exercise in exercise_list:
             if search_user in exercise.user.username:
                 exercises.append(exercise)
+            elif search_user in exercise.name:                
+                exercises.append(exercise)
         
         # Put the filtered results in the paginator
         paginator = Paginator(exercises, self.paginate_by)
@@ -158,6 +160,8 @@ class ExerciseList(View):
         # Filter the exercise list 
         for exercise in exercise_list:
             if search_user in exercise.user.username:
+                exercises.append(exercise)
+            elif search_user in exercise.name:                
                 exercises.append(exercise)
         
         # Put the filtered results in the paginator
