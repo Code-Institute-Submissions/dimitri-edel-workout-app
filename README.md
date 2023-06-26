@@ -4,7 +4,13 @@
 ## Introduction
  If you work out, it is always good practice to keep a journal, so you can **keep track of your results**. Many people will have a note pad, where they put everything down. But if you go to the gym and forget the note pad, then it might be difficult to memorize everything, so you can put it down in your workout journal. But for using this workout journal all you need is your smart phone with an internet connection, which you take everywhere with you anyway.
 ## Issues
-Due to some misunderstandings along the way, three weeks before submission date, I learned that I had to use django and not Flask for this projects. Only because of how well documented and well organized django is, could I learn and develop at the same time. What a freat framework! I doff my hat!
+Due to some misunderstandings along the way, three weeks before submission date, I learned that I had to use django and not Flask for this projects. 
+Here is an excerpt from the assemssment guide:
+**LO1**
+Use an Agile methodology to plan and design a Full-Stack Web application using an **MVC framework** and related contemporary technologies.
+Well, **Flask is  an MVC framework!**.
+
+Only because of how **well documented** and **well organized** django is, could I learn and develop at the same time. What a **great framework!** I doff my hat!
 The actual problem, though, came up three days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
 ### My Server does not have an SSL-Certificate yet
 This is more of a financial issue at the moment. Due to lack of SSL, the server is not capable of enstablishing a secure https connection. But this is only a presentation and not a comercial website. 
@@ -22,7 +28,7 @@ As mentioned before, I missed a few views in the intial wirefraem, which also me
 This is what the databse looks like after I have added the missing part.
 
 ![Final draft ERD](static/img/erd-final.png)
-## Use cases
+## User stories
 ### Home page
 This is the landing page of the web application
 
@@ -130,7 +136,7 @@ The admin can filter exercises of all users. The character sequence in the searc
 ![Admin exercise list page](static/img/manual/admin_exercise_list.jpg)
 
 ## Testing and validation
-As I have demonstrated in the **use cases** above, everything works fine as long as the user is doing what they are supposed to. Let's see what happens if the user attempts to do something that they are not intended to do.
+As I have demonstrated in the **user stories** above, everything works fine as long as the user is doing what they are supposed to. Let's see what happens if the user attempts to do something that they are not intended to do.
 
 ### Default validation of django
 User registration and login functionality comes from allauth, which has been tested by its developers.
