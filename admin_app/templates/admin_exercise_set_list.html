@@ -59,4 +59,5 @@
     
 {% endfor %}
 </div>
+<a href="{% url 'admin_workout_exercise_list' workout.id user.id %}" class="url-link centered-text" style="width:25%;">Back</a>
 {% endblock content %}

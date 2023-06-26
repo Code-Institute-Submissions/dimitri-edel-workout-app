@@ -44,7 +44,7 @@ notifying the user that they have just logged in, appears.
 ![Login redirect](static/img/manual/login_redirect.jpg)
 
 ### Exercises
-In order to use start working out, the user needs to define a set of exercises that they intend to use in their workouts.
+In order to start working out, the user needs to define a set of exercises that they intend to use in their workouts.
 If the user clicks on **Exercises** button in the navigation bar, a page with their exercises will open. The **illustration below** already **contains some exercises**. Yet if the user has **not created any**, the list will be **empty**.
 On this page the user can edit their **own list of exercies** as they see fit. They can add new ones, **delete execises**.
 Deleting will only work, **if the exercise has not been used** in a workout. If they want to edit an **existing exercise** they can do so, by simply **clicking** on the **name of the exercise** in the list.

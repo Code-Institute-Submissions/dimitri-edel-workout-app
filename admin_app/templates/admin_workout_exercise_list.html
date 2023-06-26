@@ -12,13 +12,11 @@
             {{ workout_exercise.id }}
         </div>
         <div class="col">
-            {{ workout_exercise.exercise.name }}
-        </div>
-        <div class="col">
-            <a href="{% url 'admin_exercise_set_list' workout_exercise.id %}" class="url-link">Open</a>
-        </div>
+            <a href="{% url 'admin_exercise_set_list' workout_exercise.id %}" class="url-link">{{ workout_exercise.exercise.name }}</a>
+        </div>        
     </div>
 </div>
 
-{% endfor %}
+{% endfor %} 
+<a href="{% url 'admin_workout_list' user.id %}" class="url-link centered-text" style="width:25%;">Back</a>
 {% endblock content %}

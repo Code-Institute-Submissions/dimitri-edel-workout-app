@@ -103,10 +103,12 @@ class ExerciseSetList(View):
         workout_exercise_id = kwargs.get("workout_exercise_id")
         workout_exercise = models.WorkoutExercise.objects.get(
             id=workout_exercise_id)
+        user = workout_exercise.workout.user  
+        workout = workout_exercise.workout      
         exercise = workout_exercise.exercise
         exercise_set_list = models.ExerciseSet.objects.filter(
             workout_exercise_id=workout_exercise_id)
-        return render(request, self.template_name, {"exercise_set_list": exercise_set_list, "exercise": exercise})
+        return render(request, self.template_name, {"exercise_set_list": exercise_set_list, "exercise": exercise, "workout": workout, "user": user})
 
 
 class DeleteUser(View):
