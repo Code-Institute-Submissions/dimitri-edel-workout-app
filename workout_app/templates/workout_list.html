@@ -21,7 +21,7 @@
             <span class="date-field">{{ report.date |date:"M d, y" }}</span>
         </div>
         <div class="col-7 centered-text" style="display:inline-block;">
-            <a class="url-link"" href=" {% url 'edit_workout' report.workout_id %}"><i
+            <a class="url-link workout-name"" href=" {% url 'edit_workout' report.workout_id %}"><i
                     class="fa-solid fa-pen-to-square"></i>{{report.name }}</a>
             {% for exercise_report in report.exercise_reports %}
             <a style="display:block;" class="url-link"

@@ -11,7 +11,7 @@ Use an Agile methodology to plan and design a Full-Stack Web application using a
 Well, **Flask is  an MVC framework!**.
 
 Only because of how **well documented** and **well organized** django is, could I learn and develop at the same time. What a **great framework!** I doff my hat!
-The actual problem, though, came up fouor days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
+The actual problem, though, came up four days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good **documentation** and a **comrehensive manaul** on the home page. This is the reason why the manual is incomplete for the time being.
 
 ## First design
 ### Wireframe
@@ -163,6 +163,48 @@ For instance, the user tries to delete an exercise named jogging from the list o
 ![Error deleting exercise](static/img/manual/errors/delete_exercise_2.jpg)
 
 **An error message is sent to the user**
+
+### Manual Testing Scenarios
+### Allauth 
+- Registration works
+- Login works
+- Logout works
+
+#### Exercise List
+- New exercises can be created
+- Validation works
+- Deleting an exercise that is already in use yields an error message to the user
+- The exercise list only shows the exercises defined by the currently logged in user
+
+#### Create Workout(Start Workout)
+- Validation in the form works
+- The workout is created acurately and the selected exercise is added to the corresponding model(WorkoutExercise)
+
+#### Workout (Edit Workout)
+- Validation works
+- Adding new exercise works
+- Confirmation dialog for deleting works
+- Deleting works
+- Renaming works
+
+#### Exercise Sets 
+This is where the actual logging of results happens
+- WakeLock works
+- Timer works properly
+- Validation not required (Fields are allowed to stay blank)
+- Deleting works (**intentionally** no confirm dialog)
+- Adding a new set works
+
+#### Workout List
+- The workout lists show up for different users correctly
+- The last workout shows up first (sorted by date)
+- The pagination works properly
+- The Confirm Delete Dialog works properly
+- The links for editting workouts work properly
+- The links for editting exercises in a given workout work properly
+#### Rerouting URL requests depnnding on user role
+- If admin signs in, they get redirected to admin-users page
+- If a user is **not** signed in, but the request a **URL** such as edit_workout/4 or something like this, they get redirected to the login page
 
 ## Bugs
 ### BUG-FIX # 1 (Not relevant anymore)
