@@ -11,10 +11,7 @@ Use an Agile methodology to plan and design a Full-Stack Web application using a
 Well, **Flask is  an MVC framework!**.
 
 Only because of how **well documented** and **well organized** django is, could I learn and develop at the same time. What a **great framework!** I doff my hat!
-The actual problem, though, came up three days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
-### My Server does not have an SSL-Certificate yet
-This is more of a financial issue at the moment. Due to lack of SSL, the server is not capable of enstablishing a secure https connection. But this is only a presentation and not a comercial website. 
-Lack of SSL won't allow me to use certain functionality that I had added to the project, but had to remove for the time beeing. It was a simple Wake-Lock, that prevents the screen from going into sleep mode. The lock works fine on the local host, but won't work with a simple HTTP-Connection. Which does make sense, since it uses a functionality of the operating system.
+The actual problem, though, came up fouor days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good documentation. 
 
 ## First design
 ### Wireframe
@@ -103,7 +100,7 @@ If the type of exercise is a cardio exercise and its goal is distance, which jog
 
 ![Edit jogging](static/img/manual/edit_workout_exercise_jogging.jpg)
 
- However, there is a timer that you can use to facilitate that. Upon stopping the timer the results will appear in the time field. When you are done with this set, just click on **Add**.
+ However, there is a **timer** that you can use to facilitate that. Upon stopping the timer the results will appear in the **time field**. Also, if you prefer to keep the screen on, whilest exercising, there is a **check-box** that you can **activate** to do just that. My screen goes into sleep mode after one minute of inactivity, and I pefer not to have to enter the PIN on my cell phone every time I want to log the results of the current exercise. In the picture above you can see that the , so called, **Wake Lock** was activated.When you are **done** with this set, just click on **Add**.
 
 ![Jogging results](static/img/manual/edit_workout_exercise_jogging_results.jpg)
 
@@ -233,10 +230,11 @@ def __init__(self, *args, **kwargs):
 
 ## Deployment
 Before beginning with the project I had rented a Virtual Private Server at IONOS. The server comes with a plain Ubuntu operating system. Most Linux systems come with a pre-installed python interpreter and Ubuntu is one of them. 
-1. Install an Apache2 Webserver([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-22-04)) and PostreSQL([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-22-04-quickstart)]) on the system. 
-3. Configure server for a django application ([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-apache-and-mod_wsgi-on-ubuntu-14-04))
+1. Install an **Apache2 Webserver**([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-22-04)) and PostreSQL([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-22-04-quickstart)]) on the system. 
+2. Configure server for a **django application** ([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-apache-and-mod_wsgi-on-ubuntu-14-04))
+3. Configure server for **SSL-Encryption** ([Tutorial I used](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-22-04))
 4. Apply changes to **settings.py**, adding **ROOT_URL** and **STATIC_URL** as well as **STATIC_ROOT** .
-5. Run the collect static command.
+5. Run the **collect static** command.
 
 ## Technologies
 - Django
