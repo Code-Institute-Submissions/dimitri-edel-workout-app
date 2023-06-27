@@ -3,6 +3,11 @@
 
 {% block content %}
 <h1>{{ workout_exercise_form.instance.workout.name }} : {{ exercise.name }}</h1>
+<!-- Activate the wake lock to keep the screen active -->
+<span class="wakelock">
+    <label for="wakelock_active">Keep SCREEN AWAKE</label>
+    <input id="wakelock_active" type="checkbox" name="wakelock_active" value="false">
+    </span>
 <form action="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}" method="POST">
     {% csrf_token %}
     <div hidden>
@@ -10,13 +15,13 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-4 entry-column">
+            <div class="col-4 table-header">
                 Reps
             </div>
-            <div class="col-4 entry-column">
+            <div class="col-4 table-header">
                 Weight
             </div>
-            <div class="col entry-column">
+            <div class="col table-header">
 
             </div>
         </div>
@@ -30,16 +35,16 @@
             </div>
             <div class="col entry-column">
                 <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set.id %}"
-                    class="url-link"><i class="fa-solid fa-trash-can"></i></a>
+                    class="url-link wo-button"><i class="fa-solid fa-trash-can"></i></a>
             </div>
         </div>
         {% endfor %}
 
         <div class="row">
-            <div class="col-4">
+            <div class="col-4 entry-column">
                 {{ exercise_set_form.reps }}
             </div>
-            <div class="col-4">
+            <div class="col-4 entry-column">
                 {{ exercise_set_form.weight }}
             </div>
             <div class="col">
@@ -68,5 +73,35 @@
     function submit_form() {
         document.forms[0].submit();
     }
+    /*   WakeLock API 
+         Purpose: Keep the screen awake
+ 
+         Code copied from : https://developer.chrome.com/en/articles/wake-lock/
+    */
+    // The wake lock sentinel.
+    let wakeLock = null;
+
+    // Function that attempts to request a screen wake lock.
+    const requestWakeLock = async () => {
+        try {
+            wakeLock = await navigator.wakeLock.request();
+            wakeLock.addEventListener('release', () => {
+                console.log('Screen Wake Lock released:', wakeLock.released);
+            });
+            console.log('Screen Wake Lock released:', wakeLock.released);
+        } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+        }
+    };
+
+    // IF the checkbox is checked request a WakeLock, otherwise release the WakeLock
+    document.getElementById("wakelock_active").addEventListener("change", ()=>{
+        if(wakeLock == null){
+            wakeLock = requestWakeLock();
+        }else{
+            wakeLock.release();
+            wakeLock = null;
+        }
+    });
 </script>
 {% endblock content %}

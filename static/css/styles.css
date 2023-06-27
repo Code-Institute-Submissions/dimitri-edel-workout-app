@@ -78,16 +78,17 @@ h3 {
     background-image: linear-gradient(to right, rgb(249 244 244 / 91%), white, rgb(240 235 235 / 90%));
 }
 
+
+/* --------------------------------------------------------------------------------------------- */
+
+/* APPLICATION ELEMENTS ######################################################################### */
 div .table-header {
     background-image: linear-gradient(to right, #a2a3a6bf, white, #a2a3a6ed);
     color: #3e3c58;
     font-weight: bold;
     font-size: 1.2em;
+    margin: 2px;
 }
-/* --------------------------------------------------------------------------------------------- */
-
-/* APPLICATION ELEMENTS ######################################################################### */
-
 
 .data-row {
     background-color:  #e5e9eb;      
@@ -194,4 +195,13 @@ i {
     border-color: rgb(55, 4, 125);
     font-size: 1em;
     font-weight: bold;
+}
+
+.wakelock {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    color: #ece3d9;
+    background-image: linear-gradient(to right, #2e2e2ecd, black, #2e2e2ecd);
+    border: 3px solid;
+    border-color: transparent;
 }

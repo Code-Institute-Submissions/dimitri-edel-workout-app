@@ -3,21 +3,25 @@
 
 {% block content %}
 <h1>{{ workout_exercise_form.instance.workout.name }} : {{ exercise.name }}</h1>
+<!-- Activate the wake lock to keep the screen active -->
+<span class="wakelock">
+<label for="wakelock_active">Keep SCREEN AWAKE</label>
+<input id="wakelock_active" type="checkbox" name="wakelock_active" value="false">
+</span>
 <form action="{% url 'edit_exercise_set' workout_exercise_form.instance.id %}" method="POST">
     {% csrf_token %}
     <div hidden>
         {{ workout_exercise_form }}
-    </div>
-    {{ exercise_set_formset.management_form }}
+    </div>    
     <div class="container-fluid">
         <div class="row">
-            <div class="col-4 entry-column">
+            <div class="col-4 table-header">
                 Distance
             </div>
-            <div class="col-4 entry-column">
+            <div class="col-4 table-header">
                 Time
             </div>
-            <div class="col entry-column">
+            <div class="col table-header">
                 <!-- Placeholder-->
             </div>
         </div>
@@ -31,15 +35,15 @@
             </div>
             <div class="col">
                 <a href="{% url 'delete_exercise_set' workout_exercise_form.instance.id exercise_set.id %}"
-                    class="url-link"><i class="fa-solid fa-trash-can"></i></a>
+                    class="url-link wo-button"><i class="fa-solid fa-trash-can"></i></a>
             </div>
         </div>
         {% endfor %}
         <div class="row">
-            <div class="col-4">
+            <div class="col-4 entry-column">
                 {{ exercise_set_form.distance }}
             </div>
-            <div class="col-4">
+            <div class="col-4 entry-column">
                 {{ exercise_set_form.time }}
             </div>
             <script>
@@ -47,7 +51,7 @@
                 let result_field_id = "{{ exercise_set_form.time.auto_id }}";
             </script>
             <div class="col">
-                <a href="#" onclick="submit_form()" class="url-link">
+                <a href="#" onclick="submit_form()" class="url-link wo-button">
                     <i class="fa-solid fa-circle-plus"></i>Add
                 </a>
             </div>
@@ -55,7 +59,7 @@
     </div>
     <div class="container-fluid" style="margin-top: 10px;">
         <div class="row">
-            <div class="col-4">                
+            <div class="col-4">
                 <a href="{% url 'edit_workout' workout_exercise_form.instance.workout_id %}" class="url-link wo-button"
                     id="close-button">
                     <i class="fa-solid fa-circle-left"></i>Close
@@ -99,9 +103,9 @@
     // Event listener for the start/stop timer button
     function start_button_click(button) {
         if (timer_button_clicked) {
-            timer.stop();  
-            timer_button_clicked = false;  
-            button.innerHTML = "<i class='fa-solid fa-play'></i>Timer";        
+            timer.stop();
+            timer_button_clicked = false;
+            button.innerHTML = "<i class='fa-solid fa-play'></i>Timer";
         } else {
             timer_button_clicked = true;
             button.innerHTML = "<i class='fa-solid fa-stop'></i>Timer";
@@ -119,6 +123,37 @@
         Third parameter specifies the intervals in milliseconds in which the timer will be updated
     */
     let timer = new Timer("timer-text", result_field_id, 100);
-   
+
+    /*   WakeLock API 
+         Purpose: Keep the screen awake
+ 
+         Code copied from : https://developer.chrome.com/en/articles/wake-lock/
+    */
+    // The wake lock sentinel.
+    let wakeLock = null;
+
+    // Function that attempts to request a screen wake lock.
+    const requestWakeLock = async () => {
+        try {
+            wakeLock = await navigator.wakeLock.request();
+            wakeLock.addEventListener('release', () => {
+                console.log('Screen Wake Lock released:', wakeLock.released);
+            });
+            console.log('Screen Wake Lock released:', wakeLock.released);
+        } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+        }
+    };
+
+    // IF the checkbox is checked request a WakeLock, otherwise release the WakeLock
+    document.getElementById("wakelock_active").addEventListener("change", ()=>{
+        if(wakeLock == null){
+            wakeLock = requestWakeLock();
+        }else{
+            wakeLock.release();
+            wakeLock = null;
+        }
+    });
+    
 </script>
 {% endblock content %}
