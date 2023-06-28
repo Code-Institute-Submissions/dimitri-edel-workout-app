@@ -44,7 +44,9 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
-
+# This model is used to add exercises to a Workout
+# Furthermore, ExerciseSets use it to add Sets of an Exercise in a workout
+# In other words, this model is referenced as a ForeingKey by ExerciseSet
 class WorkoutExercise(models.Model):
     # The relationshop to the owner object of type Workout
     workout= models.ForeignKey(
@@ -61,11 +63,7 @@ class WorkoutExercise(models.Model):
 # A class for a set. It belongs to (related to) an object of type Workout.
 # Each set must also be related to a particular exercise, such as pull-ups or jogging, etc.
 class ExerciseSet(models.Model):
-    # The relationshop to the owner object of type Workout
-    # workout= models.ForeignKey(
-    #     Workout, on_delete=models.CASCADE, related_name="workout_exercise_set")
-    # The relationship to an Exercise object
-    # exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="exercise_set")
+    # The relationshop to the owner object of type WorkoutExercise  
     workout_exercise = models.ForeignKey(WorkoutExercise, on_delete=models.CASCADE, related_name="workout_exercise_exercise_set", default=0)
     # Number of repetitioons in this set
     reps = models.IntegerField(blank=True, null=True, default="0")

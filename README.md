@@ -4,27 +4,23 @@
 ## Introduction
  If you work out, it is always good practice to keep a journal, so you can **keep track of your results**. Many people will have a note pad, where they put everything down. But if you go to the gym and forget the note pad, then it might be difficult to memorize everything, so you can put it down in your workout journal. But for using this workout journal all you need is your smart phone with an internet connection, which you take everywhere with you anyway.
 ## Issues
-Due to some misunderstandings along the way, three weeks before submission date, I learned that I had to use django and not Flask for this projects. 
-Here is an excerpt from the assemssment guide:
-**LO1**
-Use an Agile methodology to plan and design a Full-Stack Web application using an **MVC framework** and related contemporary technologies.
-Well, **Flask is  an MVC framework!**.
-
-Only because of how **well documented** and **well organized** django is, could I learn and develop at the same time. What a **great framework!** I doff my hat!
-The actual problem, though, came up four days before submission, as I was already beginning to work on this README.MD file. What happened was that I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of crud functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good **documentation** and a **comrehensive manaul** on the home page. This is the reason why the manual is incomplete for the time being.
+Four days before submission, as I was already beginning to work on this README.MD file,I learned from my mentor, that the django adminstraion sites, do not count as the real admin sites. Thus, I have to implement my own admin interface. So, I whipped up an interface, that I would not put out in the real world. It does not cover the entire scope of CRUD functionality for all models, yet they can be easily added later.This interface merely serves as a means to show the assesment team, that if I had planned that in, it would not have been an issue. This mishap took away a huge chunk of the time that was planned on providing a good **documentation** and a **comrehensive manaul** on the home page. This is the reason why the manual is incomplete for the time being.
 
 ## First design
 ### Wireframe
 This was the initial thought. Yet, in the process I realized that I missed out a couple of views.
+
 ![First draft wireframe](static/img/first_design_wireframe.png)
 ### ERD
-As mentioned before, I missed a few views in the intial wirefraem, which also means that the first ERD was missing one model class. However, this was the first draft.
+This is what the first draft looked like.
+
 ![First draft ERD](static/img/first_erd.png)
 ## Final Design
 ### ERD
-This is what the databse looks like after I have added the missing part.
+As I started implementing the views, I realized that a model class was missing, to make it work the way I wanted it to be. This is what the databse looks like after I have added the missing part.
 
 ![Final draft ERD](static/img/erd-final.png)
+
 ## User stories
 ### Home page
 This is the landing page of the web application
@@ -289,6 +285,8 @@ Before beginning with the project I had rented a Virtual Private Server at IONOS
 - HTML & CSS
 - FontAwsome
 - Google Fonts
+- MS Paint
+
 ## Credits
 - Code Institute
 - Django Documentation
@@ -297,3 +295,4 @@ Before beginning with the project I had rented a Virtual Private Server at IONOS
 - stackoverflow.com
 - DigitalOcean
 - www.pexels.com
+- developer.chrome.com
